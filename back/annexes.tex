@@ -1,0 +1,67 @@
+\begin{appendices}
+
+\chapter{Glossaire des termes techniques}
+\label{annexe:glossaire}
+
+\noindent
+Ce glossaire r\'ecapitule les d\'efinitions des principaux termes techniques et acronymes employ\'es dans le rapport :
+
+\section*{Architecture et m\'ethodologies}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{p{4.2cm} X}
+\toprule
+\textbf{Terme / Concept} & \textbf{D\'efinition et Contexte} \\
+\midrule
+\textbf{API REST} & Interface de programmation applicative reposant sur le protocole HTTP, permettant la communication d\'ecoupl\'ee entre client et serveur. \\
+\textbf{CI/CD}    & Pratiques d'int\'egration et de d\'eploiement continus automatisant le cycle de vie logiciel (build, tests, mise en production). \\
+\textbf{GitFlow}  & Mod\`ele structur\'e de gestion des branches Git garantissant la stabilit\'e du code en production. \\
+\textbf{MVC / MVVM}& Patrons d'architecture logicielle s\'eparant les donn\'ees, la logique de traitement et la couche de pr\'esentation. \\
+\textbf{SoC}      & S\'eparation des pr\'eoccupations (\textit{Separation of Concerns}), principe de conception visant \`a modulariser les responsabilit\'es. \\
+\bottomrule
+\end{tabularx}
+\caption{Glossaire des concepts d'architecture et de m\'ethodologie}
+\label{tab:glossaire-archi}
+\end{table}
+
+\section*{Technologies et d\'eveloppement}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{p{4.2cm} X}
+\toprule
+\textbf{Terme / Outil} & \textbf{D\'efinition et R\^ole Technique} \\
+\midrule
+\textbf{Conteneurisation} & M\'ecanisme d'isolation logicielle empaquetant le code et ses d\'ependances pour garantir la portabilit\'e. \\
+\textbf{JWT}              & Jeton s\'ecuris\'e d'authentification (\textit{JSON Web Token}) transmettant des informations sign\'ees num\'eriquement. \\
+\textbf{ORM}              & Outil faisant le pont entre les classes objets du code source et les tables relationnelles d'une base de donn\'ees. \\
+\textbf{Swagger / OpenAPI}& Outil de documentation interactive et de test standardis\'e des routes d'une API REST. \\
+\bottomrule
+\end{tabularx}
+\caption{Glossaire des technologies et outils de d\'eveloppement}
+\label{tab:glossaire-tech}
+\end{table}
+
+\chapter{Sp\'ecifications des points d'entr\'ee de l'API}
+\label{annexe:api-endpoints}
+
+\noindent
+Le tableau ci-dessous pr\'esente la structure type de documentation des points d'entr\'ee (\textit{endpoints}) d'une API REST :
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{p{2.2cm} p{4.8cm} X}
+\toprule
+\textbf{M\'ethode} & \textbf{Point de Terminaison} & \textbf{Description et R\^ole} \\
+\midrule
+\texttt{POST}   & \texttt{/api/v1/auth/login}       & Authentification des utilisateurs et g\'en\'eration du token. \\
+\texttt{GET}    & \texttt{/api/v1/items}            & Consultation de la liste des \'el\'ements avec pagination. \\
+\texttt{POST}   & \texttt{/api/v1/items}            & Cr\'eation d'un nouvel enregistrement avec validation des donn\'ees. \\
+\texttt{PUT}    & \texttt{/api/v1/items/\{id\}}      & Mise \`a jour compl\`ete des informations d'un \'el\'ement existant. \\
+\texttt{DELETE} & \texttt{/api/v1/items/\{id\}}      & Suppression d'un \'el\'ement du syst\`eme. \\
+\bottomrule
+\end{tabularx}
+\caption{Exemple de documentation des points de terminaison d'une API}
+\label{tab:api-endpoints}
+\end{table}
+
+\end{appendices}

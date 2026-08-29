@@ -1,0 +1,33 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+*.nav
+*.snm
+*.vrb
+
+# Output PDF & zip exports
+main.pdf
+*.zip
+
+# Python & IDE
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+.gemini/
+
+# OS artifacts
+Thumbs.db
+.DS_Store

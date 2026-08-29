@@ -1,0 +1,158 @@
+\chapter{Cadre g\'en\'eral du projet}
+\finPageTitre
+
+\section{Introduction}
+Ce premier chapitre est consacr\'e \`a la pr\'esentation du cadre g\'en\'eral du projet de fin d'ann\'ee. Nous introduisons tout d'abord l'organisme d'accueil, ses activit\'es et ses p\^oles d'expertise. Nous menons ensuite une analyse m\'ethodique de l'existant afin de cerner le contexte technique et op\'erationnel. Enfin, nous d\'elimitons le p\'erim\`etre pr\'ecis de la mission confi\'ee, ses objectifs, ses contraintes ainsi que la planification pr\'evisionnelle illustr\'ee par le diagramme de Gantt.
+
+\section{Pr\'esentation de l'organisme d'accueil}
+\subsection{Pr\'esentation g\'en\'erale et secteur d'activit\'e}
+L'organisme d'accueil, \textbf{[Nom de l'organisme / Entreprise]}, est une structure sp\'ecialis\'ee dans le domaine de \textbf{[secteur d'activit\'e : ex. le d\'eveloppement logiciel, l'int\'egration de syst\`emes, la transformation digitale]}.
+
+Fond\'ee en \textbf{[Ann\'ee]}, l'organisation propose des solutions innovantes adapt\'ees aux besoins de ses clients et partenaires. Ses activit\'es couvrent le conseil en technologies, la conception d'architectures logicielles et le d\'eploiement de solutions m\'etier.
+
+\subsection{Positionnement et \'ecosyst\`eme}
+L'organisme collabore avec divers partenaires institutionnels et industriels \textbf{[citer des r\'ef\'erences : ex. entreprises partenaires, organismes publics, clients cl\'es]}. Situ\'e \`a \textbf{[Ville / R\'egion]}, il dispose d'un positionnement strat\'egique lui permettant d'intervenir sur des projets \`a forte valeur ajout\'ee.
+
+\subsection{Domaines d'expertise}
+Les principales comp\'etences et activit\'es de l'organisme s'articulent autour de plusieurs axes compl\'ementaires pr\'esent\'es dans le Tableau~\ref{tab:expertises}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{X X X}
+\toprule
+\textbf{Ing\'enierie Logicielle} & \textbf{Conseil \& Expertise} & \textbf{Innovation \& R\&D} \\
+\midrule
+\textbullet~Conception d'architectures \par
+\textbullet~D\'eveloppement Web \& Mobile \par
+\textbullet~Int\'egration de syst\`emes & 
+\textbullet~Audit et s\'ecurit\'e \par
+\textbullet~Gestion de projets IT \par
+\textbullet~Accompagnement digital & 
+\textbullet~Veille technologique \par
+\textbullet~D\'eveloppement de PoC \par
+\textbullet~Intelligence Artificielle \\
+\bottomrule
+\end{tabularx}
+\caption{Domaines d'expertise de l'organisme d'accueil}
+\label{tab:expertises}
+\end{table}
+
+\subsection{Solutions et produits principaux}
+Dans le cadre de ses prestations, l'organisme con\c{c}oit et maintient diff\'erentes solutions logicielles :
+\begin{itemize}
+    \item \textbf{[Solution / Plateforme 1]} : [Br\`eve description de la solution principale ou du produit associ\'e au projet] ;
+    \item \textbf{[Solution / Plateforme 2]} : [Br\`eve description d'autres produits d\'evelopp\'es au sein de l'entreprise].
+\end{itemize}
+
+\section{Analyse de l'existant}
+\subsection{Contexte et p\'erim\`etre du syst\`eme existant}
+L'intervention r\'ealis\'ee porte sur \textbf{[Nom du syst\`eme / de l'application existante]}. Ce syst\`eme a pour finalit\'e de \textbf{[d\'ecrire la mission op\'erationnelle du syst\`eme existant]}.
+
+\subsection{Architecture technique initiale}
+Le Tableau~\ref{tab:stack-existant} r\'esume la composition de la pile technologique initiale du syst\`eme.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{p{3.8cm} X p{3.8cm}}
+\toprule
+\textbf{Composant / Couche} & \textbf{Technologies Utilis\'ees} & \textbf{R\^ole Op\'erationnel} \\
+\midrule
+\textbf{Couche Pr\'esentation} & [Technologies Front : ex. HTML/CSS, Framework UI] & Interface utilisateur et interactions \\
+\textbf{Couche M\'etier}       & [Technologies Back : ex. Langage, Framework API]  & Logique m\'etier et traitement des flux \\
+\textbf{Couche Persistance}    & [Syst\`eme de BDD : ex. SQL / NoSQL]               & Stockage et gestion des donn\'ees \\
+\textbf{Infrastructure}        & [Outils : ex. Serveur web, Conteneurs, Outils CI]   & H\'ebergement et ex\'ecution \\
+\bottomrule
+\end{tabularx}
+\caption{Architecture technique du syst\`eme existant}
+\label{tab:stack-existant}
+\end{table}
+
+\subsection{Acteurs et flux fonctionnels}
+Le fonctionnement de la plateforme implique diff\'erents r\^oles d'utilisateurs :
+\begin{itemize}
+    \item \textbf{[Acteur 1 : ex. Administrateur]} : [R\^ole, responsabilit\'es et droits d'acc\`es] ;
+    \item \textbf{[Acteur 2 : ex. Gestionnaire / Utilisateur m\'etier]} : [Op\'erations principales et t\^aches quotidiennes] ;
+    \item \textbf{[Acteur 3 : ex. Client / Utilisateur final]} : [Consultation des informations et interactions avec le syst\`eme].
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\IfFileExists{figures/ch1/diagramme_fonctionnel.png}{%
+    \includegraphics[width=0.85\textwidth]{figures/ch1/diagramme_fonctionnel.png}%
+}{%
+    \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici le diagramme de cas d'utilisation ou d'architecture fonctionnelle de l'existant]}}}%
+}
+\caption{Diagramme fonctionnel des flux du syst\`eme}
+\label{fig:diag-fonctionnel}
+\end{figure}
+
+\section{Probl\'ematique et identification des besoins}
+L'analyse de l'existant et les \'echanges avec l'\'equipe encadrante ont permis de d\'egager plusieurs limitations :
+\begin{enumerate}
+    \item \textbf{Limitations fonctionnelles} : [D\'ecrire les manques fonctionnels ou processus manuels \`a automatiser] ;
+    \item \textbf{Contraintes techniques} : [D\'ecrire les contraintes d'architecture, de scalabilit\'e ou de performance] ;
+    \item \textbf{Besoins d'am\'elioration} : [D\'ecrire les attentes prioritaires des utilisateurs et de l'organisme].
+\end{enumerate}
+
+\section{Expos\'e de la mission confi\'ee}
+\subsection{Objectifs g\'en\'eraux}
+Pour r\'epondre aux besoins identifi\'es, la mission confi\'ee dans le cadre de ce stage consiste \`a \textbf{[d\'efinir l'objectif majeur du projet : ex. concevoir et d\'evelopper un module m\'etier complet, refondre l'architecture applicative ou cr\'eer une nouvelle plateforme]}.
+
+\subsection{P\'erim\`etre du projet}
+\begin{itemize}
+    \item \textbf{T\^aches et fonctionnalit\'es incluses} :
+    \begin{itemize}
+        \item [T\^ache 1 : ex. Analyse d\'etaill\'ee des besoins et r\'edaction des sp\'ecifications] ;
+        \item [T\^ache 2 : ex. Conception de l'architecture logicielle et de la base de donn\'ees] ;
+        \item [T\^ache 3 : ex. D\'eveloppement et int\'egration des composants Front-End et Back-End] ;
+        \item [T\^ache 4 : ex. Mise en \oe uvre des tests de validation et d\'eploiement].
+    \end{itemize}
+    \item \textbf{Fonctionnalit\'es hors p\'erim\`etre} :
+    \begin{itemize}
+        \item [Exclusion 1 : Fonctionnalit\'es secondaires report\'ees aux versions futures] ;
+        \item [Exclusion 2 : Int\'egrations mat\'erielles ou d\'eploiements externes hors port\'ee].
+    \end{itemize}
+\end{itemize}
+
+\subsection{Contraintes et crit\`eres d'\'evaluation}
+Le projet est soumis aux contraintes suivantes :
+\begin{itemize}
+    \item \textbf{D\'elai d'ex\'ecution} : Respect de la dur\'ee impartie pour le stage ([nombre] semaines) ;
+    \item \textbf{Qualit\'e et s\'ecurit\'e} : Respect des standards de codage, de s\'ecurit\'e des donn\'ees et de modularit\'e ;
+    \item \textbf{Maintenabilit\'e} : Production d'un code document\'e, testable et ais\'ement r\'eutilisable.
+\end{itemize}
+
+\section{Planification temporelle et diagramme de Gantt}
+Afin de structurer le d\'eroulement du projet et d'assurer le respect des d\'elais, un planning pr\'evisionnel a \'et\'e \'etabli. La Figure~\ref{fig:gantt} pr\'esente la r\'epartition temporelle des principales phases du projet.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{figures/ch1/gantt.png}{%
+    \includegraphics[width=0.92\textwidth]{figures/ch1/gantt.png}%
+}{%
+    \begin{ganttchart}[
+        hgrid,
+        vgrid,
+        x unit=0.88cm,
+        y unit chart=0.6cm,
+        title height=1,
+        bar/.append style={fill=grisfonce},
+        bar height=0.6
+    ]{1}{10}
+    \gantttitle{Semaines}{10}\\
+    \gantttitlelist{1,...,10}{1}\\
+    \ganttbar{Analyse de l'existant \& Sp\'ecifications}{1}{2}\\
+    \ganttbar{\'Etat de l'art \& Choix techniques}{2}{4}\\
+    \ganttbar{Conception de l'architecture}{4}{6}\\
+    \ganttbar{D\'eveloppement \& Int\'egration}{5}{8}\\
+    \ganttbar{Tests, Validation \& D\'eploiement}{8}{9}\\
+    \ganttbar{R\'edaction du rapport \& Cl\^oture}{9}{10}
+    \end{ganttchart}%
+}
+\caption{Diagramme de Gantt pr\'evisionnel du d\'eroulement du projet}
+\label{fig:gantt}
+\end{figure}
+
+\sectionTransition{%
+Ce premier chapitre a pr\'esent\'e l'organisme d'accueil, analys\'e l'existant et d\'efini les objectifs et la planification du projet. Le deuxi\`eme chapitre est consacr\'e \`a l'\'etude de l'\'etat de l'art, \`a la d\'emarche m\'ethodologique et \`a la justification des choix technologiques et architecturaux.
+}

@@ -1,0 +1,66 @@
+\begin{titlepage}
+\thispagestyle{empty}
+
+% ============================================================
+% LOGOS ENSAF ET ORGANISME D'ACCUEIL
+% ============================================================
+\begin{minipage}{0.45\textwidth}
+    \flushleft
+    \IfFileExists{logos/logo-ensaf.png}{%
+        \includegraphics[height=2.2cm]{logos/logo-ensaf.png}%
+    }{%
+        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo ENSAF}}}%
+    }
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \flushright
+    \IfFileExists{logos/logo-entreprise.png}{%
+        \includegraphics[height=2.2cm]{logos/logo-entreprise.png}%
+    }{%
+        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo Organisme}}}%
+    }
+\end{minipage}
+
+\vspace{0.8cm}
+
+\begin{center}
+    {\large \textbf{UNIVERSIT\'E SIDI MOHAMED BEN ABDELLAH}}\\[0.15cm]
+    {\large \textbf{\'ECOLE NATIONALE DES SCIENCES APPLIQU\'EES DE F\`ES}}\\[0.3cm]
+    {\small \textbf{D\'epartement G\'enie Informatique}}\\[1.2cm]
+
+    % RÈGLE ENSAF : PAS DE MENTION "MÉMOIRE" POUR UN STAGE/PFA
+    {\large \textbf{RAPPORT DE PROJET DE FIN D'ANN\'EE}}\\[0.25cm]
+    {\normalsize Pour l'obtention du Dipl\^ome d'Ing\'enieur d'\'Etat en G\'enie Informatique}\\[1.2cm]
+
+    % TITRE DU PROJET (VALORISANT ET EXPLICITE)
+    \rule{\linewidth}{0.5mm}\\[0.4cm]
+    {\Large \bfseries [TITRE DU PROJET : CONCEPTION, IMPL\'EMENTATION OU R\'ESOLUTION D'UNE PROBL\'EMATIQUE D'ING\'ENIERIE]}\\[0.3cm]
+    {\large \textit{[Sous-titre descriptif : Cas d'application / Plateforme / Domaine]}}\\[0.2cm]
+    \rule{\linewidth}{0.5mm}\\[1.2cm]
+\end{center}
+
+\vfill
+
+% IDENTIFICATION DE L'ÉTUDIANT ET DE L'ENCADREMENT
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{R\'ealis\'e par :}\\[0.2cm]
+    \textbf{[Pr\'enom NOM]}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.52\textwidth}
+    \raggedleft
+    \textbf{Sous la direction de :}\\[0.2cm]
+    \textbf{Mme/M. [Pr\'enom NOM]} \textit{(Encadrant Acad\'emique ENSAF)}\\
+    \textbf{Mme/M. [Pr\'enom NOM]} \textit{(Encadrant Professionnel Organisme)}
+\end{minipage}
+
+\vfill
+
+\begin{center}
+    \textbf{Organisme d'accueil : [Nom de l'organisme d'accueil / Entreprise - Ville]}\\[0.2cm]
+    \textbf{Ann\'ee Universitaire : 2025 -- 2026}
+\end{center}
+
+\end{titlepage}
