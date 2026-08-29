@@ -1,35 +1,51 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{ensaf}[2026/08/27 Rapport de stage ENSAF - regles Rassil]
+\ProvidesClass{ensaf}[2026/08/29 Classe Rapport ENSAF - Conforme Guide Officiel]
 \LoadClass[12pt,a4paper]{report}
 
-% ---------- Langue ----------
+% ============================================================
+% 1. LANGUES ET ENCODAGES
+% ============================================================
 \RequirePackage[LAE,T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[arabic,french]{babel}
 
-% ---------- Mise en page (Instructions Generales) ----------
-\RequirePackage[left=2.5cm,right=2.5cm,top=2cm,bottom=2cm]{geometry}
+% ============================================================
+% 2. MISE EN PAGE ET MARGES (Section 2.2.2)
+% ============================================================
+% Marges : Gauche/Droite = 2.5cm, Haut/Bas = 2cm
+\RequirePackage[left=2.5cm,right=2.5cm,top=2cm,bottom=2cm,headheight=15pt]{geometry}
 \RequirePackage{setspace}
-\setstretch{1.5}
+\setstretch{1.5} % Interligne aéré (Section 2.2.5)
 
-% ---------- Police Times ----------
+% ============================================================
+% 3. POLICE TIMES (Section 2.2.3 & 2.2.4)
+% ============================================================
+% Police proportionnelle Times obligatoire (corps en 12pt)
 \RequirePackage{mathptmx}
 
-% ---------- Pagination : arabe uniquement, jamais de romain ----------
+% ============================================================
+% 4. PAGINATION EN CHIFFRES ARABES (Section 2.2.6)
+% ============================================================
 \pagenumbering{arabic}
 
-% ---------- Palette : noir/blanc/gris uniquement ----------
+% ============================================================
+% 5. PALETTE NOIR & BLANC / GRIS (Section 2.2.2)
+% ============================================================
 \RequirePackage[table]{xcolor}
 \definecolor{grisfonce}{gray}{0.3}
 \definecolor{grisclair}{gray}{0.85}
 
-% ---------- Outils ----------
+% ============================================================
+% 6. PACKAGES COMPLÉMENTAIRES (Flottants, Tableaux, Graphiques)
+% ============================================================
 \RequirePackage{graphicx}
 \RequirePackage{float}
 \RequirePackage{caption}
-\captionsetup{font=it,labelfont={bf,it}} % legendes centrees, italique 12pt
+% Légendes de figures et tableaux : centrées, italique, 12pt (Section 2.4)
+\captionsetup{font={it,small},labelfont={bf,it},justification=centering}
 \RequirePackage{booktabs}
 \RequirePackage{tabularx}
+\RequirePackage{amsmath,amssymb} % Équations mathématiques (Section 2.4.4)
 \RequirePackage{hyperref}
 \hypersetup{
     hidelinks,
@@ -43,17 +59,17 @@
 \RequirePackage[backend=bibtex,style=numeric,sorting=nyt]{biblatex}
 
 % ============================================================
-% REGLE RASSIL n°1 : titre de chapitre = grande lettre, centre,
-% SANS texte de contenu sur la meme page. Pas de deux-points.
+% 7. FORMAT DES TITRES ET ESPACEMENTS (Sections 2.2.4 & 2.2.5)
 % ============================================================
+% Titre de chapitre : grande lettre, centré, sans soulignage
 \titleformat{\chapter}[display]
   {\centering\normalfont\bfseries}
   {\Large\MakeUppercase{\chaptertitlename}~\thechapter}
-  {30pt}
-  {\vspace{40pt}\Huge\MakeUppercase}
+  {25pt}
+  {\vspace{30pt}\Huge\MakeUppercase}
 \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 
-% Format specifique pour les chapitres non numerotes (\chapter*{...})
+% Format spécifique pour chapitres non numérotés (\chapter*{...})
 \titleformat{name=\chapter,numberless}[display]
   {\centering\normalfont\bfseries}
   {}
@@ -61,33 +77,57 @@
   {\Huge\MakeUppercase}
 \titlespacing*{name=\chapter,numberless}{0pt}{0pt}{20pt}
 
-% Commande pour forcer "page de titre seule" : a utiliser juste
-% apres \chapter{...} et avant la premiere \section.
+% Espacements conformes au guide (2 lignes avant section, 1.5 avant sous-section, 1 avant sous-sous-section)
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{24pt}{12pt}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{18pt}{8pt}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+
+% Commande pour page de titre de chapitre seule
 \newcommand{\finPageTitre}{\clearpage}
 
-% ---------- Numerotation sections classique (1.1.2, pas de romain) ----------
+% Numérotation arabe classique à 3 niveaux (ex: 1.1.2)
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
-% ---------- En-tete / pied de page ----------
+% ============================================================
+% 8. EN-TÊTES ET PIEDS DE PAGE (Sections 2.2.2 & 2.2.6)
+% ============================================================
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0pt}
+% En-tête : intitulé courant à gauche, nom établissement à droite
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\textbf{ENSAF}}
+\renewcommand{\headrulewidth}{0.4pt}
 
-% Assurer le meme pied de page sur les pages de debut de chapitre (style plain)
+% Pied de page : affiliation à gauche, numéro de page à droite
+\fancyfoot[L]{\small ENSA de F\`es}
+\fancyfoot[R]{\thepage}
+\renewcommand{\footrulewidth}{0pt}
+
+% Style 'plain' pour les premières pages de chapitre (sans en-tête haut)
 \fancypagestyle{plain}{%
   \fancyhf{}%
-  \fancyfoot[C]{\thepage}%
+  \fancyfoot[L]{\small ENSA de F\`es}%
+  \fancyfoot[R]{\thepage}%
   \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
 }
 
-% Compatibilite report class pour \mainmatter et \backmatter
+% Compatibilité report class
 \providecommand{\mainmatter}{}
 \providecommand{\backmatter}{}
 
-% ---------- Commande conclusion de chapitre qui reference le suivant ----------
-% Usage : \sectionTransition{texte annoncant le chapitre suivant}
+% ============================================================
+% 9. SECTION DE TRANSITION ENTRE CHAPITRES (Section 1.1.2)
+% ============================================================
 \newcommand{\sectionTransition}[1]{%
   \section*{Conclusion}
   \addcontentsline{toc}{section}{Conclusion}
