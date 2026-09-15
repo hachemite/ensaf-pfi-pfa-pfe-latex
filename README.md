@@ -7,11 +7,17 @@ Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage,
 ## ⚡ Démarrage Rapide (4 Étapes)
 
 ### 0. Personnaliser vos informations (Formulaire & IA)
-Renseignez vos informations dans **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** (titre, solo/binôme/trinôme, entreprise, encadrants ENSAF et société, période de stage, jury), puis appliquez-les automatiquement :
+Renseignez vos informations dans **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
+- Type de stage : `PFA` (Stage d'Application), `PFE` (Projet de Fin d'Études), `INITIATION` (Stage d'Initiation), ou `NONE` (sans couverture).
+- Auteur(s) (solo, binôme ou trinôme), département et filière.
+- Organisme d'accueil, sujet, dates de stage.
+- Encadrement pédagogique ENSAF, encadrement professionnel, et jury de soutenance.
+
+Puis appliquez la configuration :
 ```bash
 python configure.py
 ```
-*(Génère automatiquement `front/titlepage.tex` et `front/remerciements.tex` sur mesure).*
+*(Génère automatiquement la couverture Word officielle garantie sur 1 page `front/couverture.pdf`, le résumé en arabe haute fidélité `front/resume_ar.pdf`, et les remerciements protocolaires `front/remerciements.tex`).*
 
 ### 1. Compiler localement
 - **Option A (Double-clic) :** Double-cliquez sur [`compile.bat`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/compile.bat).
@@ -19,7 +25,7 @@ python configure.py
   ```bash
   python preview.py
   ```
-  *(Compile le document et ouvre directement `main.pdf`)*
+  *(Compile le document avec Tectonic et ouvre directement `main.pdf`)*
 
 ### 2. Vérifier la conformité académique (Linter)
 Avant de soumettre votre rapport, vérifiez automatiquement le respect des règles ENSAF (pas de "je", pas de soulignage, captions obligatoires, etc.) :
