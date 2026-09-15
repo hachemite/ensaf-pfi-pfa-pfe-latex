@@ -67,3 +67,21 @@ Pour rédiger en ligne sur Overleaf avec vos binômes :
 - **Style :** Forme impersonnelle (proscrire le "je" sauf en dédicaces/remerciements).
 - **Titres :** Grande lettre, centrés sur page dédiée (`\finPageTitre`), sans deux-points.
 - **Figures / Tableaux :** Numérotation `Nc.No` avec légende (`\caption`) systématique.
+
+---
+
+## 🏛️ Provenance & Remerciements (Provenance & Acknowledgments)
+
+> **Projet indépendant & non officiel**  
+> Ce modèle implémente les exigences typographiques du guide officiel de rédaction de l'**ENSAF (École Nationale des Sciences Appliquées de Fès)** et intègre les directives méthodologiques du **Pr. Rassil** (encadrante académique).  
+> 
+> Il s'agit d'un travail indépendant développé par **Hachem Squalli El Houssaini**, sans affiliation institutionnelle ni approbation officielle de l'administration de l'ENSAF. Les étudiants doivent s'assurer de la conformité de leur version finale auprès de leur propre encadrant.  
+> 
+> *This template implements the formatting requirements of ENSAF's official redaction guide and incorporates methodological guidance from Pr. Rassil (academic supervisor). It is an independent, unofficial project by Hachem Squalli El Houssaini and is not officially endorsed by ENSAF.*
+
+---
+
+## 📄 Licence (License)
+
+Ce projet est distribué sous licence open-source **[MIT](LICENSE)**.  
+Copyright (c) 2026 **Hachem Squalli El Houssaini and Contributors**. Vous êtes libres de l'utiliser, l'adapter et le redistribuer pour vos travaux académiques et professionnels.

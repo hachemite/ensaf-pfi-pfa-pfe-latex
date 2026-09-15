@@ -2,6 +2,8 @@
 
 Ce guide récapitule les règles officielles de présentation, de typographie et de structuration du rapport de stage / projet de fin d'année et de fin d'études à l'**ENSAF (École Nationale des Sciences Appliquées de Fès)**, telles qu'établies dans le *Guide officiel de rédaction*.
 
+> **Note de provenance :** Ce document constitue une synthèse technique et pratique des exigences académiques de l'ENSAF et des directives méthodologiques transmises par le **Pr. Rassil**. Il sert d'aide-mémoire pour la rédaction avec la classe `ensaf.cls` et ne se substitue pas aux consignes personnalisées délivrées par votre encadrant pédagogique.
+
 ---
 
 ## 1. Respect des Règles de Présentation (Section 2.2 du Guide)
