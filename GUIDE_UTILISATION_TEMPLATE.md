@@ -49,14 +49,20 @@ cmrpi/
 
 ## 2. Comment Démarrer et Remplir le Rapport
 
-### Étape 1 : Configurer la page de garde (`front/titlepage.tex`)
-Dans `front/titlepage.tex`, remplacez les textes entre crochets :
-- `[TITRE DU PROJET]` : Titre explicite et valorisant de votre sujet.
-- `[Sous-titre descriptif]` : Plateforme, domaine ou organisme.
-- `[Prénom NOM]` : Votre nom et prénom.
-- `[Nom de l'encadrant académique]` : Nom de votre encadrant ENSAF.
-- `[Nom de l'encadrant professionnel]` : Nom de votre tuteur en entreprise.
-- `[Nom de l'organisme d'accueil - Ville]` : Nom de l'entreprise et ville.
+### Étape 1 : Renseigner vos métadonnées (`project_info.yaml`)
+La méthode recommandée consiste à modifier le fichier central **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
+- **`modele_couverture`** : Choisissez `"PFA"` (Stage d'Application 2A), `"PFE"` (3A), `"INITIATION"` (1A), ou `"NONE"` (sans couverture).
+- Vos informations : titre, auteurs (solo, binôme, trinôme), organisme d'accueil, dates de stage, encadrants et membres du jury.
+
+Puis appliquez la configuration automatique :
+```bash
+python configure.py
+```
+Ce script :
+1. Remplit automatiquement le document Word officiel correspondant dans [`couvertures_rapport_stage_ensaf/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/couvertures_rapport_stage_ensaf/).
+2. Compacte le texte pour garantir **strictement 1 seule page** (`front/couverture.pdf`).
+3. Génère le résumé arabe haute fidélité (`front/resume_ar.pdf`) avec le moteur natif sans bordure superflue.
+4. Rédige les remerciements protocolaires dans `front/remerciements.tex`.
 
 > **Note :** Si vous souhaitez afficher la page de garde dans le PDF généré, décommentez la ligne `\input{front/titlepage}` au début de `main.tex`.
 
