@@ -1,0 +1,89 @@
+\begin{titlepage}
+\thispagestyle{empty}
+
+% ============================================================
+% 1. LOGOS (ENSAF & ENTREPRISE)
+% ============================================================
+\begin{minipage}{0.45\textwidth}
+    \flushleft
+    \IfFileExists{logos/logo-ensaf.png}{%
+        \includegraphics[height=2.2cm]{logos/logo-ensaf.png}%
+    }{%
+        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo ENSAF}}}%
+    }
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \flushright
+    \IfFileExists{logos/logo-entreprise.png}{%
+        \includegraphics[height=2.2cm]{logos/logo-entreprise.png}%
+    }{%
+        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo Entreprise}}}%
+    }
+\end{minipage}
+
+\vspace{0.6cm}
+
+% ============================================================
+% 2. EN-TÊTE OFFICIEL PFE ENSAF
+% ============================================================
+\begin{center}
+    {\large \textbf{UNIVERSIT\'E SIDI MOHAMED BEN ABDELLAH}}\\[0.15cm]
+    {\large \textbf{\'ECOLE NATIONALE DES SCIENCES APPLIQU\'EES DE F\`ES}}\\[0.8cm]
+
+    {\LARGE \textbf{Projet de Fin d'\'Etudes}}\\[0.3cm]
+    {\large \textbf{Pour l'obtention du dipl\^ome}}\\[0.15cm]
+    {\Large \textbf{D'Ing\'enieur d'\'Etat}}\\[0.25cm]
+    {\large \textbf{G\'enie [Intitul\'e de la Fili\`ere : ex. Informatique]}}\\[0.2cm]
+    {\normalsize \textbf{Promotion [Ann\'ee de diplomation : ex. 2026]}}\\[0.8cm]
+
+    % SUJET DE STAGE
+    \rule{\linewidth}{0.5mm}\\[0.35cm]
+    {\Large \bfseries Sujet de stage :}\\[0.25cm]
+    {\large [TITRE DU SUJET DE PFE]}\\[0.15cm]
+    {\normalsize \textit{[Sous-titre descriptif ou p\'erim\`etre applicatif]}}\\[0.2cm]
+    \rule{\linewidth}{0.5mm}\\[0.6cm]
+
+    {\large \textbf{Stage r\'ealis\'e au sein de : [Nom de l'organisme / Entreprise d'accueil]}}\\[0.5cm]
+\end{center}
+
+\vfill
+
+% ============================================================
+% 3. ÉTUDIANT(S) ET DATE DE SOUTENANCE
+% ============================================================
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+    \textbf{R\'ealis\'e par :}\\[0.2cm]
+    M. [Pr\'enom \& NOM]
+    % Pour un binôme :
+    % \\ M. [Deuxi\`eme Pr\'enom \& NOM]
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \raggedleft
+    \textbf{Soutenance le :}\\[0.2cm]
+    [Date de la soutenance : ex. 28 Juin 2026]
+\end{minipage}
+
+\vspace{0.7cm}
+
+% ============================================================
+% 4. MEMBRES DU JURY OFFICIEL
+% ============================================================
+\noindent
+\textbf{Membres de jury :}\\[0.15cm]
+\begin{tabularx}{\textwidth}{@{}p{6.5cm} X@{}}
+    \textbf{M./Mme [Nom Encadrant Entreprise]} & Encadrant(e) Soci\'et\'e \\
+    \textbf{M./Mme [Nom Encadrant ENSAF]}     & Encadrant ENSAF \\
+    \textbf{M./Mme [Nom Enseignant ENSAF 1]}  & Enseignant ENSAF \\
+    \textbf{M./Mme [Nom Enseignant ENSAF 2]}  & Enseignant ENSAF \\
+\end{tabularx}
+
+\vfill
+
+\begin{center}
+    \small \textbf{Ann\'ee Universitaire : 2025 -- 2026}
+\end{center}
+
+\end{titlepage}

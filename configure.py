@@ -122,8 +122,131 @@ def build_titlepage(cfg: dict) -> str:
             membres_str.append(f"\\textbf{{{civ} {nom}}}, {qualite} ({etab})")
         bloc_jury = "\n\\vspace{0.4cm}\n\\begin{center}\n\\small \\textbf{Membres du Jury :}\\\\[0.1cm]\n" + " \\quad | \\quad ".join(membres_str) + "\n\\end{center}\n"
 
-    # Période de stage
-    periode_str = f"\\textbf{{P\\'eriode de stage :}} {periode}\\\\[0.15cm]\n    " if periode else ""
+    modele = str(acad.get("modele_couverture", "PFA")).upper().strip()
+    promotion = escape_latex(acad.get("promotion", "2026"))
+    date_soutenance = escape_latex(acad.get("date_soutenance", "Juin 2026"))
+
+    # CAS 1 : PROJET DE FIN D'ÉTUDES (PFE / cpfe.docx)
+    if "PFE" in modele or "FIN D" in type_rapport.upper():
+        jury_items = []
+        for pro in enc.get("professionnel", []):
+            civ = pro.get("civilite", "M.")
+            pnom = pro.get("prenom_nom", "[Encadrant Société]")
+            jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant(e) Soci\\'et\\'e \\\\")
+        for aca in enc.get("academique", []):
+            civ = aca.get("civilite", "Prof.")
+            pnom = aca.get("prenom_nom", "[Encadrant ENSAF]")
+            jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant ENSAF \\\\")
+        for j in jury.get("membres", []):
+            civ = j.get("civilite", "Prof.")
+            pnom = j.get("prenom_nom", "[Enseignant ENSAF]")
+            role = j.get("qualite", "Enseignant ENSAF")
+            jury_items.append(f"\\textbf{{{civ} {pnom}}} & {role} \\\\")
+
+        jury_block = ""
+        if jury_items:
+            jury_block = f"""\\vspace{{0.5cm}}
+\\noindent
+\\textbf{{Membres de jury :}}\\\\[0.15cm]
+\\begin{{tabularx}}{{\\textwidth}}{{@{{}}p{{7.5cm}} X@{{}}}}
+{chr(10).join(jury_items)}
+\\end{{tabularx}}
+"""
+
+        content = f"""\\begin{{titlepage}}
+\\thispagestyle{{empty}}
+
+% ============================================================
+% LOGOS ENSAF ET ORGANISME D'ACCUEIL
+% ============================================================
+\\begin{{minipage}}{{0.45\\textwidth}}
+    \\flushleft
+    \\IfFileExists{{logos/logo-ensaf.png}}{{%
+        \\includegraphics[height=2.2cm]{{logos/logo-ensaf.png}}%
+    }}{{%
+        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo ENSAF}}}}}}%
+    }}
+\\end{{minipage}}
+\\hfill
+\\begin{{minipage}}{{0.45\\textwidth}}
+    \\flushright
+    \\IfFileExists{{logos/logo-entreprise.png}}{{%
+        \\includegraphics[height=2.2cm]{{logos/logo-entreprise.png}}%
+    }}{{%
+        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo Entreprise}}}}}}%
+    }}
+\\end{{minipage}}
+
+\\vspace{{0.6cm}}
+
+\\begin{{center}}
+    {{\\large \\textbf{{{univ}}}}}\\\\[0.15cm]
+    {{\\large \\textbf{{{inst}}}}}\\\\[0.6cm]
+
+    {{\\LARGE \\textbf{{Projet de Fin d'\\'Etudes}}}}\\\\[0.25cm]
+    {{\\large \\textbf{{Pour l'obtention du dipl\\^ome}}}}\\\\[0.15cm]
+    {{\\Large \\textbf{{D'Ing\\'enieur d'\\'Etat}}}}\\\\[0.25cm]
+    {{\\large \\textbf{{G\\'enie {dept}}}}}\\\\[0.2cm]
+    {{\\normalsize \\textbf{{Promotion {promotion}}}}}\\\\[0.6cm]
+
+    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.35cm]
+    {{\\Large \\bfseries Sujet de stage :}}\\\\[0.2cm]
+    {{\\large {titre}}}\\\\[0.15cm]
+    {{\\normalsize \\textit{{{sous_titre}}}}}\\\\[0.2cm]
+    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.5cm]
+
+    {{\\large \\textbf{{Stage r\\'ealis\\'e au sein de :}} {org_nom} ({org_ville})}}\\\\[0.4cm]
+\\end{{center}}
+
+\\vfill
+
+% IDENTIFICATION DES ÉTUDIANTS ET DATE DE SOUTENANCE
+\\noindent
+\\begin{{minipage}}[t]{{0.48\\textwidth}}
+    {bloc_auteurs}
+\\end{{minipage}}
+\\hfill
+\\begin{{minipage}}[t]{{0.48\\textwidth}}
+    \\raggedleft
+    \\textbf{{Soutenance le :}}\\\\[0.2cm]
+    {date_soutenance}
+\\end{{minipage}}
+
+{jury_block}
+\\vfill
+
+\\begin{{center}}
+    \\small \\textbf{{Ann\\'ee Universitaire :}} {annee}
+\\end{{center}}
+
+\\end{{titlepage}}
+"""
+        return content
+
+    # CAS 2 : STAGE D'INITIATION (1ère année / csi.docx)
+    elif "INIT" in modele or "1" in modele:
+        titre_stage = "Stage d'Initiation"
+        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 1\\textsuperscript{\\grave{{e}}re} ann\\'ee"
+    # CAS 3 : STAGE D'APPLICATION (2ème année / PFA / csa.docx)
+    else:
+        titre_stage = "Stage d'Application"
+        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 2\\textsuperscript{\\grave{{e}}me} ann\\'ee"
+
+    # Jury pour stage d'application / initiation
+    bloc_jury_stage = ""
+    if jury.get("membres"):
+        j_l = []
+        for m in jury["membres"]:
+            civ = m.get("civilite", "M.")
+            nom = m.get("prenom_nom", "")
+            j_l.append(f"-- {civ} {nom}")
+        bloc_jury_stage = f"""\\vspace{{0.5cm}}
+\\noindent
+\\textbf{{Membres de jury :}}\\\\[0.15cm]
+\\begin{{tabular}}{{@{{}}l}}
+    {" \\\\\\\\ " + chr(10) + "    ".join(j_l)}
+\\end{{tabular}}
+"""
 
     content = f"""\\begin{{titlepage}}
 \\thispagestyle{{empty}}
@@ -145,7 +268,7 @@ def build_titlepage(cfg: dict) -> str:
     \\IfFileExists{{logos/logo-entreprise.png}}{{%
         \\includegraphics[height=2.2cm]{{logos/logo-entreprise.png}}%
     }}{{%
-        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo Organisme}}}}}}%
+        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo Entreprise}}}}}}%
     }}
 \\end{{minipage}}
 
@@ -153,16 +276,21 @@ def build_titlepage(cfg: dict) -> str:
 
 \\begin{{center}}
     {{\\large \\textbf{{{univ}}}}}\\\\[0.15cm]
-    {{\\large \\textbf{{{inst}}}}}\\\\[0.3cm]
-    {{\\small \\textbf{{D\\'epartement {dept}}}}}\\\\[1.0cm]
+    {{\\large \\textbf{{{inst}}}}}\\\\[0.6cm]
 
-    {{\\large \\textbf{{{type_rapport}}}}}\\\\[0.25cm]
-    {{\\normalsize Pour l'obtention du {diplome}}}\\\\[1.0cm]
+    {{\\LARGE \\textbf{{{titre_stage}}}}}\\\\[0.3cm]
+    {{\\large \\textbf{{{statut_etudiant}}}}}\\\\[0.15cm]
+    {{\\large \\textbf{{G\\'enie {dept}}}}}\\\\[0.8cm]
 
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.4cm]
-    {{\\Large \\bfseries {titre}}}\\\\[0.3cm]
-    {{\\large \\textit{{{sous_titre}}}}}\\\\[0.2cm]
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[1.0cm]
+    {{\\large \\textbf{{Stage r\\'ealis\\'e au sein de :}} {org_nom} ({org_ville})}}\\\\[0.5cm]
+
+    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.35cm]
+    {{\\Large \\bfseries Sujet de stage :}}\\\\[0.2cm]
+    {{\\large {titre}}}\\\\[0.15cm]
+    {{\\normalsize \\textit{{{sous_titre}}}}}\\\\[0.2cm]
+    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.5cm]
+
+    {periode_str}
 \\end{{center}}
 
 \\vfill
@@ -178,12 +306,11 @@ def build_titlepage(cfg: dict) -> str:
     {bloc_encadrement}
 \\end{{minipage}}
 
-{bloc_jury}
+{bloc_jury_stage}
 \\vfill
 
 \\begin{{center}}
-    {periode_str}\\textbf{{Organisme d'accueil :}} {org_nom} ({org_ville})\\\\[0.15cm]
-    \\textbf{{Ann\\'ee Universitaire :}} {annee}
+    \\small \\textbf{{Ann\\'ee Universitaire :}} {annee}
 \\end{{center}}
 
 \\end{{titlepage}}
