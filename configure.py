@@ -211,7 +211,48 @@ try {
         }
     }
 
-    # Réduction stricte à exactement 1 seule page
+    # Nettoyage des paragraphes vides pour eviter que 'Periode de stage' ne chevauche la bordure de forme
+    $pSujet = $null; $pPeriode = $null; $pRealise = $null
+    for ($i = 1; $i -le $d.Paragraphs.Count; $i++) {
+        $t = $d.Paragraphs.Item($i).Range.Text.Trim()
+        if ($t -match "^Sujet de stage") { $pSujet = $i }
+        elseif ($t -match "P.*riode de stage") { $pPeriode = $i }
+        elseif ($t -match "R.*alis.*par") { $pRealise = $i }
+    }
+
+    if ($pSujet -and $pPeriode) {
+        $delCount = 0
+        for ($i = $pPeriode - 1; $i -gt $pSujet; $i--) {
+            if ($d.Paragraphs.Item($i).Range.Text.Trim() -eq "") {
+                $delCount++
+                if ($delCount -gt 1) {
+                    $d.Paragraphs.Item($i).Range.Delete()
+                }
+            }
+        }
+    }
+
+    for ($i = 1; $i -le $d.Paragraphs.Count; $i++) {
+        $t = $d.Paragraphs.Item($i).Range.Text.Trim()
+        if ($t -match "P.*riode de stage") { $pPeriode = $i }
+        elseif ($t -match "R.*alis.*par") { $pRealise = $i }
+    }
+
+    if ($pPeriode -and $pRealise) {
+        $delCount = 0
+        for ($i = $pRealise - 1; $i -gt $pPeriode; $i--) {
+            if ($d.Paragraphs.Item($i).Range.Text.Trim() -eq "") {
+                $delCount++
+                if ($delCount -eq 1) {
+                    $d.Paragraphs.Item($i).Range.Font.Size = 11
+                } else {
+                    $d.Paragraphs.Item($i).Range.Delete()
+                }
+            }
+        }
+    }
+
+    # Reduction stricte a exactement 1 seule page
     $pages = $d.ComputeStatistics(2)
     while ($pages -gt 1) {
         $deleted = $false
@@ -343,36 +384,27 @@ def generate_arabic_resume(cfg: dict):
     margin: 0;
     padding: 0;
   }}
-  h1.fr-title {{
-    direction: ltr;
-    text-align: left;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20pt;
-    font-weight: bold;
-    margin-top: 1cm;
-    margin-bottom: 1.5cm;
-  }}
   .ar-title {{
     text-align: center;
-    font-size: 18pt;
+    font-size: 26pt;
     font-weight: bold;
-    margin-bottom: 25px;
+    margin-top: 1.5cm;
+    margin-bottom: 1.8cm;
   }}
   p {{
     text-align: justify;
     text-justify: inter-word;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     text-indent: 1.5em;
   }}
   .keywords {{
-    margin-top: 30px;
+    margin-top: 35px;
     font-size: 14pt;
     text-indent: 0;
   }}
 </style>
 </head>
 <body>
-  <h1 class="fr-title">Résumé en langue arabe</h1>
   <div class="ar-title">{titre_ar}</div>
 {paragraphs_html}
   <p class="keywords">
