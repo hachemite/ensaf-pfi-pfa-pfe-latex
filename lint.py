@@ -164,7 +164,7 @@ def check_file(filepath):
 
     return rel_path, issues
 
-def run_lint():
+def run_lint(strict_mode=False):
     print("=" * 65)
     print("  LINT AUTOMATIQUE & VERIFICATION DE CONFORMITE ENSAF")
     print("=" * 65)
@@ -209,15 +209,12 @@ def run_lint():
         return 0
     elif total_errors == 0:
         print(f"\n{Colors.YELLOW}{Colors.BOLD}[INFO] Rapport valide pour compilation. Des avertissements ou placeholders subsistent.{Colors.RESET}\n")
-        return 0
+        return 1 if strict_mode else 0
     else:
         print(f"\n{Colors.RED}{Colors.BOLD}[ECHEC] Des erreurs de conformite bloquantes ont ete detectees.{Colors.RESET}\n")
         return 1
 
 if __name__ == "__main__":
     strict_mode = "--strict" in sys.argv
-    code = run_lint()
-    if strict_mode:
-        sys.exit(code)
-    else:
-        sys.exit(0)
+    code = run_lint(strict_mode=strict_mode)
+    sys.exit(code)
