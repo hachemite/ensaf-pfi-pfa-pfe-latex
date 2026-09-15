@@ -37,6 +37,8 @@
 *.pdf
 !logos/**/*.pdf
 !figures/**/*.pdf
+!front/couverture.pdf
+!front/resume_ar.pdf
 front/couverture.docx
 front/resume_ar.html
 *.zip

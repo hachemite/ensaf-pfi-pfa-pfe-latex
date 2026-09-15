@@ -30,20 +30,6 @@ jobs:
           root_file: main.tex
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      - name: Show LaTeX log on failure
-        if: failure()
-        run: |
-          echo "### Debug Files" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          ls -la >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          if [ -f main.log ]; then
-            echo "### LaTeX Log" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 150 main.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         if: success()
@@ -51,3 +37,10 @@ jobs:
           name: main-pdf
           path: main.pdf
           if-no-files-found: error
+
+      - name: Upload LaTeX Log on Failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: latex-log
+          path: main.log
