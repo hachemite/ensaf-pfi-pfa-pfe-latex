@@ -1,4 +1,6 @@
-# LaTeX build artifacts
+# ============================================================
+# LaTeX Build Artifacts & Temporary Files
+# ============================================================
 *.aux
 *.bbl
 *.bcf
@@ -11,23 +13,112 @@
 *.out
 *.run.xml
 *.synctex.gz
+*.synctex(busy)
 *.toc
 *.xdv
 *.nav
 *.snm
 *.vrb
+*.ist
+*.glo
+*.gls
+*.glg
+*.idx
+*.ind
+*.ilg
+*.brf
+*.upa
+*.upb
+*.ptb
 
-# Output PDF & zip exports
-main.pdf
+# ============================================================
+# Generated Output Documents & Archives
+# ============================================================
+*.pdf
+!logos/**/*.pdf
+!figures/**/*.pdf
 *.zip
+*.tar.gz
+*.7z
+*.rar
 
-# Python & IDE
+# ============================================================
+# Secrets, Credentials & Environment Variables
+# ============================================================
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.pfx
+*.p12
+*.cert
+*.crt
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+secrets/
+private/
+credentials/
+*.secret
+*.token
+
+# ============================================================
+# Temporary, Backup & Duplicate Files
+# ============================================================
+* copy*
+* - Copy.*
+*.bak
+*.bak*
+*.sav
+*.swp
+*~
+*.tmp
+
+# ============================================================
+# Project Planning, Private Data & Scratch Files
+# ============================================================
+*.gantt
+gantt_project.json
+generate_gantt.py
+test_*.tex
+test_*.pdf
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql
+*.csv
+*.xlsx
+*.xls
+drafts/
+notes/
+
+# ============================================================
+# Python & Virtual Environments
+# ============================================================
 __pycache__/
 *.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# ============================================================
+# IDE, Workspace & Editor Configurations
+# ============================================================
 .vscode/
 .idea/
+*.code-workspace
 .gemini/
 
-# OS artifacts
+# ============================================================
+# Operating System Artifacts
+# ============================================================
 Thumbs.db
+ehthumbs.db
 .DS_Store
+desktop.ini
