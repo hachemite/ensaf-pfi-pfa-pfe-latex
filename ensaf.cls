@@ -61,13 +61,14 @@
 % ============================================================
 % 7. FORMAT DES TITRES ET ESPACEMENTS (Sections 2.2.4 & 2.2.5)
 % ============================================================
-% Titre de chapitre : grande lettre, centré, sans soulignage
-\titleformat{\chapter}[display]
-  {\centering\normalfont\bfseries}
-  {\Large\MakeUppercase{\chaptertitlename}~\thechapter}
-  {25pt}
-  {\vspace{30pt}\Huge\MakeUppercase}
-\titlespacing*{\chapter}{0pt}{0pt}{0pt}
+% Titre de chapitre : deux lignes horizontales (haut et bas), centré verticalement au milieu de la page
+\titleformat{\chapter}[block]%
+  {\filcenter\normalfont\huge\bfseries}%
+  {\titleline{\titlerule[1.5pt]}\vspace{20pt}\thechapter.\quad}%
+  {0pt}%
+  {}%
+  [\vspace{20pt}\titleline{\titlerule[1.5pt]}]
+\titlespacing*{\chapter}{0pt}{0.30\textheight}{0pt}
 
 % Format spécifique pour chapitres non numérotés (\chapter*{...})
 \titleformat{name=\chapter,numberless}[display]
@@ -98,25 +99,21 @@
 \setcounter{tocdepth}{3}
 
 % ============================================================
-% 8. EN-TÊTES ET PIEDS DE PAGE (Sections 2.2.2 & 2.2.6)
+% 8. EN-TÊTES ET PIEDS DE PAGE
 % ============================================================
 \pagestyle{fancy}
 \fancyhf{}
-% En-tête : intitulé courant à gauche, nom établissement à droite
-\fancyhead[L]{\small\nouppercase{\leftmark}}
-\fancyhead[R]{\small\textbf{ENSAF}}
-\renewcommand{\headrulewidth}{0.4pt}
+% En-tête : supprimé
+\renewcommand{\headrulewidth}{0pt}
 
-% Pied de page : affiliation à gauche, numéro de page à droite
-\fancyfoot[L]{\small ENSA de F\`es}
-\fancyfoot[R]{\thepage}
+% Pied de page : numéro de page centré uniquement
+\fancyfoot[C]{\thepage}
 \renewcommand{\footrulewidth}{0pt}
 
-% Style 'plain' pour les premières pages de chapitre (sans en-tête haut)
+% Style 'plain' pour les premières pages de chapitre
 \fancypagestyle{plain}{%
   \fancyhf{}%
-  \fancyfoot[L]{\small ENSA de F\`es}%
-  \fancyfoot[R]{\thepage}%
+  \fancyfoot[C]{\thepage}%
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
 }
