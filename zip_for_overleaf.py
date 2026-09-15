@@ -16,10 +16,12 @@ ALLOWED_EXTENSIONS = {'.tex', '.cls', '.bib', '.png', '.jpg', '.jpeg', '.pdf', '
 ALLOWED_ROOT_FILES = {'main.tex', 'ensaf.cls'}
 INCLUDE_DIRS = {'front', 'chapters', 'back', 'figures', 'logos'}
 
-# Fichiers / motifs à exclure
-EXCLUDE_PATTERNS = {
-    'main.pdf', '.zip', '.git', '__pycache__', '.vscode', '.idea',
-    '.aux', '.bbl', '.blg', '.toc', '.lof', '.lot', '.out', '.fls', '.fdb_latexmk', '.synctex.gz'
+# Fichiers et motifs à exclure
+EXCLUDE_FILENAMES = {'main.pdf', '.gitignore', '.gitattributes', '.DS_Store', 'Thumbs.db'}
+EXCLUDE_DIR_NAMES = {'.git', '__pycache__', '.vscode', '.idea'}
+EXCLUDE_EXTENSIONS = {
+    '.aux', '.bbl', '.blg', '.toc', '.lof', '.lot', '.out', '.fls',
+    '.fdb_latexmk', '.synctex.gz', '.zip', '.log', '.bcf', '.run.xml'
 }
 
 def create_overleaf_zip(output_filename=DEFAULT_OUTPUT_ZIP):
@@ -45,16 +47,15 @@ def create_overleaf_zip(output_filename=DEFAULT_OUTPUT_ZIP):
             if not os.path.exists(dir_path):
                 continue
             for root, dirs, files in os.walk(dir_path):
+                # Filtrer les dossiers internes à exclure
+                dirs[:] = [d for d in dirs if d not in EXCLUDE_DIR_NAMES]
                 for file in files:
                     ext = os.path.splitext(file)[1].lower()
+                    if file in EXCLUDE_FILENAMES or ext in EXCLUDE_EXTENSIONS:
+                        continue
                     if ext in ALLOWED_EXTENSIONS or file == '.gitkeep':
                         full_path = os.path.join(root, file)
-                        rel_path = os.path.relpath(full_path, WORKSPACE)
-                        
-                        # Vérifier exclusion
-                        if any(exc in file for exc in EXCLUDE_PATTERNS):
-                            continue
-                        
+                        rel_path = os.path.relpath(full_path, WORKSPACE).replace('\\', '/')
                         zipf.write(full_path, arcname=rel_path)
                         files_added.append(rel_path)
 

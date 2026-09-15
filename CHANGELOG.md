@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive onboarding, integration, and AI-assisted workflow guides in `README.md` and `GUIDE_UTILISATION_TEMPLATE.md` (standalone clone, git submodule, Overleaf import, and CI/CD).
 - Version history tracking via `CHANGELOG.md` linked from `README.md`.
 
+### Fixed
+- **Overleaf Engine Directives**: Added `% !TEX program = pdflatex` and `% !BIB program = bibtex` magic comments at the top of `main.tex` to deterministically lock Overleaf and external editors to pdfLaTeX and BibTeX.
+- **Overleaf Zip Export Structure** in `zip_for_overleaf.py`: Refined exclusion logic to preserve `figures/ch1/`, `figures/ch2/`, and `figures/ch3/` folder hierarchies via `.gitkeep` instead of accidentally stripping them due to broad `.git` string matching.
+- **Crash-Proof Arabic Abstract Fallback** in `front/resume-ar.tex`: Replaced raw Arabic Unicode glyphs in the `\IfFileExists` false-branch with a prominent, pure ASCII/French placeholder banner (`[RÉSUMÉ ARABE MANQUANT]`), preventing pdfLaTeX UTF-8 unicode crashes when `front/resume_ar.pdf` is not yet generated.
+
 ---
 
 ## [0.5.0] - 2026-09-15
