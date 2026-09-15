@@ -33,9 +33,15 @@ jobs:
       - name: Show LaTeX log on failure
         if: failure()
         run: |
+          echo "### Debug Files" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -la >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
           if [ -f main.log ]; then
-            echo "===== LAST 100 LINES OF MAIN.LOG ====="
-            tail -n 100 main.log
+            echo "### LaTeX Log" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 150 main.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Upload PDF Artifact
