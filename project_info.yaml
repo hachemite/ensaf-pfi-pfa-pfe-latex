@@ -1,0 +1,115 @@
+# ==============================================================================
+# FORMULAIRE DE CONFIGURATION DU PROJET — ENSAF
+# ==============================================================================
+# Ce fichier centralise toutes les informations administratives et éditoriales.
+# Il est conçu pour être rempli facilement par l'étudiant ou généré/adapté par une IA.
+#
+# Lancez ensuite : python configure.py
+# (Ce script mettra à jour automatiquement front/titlepage.tex et front/remerciements.tex)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. INFORMATIONS ACADÉMIQUES & CYCLE D'INGÉNIEUR
+# ------------------------------------------------------------------------------
+academique:
+  institution: "École Nationale des Sciences Appliquées de Fès (ENSAF)"
+  universite: "Université Sidi Mohamed Ben Abdellah"
+  departement: "Génie Informatique"     # ex: Génie Informatique, Génie Industriel, etc.
+  filiere: "Génie Informatique"         # ex: Génie Informatique (GI), Télécoms & Réseaux (GTR), etc.
+  annee_universitaire: "2025 -- 2026"
+
+  # Type de rapport :
+  # Options recommandées : "Projet de Fin d'Année (PFA)", "Projet de Fin d'Études (PFE)", "Projet de Fin d'Initiation (PFI)"
+  type_rapport: "RAPPORT DE PROJET DE FIN D'ANNÉE"
+  diplome_vise: "Diplôme d'Ingénieur d'État en Génie Informatique"
+
+# ------------------------------------------------------------------------------
+# 2. INTITULÉ DU SUJET ET PÉRIODE DU STAGE
+# ------------------------------------------------------------------------------
+projet:
+  titre: "[TITRE DU PROJET : CONCEPTION ET RÉALISATION D'UNE SOLUTION D'INGÉNIERIE]"
+  sous_titre: "[Sous-titre explicatif : Plateforme, Cas d'usage ou Périmètre technique]"
+  periode_stage: "Du 15 Juillet 2026 au 31 Août 2026"
+  duree: "7 semaines"
+
+# ------------------------------------------------------------------------------
+# 3. AUTEURS / ÉTUDIANTS (Supporte 1 étudiant, binôme ou trinôme)
+# ------------------------------------------------------------------------------
+auteurs:
+  - civilite: "M."                      # "M." ou "Mme"
+    prenom: "Prénom"
+    nom: "NOM"
+    email: "prenom.nom@usmba.ac.ma"     # optionnel
+  # Décommentez pour un binôme :
+  # - civilite: "M."
+  #   prenom: "DeuxièmePrénom"
+  #   nom: "NOM"
+  #   email: "binome@usmba.ac.ma"
+  # Décommentez pour un trinôme :
+  # - civilite: "Mme"
+  #   prenom: "TroisièmePrénom"
+  #   nom: "NOM"
+  #   email: "trinome@usmba.ac.ma"
+
+# ------------------------------------------------------------------------------
+# 4. ORGANISME D'ACCUEIL / ENTREPRISE
+# ------------------------------------------------------------------------------
+organisme:
+  nom: "[Nom de l'organisme / Entreprise d'accueil]" # ex: CMRPI, OCP, Capgemini, etc.
+  partenaire: ""                         # Structure partenaire ou laboratoire (optionnel, ex: Espace Maroc Cyberconfiance)
+  ville: "Fès"                          # Ville d'accueil
+  pays: "Maroc"
+  directeur:
+    civilite: "M."                      # "M." ou "Mme"
+    nom: "[Nom du Directeur / Responsable]" # ex: "Youssef BENTALEB"
+    titre: "Directeur de l'organisme"   # ex: "Directeur Général", "Chef de département"
+
+# ------------------------------------------------------------------------------
+# 5. ENCADREMENT PROFESSIONNEL & ACADÉMIQUE
+# ------------------------------------------------------------------------------
+encadrement:
+  # Encadrants en entreprise / société :
+  professionnel:
+    - civilite: "Dr."                   # "M.", "Mme", "Dr.", "Ing."
+      prenom_nom: "[Prénom & NOM Encadrant Entreprise 1]"
+      fonction: "Chef de Projet / Ingénieur Référent"
+      specialite: "Analyse de données & Ingénierie logicielle" # Précision du rôle
+      mention_remerciement: "pour sa disponibilité constante, ses orientations méthodologiques et son accompagnement technique soutenu"
+    # - civilite: "Dr."
+    #   prenom_nom: "[Prénom & NOM Encadrant Entreprise 2]"
+    #   fonction: "Consultant Senior"
+    #   specialite: "Cybersécurité & Architecture"
+    #   mention_remerciement: "pour son expertise technique pointue et la clarté de ses directives stratégiques"
+
+  # Encadrant académique ENSAF :
+  academique:
+    - civilite: "Prof."                 # "Prof.", "Dr.", "M.", "Mme"
+      prenom_nom: "[Prénom & NOM Encadrant ENSAF]"
+      affiliation: "ENSAF — Département Génie Informatique"
+      mention_remerciement: "pour son suivi pédagogique rigoureux, ses conseils méthodologiques et sa disponibilité tout au long du projet"
+
+# ------------------------------------------------------------------------------
+# 6. JURY DE SOUTENANCE (Obligatoire en PFE, optionnel en PFA)
+# ------------------------------------------------------------------------------
+jury:
+  afficher_sur_garde: false             # Mettre 'true' pour afficher le jury dès la page de garde
+  membres:
+    - civilite: "Prof."
+      prenom_nom: "[Nom du Président du Jury]"
+      qualite: "Président"
+      etablissement: "ENSAF"
+    - civilite: "Prof."
+      prenom_nom: "[Nom de l'Examinateur]"
+      qualite: "Examinateur"
+      etablissement: "ENSAF"
+    - civilite: "Dr."
+      prenom_nom: "[Nom du Rapporteur / Invité]"
+      qualite: "Rapporteur / Membre invité"
+      etablissement: "Entreprise d'accueil"
+
+# ------------------------------------------------------------------------------
+# 7. REMERCIEMENTS COMPLÉMENTAIRES (Personnalisation avancée)
+# ------------------------------------------------------------------------------
+remerciements:
+  equipe_collaborateurs: "l'ensemble de l'équipe technique, des ingénieurs et stagiaires de l'organisme"
+  mot_personnel: ""                     # Paragraphe additionnel ou message personnalisé (optionnel)

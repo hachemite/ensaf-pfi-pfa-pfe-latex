@@ -8,11 +8,13 @@ Ce fichier permet de suivre l'état d'avancement de la rédaction du rapport, ch
 ---
 
 ## 📌 1. Pages Liminaires (Front Matter)
-- [-] **Page de garde (`front/titlepage.tex`)** :
-  - [-] Titre et sous-titre du projet
-  - [-] Nom et prénom de l'étudiant
-  - [-] Encadrant académique ENSAF & encadrant entreprise
-  - [-] Nom de l'organisme d'accueil et ville
+- [-] **Configuration générale (`project_info.yaml` & `python configure.py`)** :
+  - [-] Auteur(s) (solo, binôme ou trinôme)
+  - [-] Filière, département et année universitaire
+  - [-] Titre, sous-titre et période de stage
+  - [-] Organisme d'accueil, direction et encadrement professionnel
+  - [-] Encadrement académique ENSAF et membres du jury
+- [-] **Page de garde (`front/titlepage.tex`)** (générée automatiquement par `configure.py`)
 - [-] **Dédicaces (`front/dedicace.tex`)** :
   - [x] Alignement centré et mise en page Times
   - [-] Remplacer `[Votre Prénom]`

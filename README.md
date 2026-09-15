@@ -4,7 +4,14 @@ Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage,
 
 ---
 
-## ⚡ Démarrage Rapide (3 Étapes)
+## ⚡ Démarrage Rapide (4 Étapes)
+
+### 0. Personnaliser vos informations (Formulaire & IA)
+Renseignez vos informations dans **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** (titre, solo/binôme/trinôme, entreprise, encadrants ENSAF et société, période de stage, jury), puis appliquez-les automatiquement :
+```bash
+python configure.py
+```
+*(Génère automatiquement `front/titlepage.tex` et `front/remerciements.tex` sur mesure).*
 
 ### 1. Compiler localement
 - **Option A (Double-clic) :** Double-cliquez sur [`compile.bat`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/compile.bat).
@@ -31,6 +38,8 @@ Pour rédiger en ligne sur Overleaf avec vos binômes :
 
 | Dossier / Fichier | Description |
 | :--- | :--- |
+| [`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml) | Formulaire de métadonnées (auteurs, entreprise, encadrants, jury) |
+| [`configure.py`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/configure.py) | Script de synchronisation automatique des pages liminaires |
 | [`main.tex`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/main.tex) | Fichier racine du projet |
 | [`ensaf.cls`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/ensaf.cls) | Classe de style (police Times 12pt, marges 2.5cm/2cm, en-têtes) |
 | [`front/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/front) | Dédicaces, Remerciements, Résumés (FR/EN/AR), Abréviations |
