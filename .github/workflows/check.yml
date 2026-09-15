@@ -30,6 +30,14 @@ jobs:
           root_file: main.tex
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
+      - name: Show LaTeX log on failure
+        if: failure()
+        run: |
+          if [ -f main.log ]; then
+            echo "===== LAST 100 LINES OF MAIN.LOG ====="
+            tail -n 100 main.log
+          fi
+
       - name: Upload PDF Artifact
         uses: actions/upload-artifact@v4
         if: success()
