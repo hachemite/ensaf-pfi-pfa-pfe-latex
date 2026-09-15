@@ -1,10 +1,9 @@
-\begin{appendices}
-
 \chapter{Glossaire des termes techniques}
 \label{annexe:glossaire}
+\finPageTitre
 
 \noindent
-Ce glossaire r\'ecapitule les d\'efinitions des principaux termes techniques et acronymes employ\'es dans le rapport :
+Ce glossaire r\'ecapitule les d\'efinitions des principaux termes techniques, concepts architecturaux et acronymes employ\'es dans le rapport :
 
 \section*{Architecture et m\'ethodologies}
 \begin{table}[H]
@@ -40,28 +39,3 @@ Ce glossaire r\'ecapitule les d\'efinitions des principaux termes techniques et 
 \caption{Glossaire des technologies et outils de d\'eveloppement}
 \label{tab:glossaire-tech}
 \end{table}
-
-\chapter{Sp\'ecifications des points d'entr\'ee de l'API}
-\label{annexe:api-endpoints}
-
-\noindent
-Le tableau ci-dessous pr\'esente la structure type de documentation des points d'entr\'ee (\textit{endpoints}) d'une API REST :
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\textwidth}{p{2.2cm} p{4.8cm} X}
-\toprule
-\textbf{M\'ethode} & \textbf{Point de Terminaison} & \textbf{Description et R\^ole} \\
-\midrule
-\texttt{POST}   & \texttt{/api/v1/auth/login}       & Authentification des utilisateurs et g\'en\'eration du token. \\
-\texttt{GET}    & \texttt{/api/v1/items}            & Consultation de la liste des \'el\'ements avec pagination. \\
-\texttt{POST}   & \texttt{/api/v1/items}            & Cr\'eation d'un nouvel enregistrement avec validation des donn\'ees. \\
-\texttt{PUT}    & \texttt{/api/v1/items/\{id\}}      & Mise \`a jour compl\`ete des informations d'un \'el\'ement existant. \\
-\texttt{DELETE} & \texttt{/api/v1/items/\{id\}}      & Suppression d'un \'el\'ement du syst\`eme. \\
-\bottomrule
-\end{tabularx}
-\caption{Exemple de documentation des points de terminaison d'une API}
-\label{tab:api-endpoints}
-\end{table}
-
-\end{appendices}
