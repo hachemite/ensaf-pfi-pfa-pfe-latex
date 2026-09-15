@@ -10,8 +10,10 @@ Lit 'project_info.yaml' et synchronise automatiquement :
      - Exporte en PDF (front/couverture.pdf) et l'intègre dans le rapport via pdfpages
      - Gère l'option 'NONE' pour compiler sans aucune page de garde.
   2. Le résumé en langue arabe (front/resume_ar.pdf) :
-     - Génère une page autonome haute fidélité avec polices arabes natives (HarfBuzz)
-     - Élimine toutes les erreurs de glyphes manquants dans LaTeX/Tectonic
+     - Titre sobre 'ملخص' sans bordure ni boîte compliquée
+     - Titre de chapitre en français 'Résumé en langue arabe'
+     - Typographie arabe native haute fidélité (HarfBuzz, polices Windows)
+     - Sans ligne pointillée artificielle avant les mots-clés
   3. Les remerciements protocolaires (front/remerciements.tex).
 
 Usage :
@@ -105,7 +107,10 @@ def generate_word_cover(cfg: dict) -> bool:
     enc = cfg.get("encadrement", {})
     jury = cfg.get("jury", {})
 
-    filiere = acad.get("filiere", "Génie Informatique")
+    filiere_raw = acad.get("filiere", "Génie Informatique")
+    filiere = re.sub(r"^[Gg][ée\xe9]nie\s*", "", filiere_raw).strip()
+    if not filiere:
+        filiere = "Informatique"
     org_str = f"{org.get('nom', 'Entreprise')} ({org.get('ville', 'Fès')})"
     sujet = proj.get("titre", "Titre du projet")
     periode = proj.get("periode_stage", "")
@@ -151,34 +156,53 @@ $w = New-Object -ComObject Word.Application
 $w.Visible = $false
 try {
     $d = $w.Documents.Open($inDocx)
-    
-    function Do-Replace($search, $replaceVal) {
-        $find = $d.Content.Find
-        $find.ClearFormatting()
-        $find.Replacement.ClearFormatting()
-        [void]$find.Execute($search, $false, $false, $false, $false, $false, $true, 1, $false, $replaceVal, 2)
+    $juryArray = @()
+    if ($juryList -ne "") {
+        $juryArray = $juryList.Split(";") | ForEach-Object { $_.Trim() }
     }
-    
-    Do-Replace "Génie …." ("Génie " + $filiere)
-    Do-Replace "Génie …" ("Génie " + $filiere)
-    Do-Replace "Stage réalisé au sein de : ….." ("Stage réalisé au sein de : " + $org)
-    Do-Replace "Stage réalisé au sein de : …." ("Stage réalisé au sein de : " + $org)
-    Do-Replace "Stage réalisé au sein de : …" ("Stage réalisé au sein de : " + $org)
-    Do-Replace "Sujet de stage" ("Sujet de stage : " + $sujet)
-    if ($periode -ne "") {
-        Do-Replace "Période de stage : …." ("Période de stage : " + $periode)
-        Do-Replace "Période de stage : …" ("Période de stage : " + $periode)
+    $jIdx = 0
+
+    for ($i = 1; $i -le $d.Paragraphs.Count; $i++) {
+        $p = $d.Paragraphs.Item($i)
+        $t = $p.Range.Text.Trim()
+        
+        if ($t -match "^G.*nie") {
+            $p.Range.Text = "Génie " + $filiere + "`r`n"
+        }
+        elseif ($t -match "Stage.*au sein de") {
+            $p.Range.Text = "Stage réalisé au sein de : " + $org + "`r`n"
+        }
+        elseif ($t -match "^Sujet de stage") {
+            $p.Range.Text = "Sujet de stage : " + $sujet + "`r`n"
+        }
+        elseif ($t -match "P.*riode de stage") {
+            if ($periode -ne "") {
+                $p.Range.Text = "Période de stage : " + $periode + "`r`n"
+            }
+        }
+        elseif ($t -match "R.*alis.*par") {
+            $p.Range.Text = "Réalisé par : " + $auteurs + "`r`n"
+        }
+        elseif ($t -match "^Encadrant ENSAF") {
+            $p.Range.Text = "Encadrant ENSAF : " + $encAcad + "`r`n"
+        }
+        elseif ($t -match "^Encadrant Soci.*t") {
+            $p.Range.Text = "Encadrant Société : " + $encPro + "`r`n"
+        }
+        elseif ($t -match "^Promotion") {
+            $p.Range.Text = "Promotion " + $promotion + "`r`n"
+        }
+        elseif ($t -match "^Soutenance le") {
+            $p.Range.Text = "Soutenance le : " + $soutenance + "`r`n"
+        }
+        elseif ($t -match "^(-\s*M|M\.\s+)") {
+            if ($jIdx -lt $juryArray.Count) {
+                $prefix = if ($t.StartsWith("-")) { "- " } else { "" }
+                $p.Range.Text = $prefix + $juryArray[$jIdx] + "`r`n"
+                $jIdx++
+            }
+        }
     }
-    Do-Replace "Réalisé par M. (Prénom & Nom)" ("Réalisé par : " + $auteurs)
-    Do-Replace "Réalisé par M. (Prénom & Nom" ("Réalisé par : " + $auteurs)
-    Do-Replace "Encadrant ENSAF     …." ("Encadrant ENSAF : " + $encAcad)
-    Do-Replace "Encadrant ENSAF" ("Encadrant ENSAF : " + $encAcad)
-    Do-Replace "Encadrant Société     …." ("Encadrant Société : " + $encPro)
-    Do-Replace "Encadrant Société" ("Encadrant Société : " + $encPro)
-    Do-Replace "Promotion …" ("Promotion " + $promotion)
-    Do-Replace "Soutenance le ….." ("Soutenance le : " + $soutenance)
-    Do-Replace "Soutenance le …." ("Soutenance le : " + $soutenance)
-    Do-Replace "Soutenance le …" ("Soutenance le : " + $soutenance)
 
     # Réduction stricte à exactement 1 seule page
     $pages = $d.ComputeStatistics(2)
@@ -201,7 +225,7 @@ try {
         }
         $pages = $d.ComputeStatistics(2)
     }
-    
+
     $d.SaveAs([ref]$outDocx, [ref]16)
     $d.SaveAs([ref]$outPdf, [ref]17)
     $d.Close([ref]$false)
@@ -272,7 +296,7 @@ def build_titlepage(cfg: dict, cover_generated: bool) -> str:
 
 
 def generate_arabic_resume(cfg: dict):
-    """Génère une page autonome pour le résumé en langue arabe avec rendu natif parfait."""
+    """Génère une page sobre sans cadre pour le résumé en langue arabe avec titre 'ملخص'."""
     proj = cfg.get("projet", {})
     org = cfg.get("organisme", {})
     res_cfg = cfg.get("resume_arabe", {})
@@ -280,7 +304,11 @@ def generate_arabic_resume(cfg: dict):
     org_nom = org.get("nom", "المؤسسة المستضيفة")
     sujet = proj.get("titre", "المشروع")
 
-    titre_ar = res_cfg.get("titre", "ملخص المشروع")
+    # Titre strictement "ملخص"
+    titre_ar = res_cfg.get("titre", "ملخص")
+    if "مشروع" in titre_ar:
+        titre_ar = "ملخص"
+
     texte_ar = res_cfg.get("texte", "")
     mots_cles = res_cfg.get("mots_cles", "هندسة البرمجيات، بنية النظم، تطوير التطبيقات.")
 
@@ -302,7 +330,7 @@ def generate_arabic_resume(cfg: dict):
   }}
   body {{
     font-family: 'Traditional Arabic', 'Segoe UI', Arial, sans-serif;
-    line-height: 1.8;
+    line-height: 1.85;
     font-size: 15pt;
     color: #111;
     margin: 0;
@@ -315,42 +343,34 @@ def generate_arabic_resume(cfg: dict):
     font-size: 20pt;
     font-weight: bold;
     margin-top: 1cm;
-    margin-bottom: 1.2cm;
+    margin-bottom: 1.5cm;
   }}
-  .box {{
-    border: 1.5px solid #222;
-    padding: 24px 28px;
-    border-radius: 2px;
-  }}
-  .box-title {{
+  .ar-title {{
     text-align: center;
     font-size: 18pt;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }}
   p {{
     text-align: justify;
     text-justify: inter-word;
-    margin-bottom: 16px;
-    text-indent: 1.2em;
+    margin-bottom: 18px;
+    text-indent: 1.5em;
   }}
   .keywords {{
-    margin-top: 25px;
-    font-size: 13pt;
-    border-top: 1px dashed #777;
-    padding-top: 12px;
+    margin-top: 30px;
+    font-size: 14pt;
+    text-indent: 0;
   }}
 </style>
 </head>
 <body>
   <h1 class="fr-title">Résumé en langue arabe</h1>
-  <div class="box">
-    <div class="box-title">{titre_ar}</div>
+  <div class="ar-title">{titre_ar}</div>
 {paragraphs_html}
-    <div class="keywords">
-      <strong>كلمات مفتاحية :</strong> {mots_cles}
-    </div>
-  </div>
+  <p class="keywords">
+    <strong>كلمات مفتاحية :</strong> {mots_cles}
+  </p>
 </body>
 </html>"""
 
