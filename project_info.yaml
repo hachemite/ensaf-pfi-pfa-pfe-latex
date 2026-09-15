@@ -122,3 +122,12 @@ jury:
 remerciements:
   equipe_collaborateurs: "l'ensemble de l'équipe technique, des ingénieurs et stagiaires de l'organisme"
   mot_personnel: ""                     # Paragraphe additionnel ou message personnalisé (optionnel)
+
+# ------------------------------------------------------------------------------
+# 8. RÉSUMÉ EN LANGUE ARABE (ملخص باللغة العربية)
+# ------------------------------------------------------------------------------
+resume_arabe:
+  titre: "ملخص المشروع"
+  texte: ""                             # Laisser vide pour utiliser le texte automatique basé sur les métadonnées, ou insérer votre propre résumé en arabe
+  mots_cles: "هندسة البرمجيات، بنية النظم، تطوير التطبيقات"
+

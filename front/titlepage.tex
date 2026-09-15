@@ -1,77 +1,16 @@
-\begin{titlepage}
+% ============================================================
+% PAGE DE GARDE OFFICIELLE ENSAF (PFA)
+% Générée depuis le document Word officiel (PFA) sur 1 page
+% ============================================================
 \thispagestyle{empty}
-
-% ============================================================
-% LOGOS ENSAF ET ORGANISME D'ACCUEIL
-% ============================================================
-\begin{minipage}{0.45\textwidth}
-    \flushleft
-    \IfFileExists{logos/logo-ensaf.png}{%
-        \includegraphics[height=2.2cm]{logos/logo-ensaf.png}%
-    }{%
-        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo ENSAF}}}%
-    }
-\end{minipage}
-\hfill
-\begin{minipage}{0.45\textwidth}
-    \flushright
-    \IfFileExists{logos/logo-entreprise.png}{%
-        \includegraphics[height=2.2cm]{logos/logo-entreprise.png}%
-    }{%
-        \fbox{\parbox[c][2cm][c]{3.5cm}{\centering \textbf{Logo Entreprise}}}%
-    }
-\end{minipage}
-
-\vspace{0.6cm}
-
-\begin{center}
-    {\large \textbf{Université Sidi Mohamed Ben Abdellah}}\\[0.15cm]
-    {\large \textbf{École Nationale des Sciences Appliquées de Fès (ENSAF)}}\\[0.6cm]
-
-    {\LARGE \textbf{Stage d'Application}}\\[0.3cm]
-    {\large \textbf{\'El\`eve Ing\'enieur en 2\textsuperscript{\`eme} ann\'ee}}\\[0.15cm]
-    {\large \textbf{G\'enie Génie Informatique}}\\[0.8cm]
-
-    {\large \textbf{Stage r\'ealis\'e au sein de :} [Nom de l'organisme / Entreprise d'accueil] (Fès)}\\[0.5cm]
-
-    \rule{\linewidth}{0.5mm}\\[0.35cm]
-    {\Large \bfseries Sujet de stage :}\\[0.2cm]
-    {\large [TITRE DU PROJET : CONCEPTION ET RÉALISATION D'UNE SOLUTION D'INGÉNIERIE]}\\[0.15cm]
-    {\normalsize \textit{[Sous-titre explicatif : Plateforme, Cas d'usage ou Périmètre technique]}}\\[0.2cm]
-    \rule{\linewidth}{0.5mm}\\[0.5cm]
-
-    \textbf{P\'eriode de stage :} Du 15 Juillet 2026 au 31 Août 2026\\[0.15cm]
-    
-\end{center}
-
-\vfill
-
-% IDENTIFICATION DES ÉTUDIANTS ET DE L'ENCADREMENT
-\noindent
-\begin{minipage}[t]{0.48\textwidth}
-    \textbf{R\'ealis\'e par :}\\[0.2cm]
-    \textbf{M. Prénom NOM}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.48\textwidth}
-    \raggedleft
-    \textbf{Sous la direction de :}\\[0.2cm]
-    \textbf{Prof. [Prénom \& NOM Encadrant ENSAF]} \textit{(Encadrant Acad\'emique ENSAF)}\\
-    \textbf{Dr. [Prénom \& NOM Encadrant Entreprise 1]} \textit{(Encadrant Professionnel)}
-\end{minipage}
-
-\vspace{0.5cm}
-\noindent
-\textbf{Membres de jury :}\\[0.15cm]
-\begin{tabular}{@{}l}
-     \\\\ 
--- Prof. [Nom du Président du Jury]    -- Prof. [Nom de l'Examinateur]    -- Dr. [Nom du Rapporteur / Invité]
-\end{tabular}
-
-\vfill
-
-\begin{center}
-    \small \textbf{Ann\'ee Universitaire :} 2025 -- 2026
-\end{center}
-
-\end{titlepage}
+\IfFileExists{front/couverture.pdf}{%
+    \includepdf[pages=1]{front/couverture.pdf}%
+}{%
+    \begin{center}
+        \vspace*{3cm}
+        {\Large \textbf{Université Sidi Mohamed Ben Abdellah}\\[0.2cm]}
+        {\large \textbf{École Nationale des Sciences Appliquées de Fès}\\[1.5cm]}
+        {\LARGE \bfseries Rapport de Stage d'Ingénieur\\[1cm]}
+        {\large Veuillez exécuter \texttt{python configure.py} sous Windows pour générer la couverture officielle Word.\\[0.5cm]}
+    \end{center}
+}

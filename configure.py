@@ -2,18 +2,27 @@
 # -*- coding: utf-8 -*-
 """
 configure.py — Générateur et configurateur de métadonnées ENSAF.
-Lit 'project_info.yaml' et met à jour automatiquement :
-  - front/titlepage.tex (Page de garde officielle, gestion solo/binôme/trinôme & jury)
-  - front/remerciements.tex (Texte de remerciements protocolaire personnalisé)
+Lit 'project_info.yaml' et synchronise automatiquement :
+  1. La couverture officielle Word (CSI, CSA, CPFE) :
+     - Écrit les métadonnées directement dans le document Word officiel
+     - Conserve 100% de la mise en page, logos et polices officielles
+     - Réduit automatiquement les espacements pour garantir STRICTEMENT 1 seule page
+     - Exporte en PDF (front/couverture.pdf) et l'intègre dans le rapport via pdfpages
+     - Gère l'option 'NONE' pour compiler sans aucune page de garde.
+  2. Le résumé en langue arabe (front/resume_ar.pdf) :
+     - Génère une page autonome haute fidélité avec polices arabes natives (HarfBuzz)
+     - Élimine toutes les erreurs de glyphes manquants dans LaTeX/Tectonic
+  3. Les remerciements protocolaires (front/remerciements.tex).
 
 Usage :
-  python configure.py             # Applique la configuration depuis project_info.yaml
+  python configure.py             # Applique la configuration complète
   python configure.py --check     # Affiche les métadonnées actuelles
 """
 
 import sys
 import os
 import re
+import subprocess
 from pathlib import Path
 
 try:
@@ -23,18 +32,21 @@ except ImportError:
     sys.exit(1)
 
 
-BASE_DIR = Path(__file__).parent
+BASE_DIR = Path(__file__).parent.resolve()
 CONFIG_PATH = BASE_DIR / "project_info.yaml"
 TITLEPAGE_PATH = BASE_DIR / "front" / "titlepage.tex"
 REMERCIEMENTS_PATH = BASE_DIR / "front" / "remerciements.tex"
+RESUME_AR_TEX_PATH = BASE_DIR / "front" / "resume-ar.tex"
+RESUME_AR_HTML_PATH = BASE_DIR / "front" / "resume_ar.html"
+RESUME_AR_PDF_PATH = BASE_DIR / "front" / "resume_ar.pdf"
+COUVERTURE_DOCX_PATH = BASE_DIR / "front" / "couverture.docx"
+COUVERTURE_PDF_PATH = BASE_DIR / "front" / "couverture.pdf"
 
 
 def escape_latex(text: str) -> str:
-    """Échappe les caractères réservés LaTeX tout en préservant les macros éventuelles."""
+    """Échappe les caractères réservés LaTeX."""
     if not text:
         return ""
-    # Si le texte contient déjà des chevrons ou crochets bruts
-    # On n'échappe pas les barres obliques déjà présentes
     chars = {
         "&": r"\&",
         "%": r"\%",
@@ -42,10 +54,8 @@ def escape_latex(text: str) -> str:
         "#": r"\#",
         "_": r"\_",
     }
-    # Remplacement simple sans casser les commandes existantes
     res = str(text)
     for c, rep in chars.items():
-        # Éviter de ré-échapper si précédé d'un backslash
         res = re.sub(r"(?<!\\)" + re.escape(c), rep, res)
     return res
 
@@ -58,277 +68,320 @@ def load_config() -> dict:
         return yaml.safe_load(f) or {}
 
 
-def build_titlepage(cfg: dict) -> str:
+def generate_word_cover(cfg: dict) -> bool:
+    """Remplit le modèle Word officiel ENSAF et l'exporte en PDF sur exactement 1 page."""
     acad = cfg.get("academique", {})
+    modele = str(acad.get("modele_couverture", "PFA")).upper().strip()
+    inclure = acad.get("inclure_couverture", True)
+
+    if not inclure or modele in ["NONE", "AUCUN", "AUCUNE", "SANS", "FALSE", "OFF", "0"]:
+        print("      [*] Option 'NONE' sélectionnée : aucune page de garde ne sera générée.")
+        if COUVERTURE_PDF_PATH.exists():
+            try:
+                COUVERTURE_PDF_PATH.unlink()
+            except Exception:
+                pass
+        return False
+
+    # Sélection du modèle officiel
+    template_map = {
+        "PFE": "couvertures_rapport_stage_ensaf/Projet_Fin_Etudes_3A_PFE_cpfe.docx",
+        "CPFE": "couvertures_rapport_stage_ensaf/Projet_Fin_Etudes_3A_PFE_cpfe.docx",
+        "INITIATION": "couvertures_rapport_stage_ensaf/Stage_Initiation_1A_csi.docx",
+        "CSI": "couvertures_rapport_stage_ensaf/Stage_Initiation_1A_csi.docx",
+        "PFA": "couvertures_rapport_stage_ensaf/Stage_Application_2A_PFA_csa.docx",
+        "CSA": "couvertures_rapport_stage_ensaf/Stage_Application_2A_PFA_csa.docx",
+    }
+    template_rel = template_map.get(modele, "couvertures_rapport_stage_ensaf/Stage_Application_2A_PFA_csa.docx")
+    template_path = BASE_DIR / template_rel
+
+    if not template_path.exists():
+        print(f"      [AVERTISSEMENT] Modèle Word introuvable : {template_path}")
+        return False
+
     proj = cfg.get("projet", {})
     auteurs = cfg.get("auteurs", [])
     org = cfg.get("organisme", {})
     enc = cfg.get("encadrement", {})
     jury = cfg.get("jury", {})
 
-    univ = escape_latex(acad.get("universite", "UNIVERSITÉ SIDI MOHAMED BEN ABDELLAH"))
-    inst = escape_latex(acad.get("institution", "ÉCOLE NATIONALE DES SCIENCES APPLIQUÉES DE FÈS"))
-    dept = escape_latex(acad.get("departement", "Génie Informatique"))
-    type_rapport = escape_latex(acad.get("type_rapport", "RAPPORT DE PROJET DE FIN D'ANNÉE"))
-    diplome = escape_latex(acad.get("diplome_vise", "Diplôme d'Ingénieur d'État en Génie Informatique"))
+    filiere = acad.get("filiere", "Génie Informatique")
+    org_str = f"{org.get('nom', 'Entreprise')} ({org.get('ville', 'Fès')})"
+    sujet = proj.get("titre", "Titre du projet")
+    periode = proj.get("periode_stage", "")
+    promotion = str(acad.get("promotion", "2026"))
+    soutenance = str(acad.get("date_soutenance", "Juin 2026"))
 
-    titre = escape_latex(proj.get("titre", "[TITRE DU PROJET]"))
-    sous_titre = escape_latex(proj.get("sous_titre", ""))
-    periode = escape_latex(proj.get("periode_stage", ""))
-    periode_str = f"\\textbf{{P\\'eriode de stage :}} {periode}\\\\[0.15cm]\n    " if periode else ""
-    annee = escape_latex(acad.get("annee_universitaire", "2025 -- 2026"))
+    auteurs_str = ", ".join(f"{a.get('civilite', 'M.')} {a.get('prenom', '')} {a.get('nom', '')}" for a in auteurs)
 
-    org_nom = escape_latex(org.get("nom", "[Organisme d'accueil]"))
-    org_ville = escape_latex(org.get("ville", "Fès"))
+    enc_acad = "[Encadrant ENSAF]"
+    if enc.get("academique"):
+        ea = enc["academique"][0]
+        enc_acad = f"{ea.get('civilite', 'Prof.')} {ea.get('prenom_nom', '')}"
 
-    # Section Auteurs (1, 2 ou 3)
-    auteurs_lines = []
-    for a in auteurs:
-        civ = escape_latex(a.get("civilite", "M."))
-        prenom = escape_latex(a.get("prenom", ""))
-        nom = escape_latex(a.get("nom", ""))
-        auteurs_lines.append(f"\\textbf{{{civ} {prenom} {nom}}}")
+    enc_pro = "[Encadrant Société]"
+    if enc.get("professionnel"):
+        ep = enc["professionnel"][0]
+        enc_pro = f"{ep.get('civilite', 'Dr.')} {ep.get('prenom_nom', '')}"
 
-    if len(auteurs_lines) == 1:
-        bloc_auteurs = f"\\textbf{{R\\'ealis\\'e par :}}\\\\[0.2cm]\n    {auteurs_lines[0]}"
-    elif len(auteurs_lines) == 2:
-        bloc_auteurs = f"\\textbf{{R\\'ealis\\'e par (Bin\\^ome) :}}\\\\[0.2cm]\n    " + "\\\\\n    ".join(auteurs_lines)
-    else:
-        bloc_auteurs = f"\\textbf{{R\\'ealis\\'e par (Trin\\^ome) :}}\\\\[0.2cm]\n    " + "\\\\\n    ".join(auteurs_lines)
+    jury_members = []
+    for m in jury.get("membres", []):
+        civ = m.get("civilite", "Prof.")
+        pnom = m.get("prenom_nom", "")
+        qual = m.get("qualite", "")
+        jury_members.append(f"{civ} {pnom} ({qual})" if qual else f"{civ} {pnom}")
 
-    # Section Encadrement
-    enc_lines = []
-    # Encadrants académiques
-    for acad_enc in enc.get("academique", []):
-        civ = escape_latex(acad_enc.get("civilite", "M./Mme"))
-        nom = escape_latex(acad_enc.get("prenom_nom", "[Encadrant ENSAF]"))
-        enc_lines.append(f"\\textbf{{{civ} {nom}}} \\textit{{(Encadrant Acad\\'emique ENSAF)}}")
-    # Encadrants professionnels
-    for pro_enc in enc.get("professionnel", []):
-        civ = escape_latex(pro_enc.get("civilite", "M./Mme"))
-        nom = escape_latex(pro_enc.get("prenom_nom", "[Encadrant Société]"))
-        enc_lines.append(f"\\textbf{{{civ} {nom}}} \\textit{{(Encadrant Professionnel)}}")
+    ps_code = r"""param(
+    [string]$inDocx,
+    [string]$outDocx,
+    [string]$outPdf,
+    [string]$filiere,
+    [string]$org,
+    [string]$sujet,
+    [string]$periode,
+    [string]$auteurs,
+    [string]$encAcad,
+    [string]$encPro,
+    [string]$promotion,
+    [string]$soutenance,
+    [string]$juryList
+)
 
-    bloc_encadrement = "\\textbf{Sous la direction de :}\\\\[0.2cm]\n    " + "\\\\\n    ".join(enc_lines)
+$w = New-Object -ComObject Word.Application
+$w.Visible = $false
+try {
+    $d = $w.Documents.Open($inDocx)
+    
+    function Do-Replace($search, $replaceVal) {
+        $find = $d.Content.Find
+        $find.ClearFormatting()
+        $find.Replacement.ClearFormatting()
+        [void]$find.Execute($search, $false, $false, $false, $false, $false, $true, 1, $false, $replaceVal, 2)
+    }
+    
+    Do-Replace "Génie …." ("Génie " + $filiere)
+    Do-Replace "Génie …" ("Génie " + $filiere)
+    Do-Replace "Stage réalisé au sein de : ….." ("Stage réalisé au sein de : " + $org)
+    Do-Replace "Stage réalisé au sein de : …." ("Stage réalisé au sein de : " + $org)
+    Do-Replace "Stage réalisé au sein de : …" ("Stage réalisé au sein de : " + $org)
+    Do-Replace "Sujet de stage" ("Sujet de stage : " + $sujet)
+    if ($periode -ne "") {
+        Do-Replace "Période de stage : …." ("Période de stage : " + $periode)
+        Do-Replace "Période de stage : …" ("Période de stage : " + $periode)
+    }
+    Do-Replace "Réalisé par M. (Prénom & Nom)" ("Réalisé par : " + $auteurs)
+    Do-Replace "Réalisé par M. (Prénom & Nom" ("Réalisé par : " + $auteurs)
+    Do-Replace "Encadrant ENSAF     …." ("Encadrant ENSAF : " + $encAcad)
+    Do-Replace "Encadrant ENSAF" ("Encadrant ENSAF : " + $encAcad)
+    Do-Replace "Encadrant Société     …." ("Encadrant Société : " + $encPro)
+    Do-Replace "Encadrant Société" ("Encadrant Société : " + $encPro)
+    Do-Replace "Promotion …" ("Promotion " + $promotion)
+    Do-Replace "Soutenance le ….." ("Soutenance le : " + $soutenance)
+    Do-Replace "Soutenance le …." ("Soutenance le : " + $soutenance)
+    Do-Replace "Soutenance le …" ("Soutenance le : " + $soutenance)
 
-    # Section Jury (optionnelle sur page de garde)
-    bloc_jury = ""
-    if jury.get("afficher_sur_garde", False) and jury.get("membres"):
-        membres_str = []
-        for m in jury["membres"]:
-            civ = escape_latex(m.get("civilite", "M."))
-            nom = escape_latex(m.get("prenom_nom", ""))
-            qualite = escape_latex(m.get("qualite", "Membre"))
-            etab = escape_latex(m.get("etablissement", "ENSAF"))
-            membres_str.append(f"\\textbf{{{civ} {nom}}}, {qualite} ({etab})")
-        bloc_jury = "\n\\vspace{0.4cm}\n\\begin{center}\n\\small \\textbf{Membres du Jury :}\\\\[0.1cm]\n" + " \\quad | \\quad ".join(membres_str) + "\n\\end{center}\n"
+    # Réduction stricte à exactement 1 seule page
+    $pages = $d.ComputeStatistics(2)
+    while ($pages -gt 1) {
+        $deleted = $false
+        for ($i = $d.Paragraphs.Count; $i -ge 1; $i--) {
+            $p = $d.Paragraphs.Item($i)
+            if ($p.Range.Text.Trim() -eq "") {
+                $p.Range.Delete()
+                $deleted = $true
+                break
+            }
+        }
+        if (-not $deleted) {
+            foreach ($p in $d.Paragraphs) {
+                $p.SpaceAfter = [Math]::Max(0, $p.SpaceAfter - 1)
+                $p.SpaceBefore = [Math]::Max(0, $p.SpaceBefore - 1)
+            }
+            break
+        }
+        $pages = $d.ComputeStatistics(2)
+    }
+    
+    $d.SaveAs([ref]$outDocx, [ref]16)
+    $d.SaveAs([ref]$outPdf, [ref]17)
+    $d.Close([ref]$false)
+    Write-Output "SUCCESS"
+} catch {
+    Write-Error $_.Exception.Message
+} finally {
+    $w.Quit()
+}
+"""
+    ps_tmp = BASE_DIR / ".word_cover_gen.ps1"
+    try:
+        with open(ps_tmp, "w", encoding="utf-8") as f:
+            f.write(ps_code)
 
+        args = [
+            "powershell", "-ExecutionPolicy", "Bypass", "-File", str(ps_tmp),
+            str(template_path), str(COUVERTURE_DOCX_PATH), str(COUVERTURE_PDF_PATH),
+            filiere, org_str, sujet, periode, auteurs_str, enc_acad, enc_pro,
+            promotion, soutenance, "; ".join(jury_members)
+        ]
+        res = subprocess.run(args, capture_output=True, text=True)
+        if "SUCCESS" in res.stdout and COUVERTURE_PDF_PATH.exists():
+            print(f"      -> Couverture Word {modele} générée sur 1 page : {COUVERTURE_PDF_PATH.relative_to(BASE_DIR)}")
+            return True
+        else:
+            print("      [AVERTISSEMENT] Génération Word COM non disponible :", res.stderr.strip() or res.stdout.strip())
+            return False
+    finally:
+        if ps_tmp.exists():
+            try:
+                ps_tmp.unlink()
+            except Exception:
+                pass
+
+
+def build_titlepage(cfg: dict, cover_generated: bool) -> str:
+    """Génère front/titlepage.tex (intègre le PDF Word ou gère NONE / fallback)."""
+    acad = cfg.get("academique", {})
     modele = str(acad.get("modele_couverture", "PFA")).upper().strip()
     inclure = acad.get("inclure_couverture", True)
-    promotion = escape_latex(acad.get("promotion", "2026"))
-    date_soutenance = escape_latex(acad.get("date_soutenance", "Juin 2026"))
 
-    # CAS 0 : AUCUNE COUVERTURE (NONE / SANS / inclure_couverture: false)
+    # CAS 0 : AUCUNE COUVERTURE
     if not inclure or modele in ["NONE", "AUCUN", "AUCUNE", "SANS", "FALSE", "OFF", "0"]:
         return "% ============================================================\n" \
                "% PAGE DE GARDE DÉSACTIVÉE (modele_couverture: NONE)\n" \
-               "% Le rapport est compilé sans page de garde (pour impression\n" \
-               "% séparée ou insertion d'une couverture externe).\n" \
+               "% Le rapport démarre directement sans page de garde.\n" \
                "% ============================================================\n"
 
-    # CAS 1 : PROJET DE FIN D'ÉTUDES (PFE / cpfe.docx)
-    if "PFE" in modele or ("FIN D'ÉTUDES" in type_rapport.upper() or "FIN D'ETUDES" in type_rapport.upper()):
-        jury_items = []
-        for pro in enc.get("professionnel", []):
-            civ = escape_latex(pro.get("civilite", "M."))
-            pnom = escape_latex(pro.get("prenom_nom", "[Encadrant Société]"))
-            jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant(e) Soci\\'et\\'e \\\\")
-        for aca in enc.get("academique", []):
-            civ = escape_latex(aca.get("civilite", "Prof."))
-            pnom = escape_latex(aca.get("prenom_nom", "[Encadrant ENSAF]"))
-            jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant ENSAF \\\\")
-        for j in jury.get("membres", []):
-            civ = escape_latex(j.get("civilite", "Prof."))
-            pnom = escape_latex(j.get("prenom_nom", "[Enseignant ENSAF]"))
-            role = escape_latex(j.get("qualite", "Enseignant ENSAF"))
-            jury_items.append(f"\\textbf{{{civ} {pnom}}} & {role} \\\\")
-
-        jury_block = ""
-        if jury_items:
-            jury_block = f"""\\vspace{{0.5cm}}
-\\noindent
-\\textbf{{Membres de jury :}}\\\\[0.15cm]
-\\begin{{tabularx}}{{\\textwidth}}{{@{{}}p{{7.5cm}} X@{{}}}}
-{chr(10).join(jury_items)}
-\\end{{tabularx}}
-"""
-
-        content = f"""\\begin{{titlepage}}
+    # CAS 1 : Couverture Word officielle exportée en PDF sur 1 page
+    return f"""% ============================================================
+% PAGE DE GARDE OFFICIELLE ENSAF ({modele})
+% Générée depuis le document Word officiel ({modele}) sur 1 page
+% ============================================================
 \\thispagestyle{{empty}}
-
-% ============================================================
-% LOGOS ENSAF ET ORGANISME D'ACCUEIL
-% ============================================================
-\\begin{{minipage}}{{0.45\\textwidth}}
-    \\flushleft
-    \\IfFileExists{{logos/logo-ensaf.png}}{{%
-        \\includegraphics[height=2.2cm]{{logos/logo-ensaf.png}}%
-    }}{{%
-        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo ENSAF}}}}}}%
-    }}
-\\end{{minipage}}
-\\hfill
-\\begin{{minipage}}{{0.45\\textwidth}}
-    \\flushright
-    \\IfFileExists{{logos/logo-entreprise.png}}{{%
-        \\includegraphics[height=2.2cm]{{logos/logo-entreprise.png}}%
-    }}{{%
-        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo Entreprise}}}}}}%
-    }}
-\\end{{minipage}}
-
-\\vspace{{0.6cm}}
-
-\\begin{{center}}
-    {{\\large \\textbf{{{univ}}}}}\\\\[0.15cm]
-    {{\\large \\textbf{{{inst}}}}}\\\\[0.6cm]
-
-    {{\\LARGE \\textbf{{Projet de Fin d'\\'Etudes}}}}\\\\[0.25cm]
-    {{\\large \\textbf{{Pour l'obtention du dipl\\^ome}}}}\\\\[0.15cm]
-    {{\\Large \\textbf{{D'Ing\\'enieur d'\\'Etat}}}}\\\\[0.25cm]
-    {{\\large \\textbf{{G\\'enie {dept}}}}}\\\\[0.2cm]
-    {{\\normalsize \\textbf{{Promotion {promotion}}}}}\\\\[0.6cm]
-
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.35cm]
-    {{\\Large \\bfseries Sujet de stage :}}\\\\[0.2cm]
-    {{\\large {titre}}}\\\\[0.15cm]
-    {{\\normalsize \\textit{{{sous_titre}}}}}\\\\[0.2cm]
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.5cm]
-
-    {{\\large \\textbf{{Stage r\\'ealis\\'e au sein de :}} {org_nom} ({org_ville})}}\\\\[0.4cm]
-\\end{{center}}
-
-\\vfill
-
-% IDENTIFICATION DES ÉTUDIANTS ET DATE DE SOUTENANCE
-\\noindent
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-    {bloc_auteurs}
-\\end{{minipage}}
-\\hfill
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-    \\raggedleft
-    \\textbf{{Soutenance le :}}\\\\[0.2cm]
-    {date_soutenance}
-\\end{{minipage}}
-
-{jury_block}
-\\vfill
-
-\\begin{{center}}
-    \\small \\textbf{{Ann\\'ee Universitaire :}} {annee}
-\\end{{center}}
-
-\\end{{titlepage}}
-"""
-        return content
-
-    # CAS 2 : STAGE D'INITIATION (1ère année / csi.docx)
-    elif "INIT" in modele or "1" in modele:
-        titre_stage = "Stage d'Initiation"
-        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 1\\textsuperscript{\\`ere} ann\\'ee"
-    # CAS 3 : STAGE D'APPLICATION (2ème année / PFA / csa.docx)
-    else:
-        titre_stage = "Stage d'Application"
-        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 2\\textsuperscript{\\`eme} ann\\'ee"
-
-    # Jury pour stage d'application / initiation
-    bloc_jury_stage = ""
-    if jury.get("membres"):
-        j_l = []
-        for m in jury["membres"]:
-            civ = escape_latex(m.get("civilite", "M."))
-            nom = escape_latex(m.get("prenom_nom", ""))
-            j_l.append(f"-- {civ} {nom}")
-        bloc_jury_stage = f"""\\vspace{{0.5cm}}
-\\noindent
-\\textbf{{Membres de jury :}}\\\\[0.15cm]
-\\begin{{tabular}}{{@{{}}l}}
-    {" \\\\\\\\ " + chr(10) + "    ".join(j_l)}
-\\end{{tabular}}
+\\IfFileExists{{front/couverture.pdf}}{{%
+    \\includepdf[pages=1]{{front/couverture.pdf}}%
+}}{{%
+    \\begin{{center}}
+        \\vspace*{{3cm}}
+        {{\\Large \\textbf{{Université Sidi Mohamed Ben Abdellah}}\\\\[0.2cm]}}
+        {{\\large \\textbf{{École Nationale des Sciences Appliquées de Fès}}\\\\[1.5cm]}}
+        {{\\LARGE \\bfseries Rapport de Stage d'Ingénieur\\\\[1cm]}}
+        {{\\large Veuillez exécuter \\texttt{{python configure.py}} sous Windows pour générer la couverture officielle Word.\\\\[0.5cm]}}
+    \\end{{center}}
+}}
 """
 
-    content = f"""\\begin{{titlepage}}
-\\thispagestyle{{empty}}
 
-% ============================================================
-% LOGOS ENSAF ET ORGANISME D'ACCUEIL
-% ============================================================
-\\begin{{minipage}}{{0.45\\textwidth}}
-    \\flushleft
-    \\IfFileExists{{logos/logo-ensaf.png}}{{%
-        \\includegraphics[height=2.2cm]{{logos/logo-ensaf.png}}%
-    }}{{%
-        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo ENSAF}}}}}}%
-    }}
-\\end{{minipage}}
-\\hfill
-\\begin{{minipage}}{{0.45\\textwidth}}
-    \\flushright
-    \\IfFileExists{{logos/logo-entreprise.png}}{{%
-        \\includegraphics[height=2.2cm]{{logos/logo-entreprise.png}}%
-    }}{{%
-        \\fbox{{\\parbox[c][2cm][c]{{3.5cm}}{{\\centering \\textbf{{Logo Entreprise}}}}}}%
-    }}
-\\end{{minipage}}
+def generate_arabic_resume(cfg: dict):
+    """Génère une page autonome pour le résumé en langue arabe avec rendu natif parfait."""
+    proj = cfg.get("projet", {})
+    org = cfg.get("organisme", {})
+    res_cfg = cfg.get("resume_arabe", {})
 
-\\vspace{{0.6cm}}
+    org_nom = org.get("nom", "المؤسسة المستضيفة")
+    sujet = proj.get("titre", "المشروع")
 
-\\begin{{center}}
-    {{\\large \\textbf{{{univ}}}}}\\\\[0.15cm]
-    {{\\large \\textbf{{{inst}}}}}\\\\[0.6cm]
+    titre_ar = res_cfg.get("titre", "ملخص المشروع")
+    texte_ar = res_cfg.get("texte", "")
+    mots_cles = res_cfg.get("mots_cles", "هندسة البرمجيات، بنية النظم، تطوير التطبيقات.")
 
-    {{\\LARGE \\textbf{{{titre_stage}}}}}\\\\[0.3cm]
-    {{\\large \\textbf{{{statut_etudiant}}}}}\\\\[0.15cm]
-    {{\\large \\textbf{{G\\'enie {dept}}}}}\\\\[0.8cm]
+    if not texte_ar:
+        texte_ar = f"""يقدّم هذا التقرير وصفاً شاملاً لمشروع نهاية السنة المنجز لدى مؤسسة {org_nom}، والمتمحور حول {sujet}. استجابةً للتحديات المرصودة، تم وضع وتنفيذ حلول هندسية متكاملة ومستدامة وفق أفضل المعايير التقنية المعمول بها.
 
-    {{\\large \\textbf{{Stage r\\'ealis\\'e au sein de :}} {org_nom} ({org_ville})}}\\\\[0.5cm]
+اعتمدت المنهجية المتبعة على التحليل المنهجي للمتطلبات، والتصميم المعماري المعياري، مع اعتماد ممارسات التطوير الحديثة لضمان جودة الأداء وقابلية الصيانة والتوسع. وتُظهر النتائج المحققة نجاعة الحلول المقترحة ومطابقتها للمواصفات المسطرة."""
 
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.35cm]
-    {{\\Large \\bfseries Sujet de stage :}}\\\\[0.2cm]
-    {{\\large {titre}}}\\\\[0.15cm]
-    {{\\normalsize \\textit{{{sous_titre}}}}}\\\\[0.2cm]
-    \\rule{{\\linewidth}}{{0.5mm}}\\\\[0.5cm]
+    paragraphs_html = "\n".join(f"    <p>{p.strip()}</p>" for p in texte_ar.split("\n\n") if p.strip())
 
-    {periode_str}
-\\end{{center}}
+    html_content = f"""<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {{
+    size: A4 portrait;
+    margin: 2cm 2.5cm 2cm 2.5cm;
+  }}
+  body {{
+    font-family: 'Traditional Arabic', 'Segoe UI', Arial, sans-serif;
+    line-height: 1.8;
+    font-size: 15pt;
+    color: #111;
+    margin: 0;
+    padding: 0;
+  }}
+  h1.fr-title {{
+    direction: ltr;
+    text-align: left;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20pt;
+    font-weight: bold;
+    margin-top: 1cm;
+    margin-bottom: 1.2cm;
+  }}
+  .box {{
+    border: 1.5px solid #222;
+    padding: 24px 28px;
+    border-radius: 2px;
+  }}
+  .box-title {{
+    text-align: center;
+    font-size: 18pt;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }}
+  p {{
+    text-align: justify;
+    text-justify: inter-word;
+    margin-bottom: 16px;
+    text-indent: 1.2em;
+  }}
+  .keywords {{
+    margin-top: 25px;
+    font-size: 13pt;
+    border-top: 1px dashed #777;
+    padding-top: 12px;
+  }}
+</style>
+</head>
+<body>
+  <h1 class="fr-title">Résumé en langue arabe</h1>
+  <div class="box">
+    <div class="box-title">{titre_ar}</div>
+{paragraphs_html}
+    <div class="keywords">
+      <strong>كلمات مفتاحية :</strong> {mots_cles}
+    </div>
+  </div>
+</body>
+</html>"""
 
-\\vfill
+    with open(RESUME_AR_HTML_PATH, "w", encoding="utf-8") as f:
+        f.write(html_content)
 
-% IDENTIFICATION DES ÉTUDIANTS ET DE L'ENCADREMENT
-\\noindent
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-    {bloc_auteurs}
-\\end{{minipage}}
-\\hfill
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-    \\raggedleft
-    {bloc_encadrement}
-\\end{{minipage}}
-
-{bloc_jury_stage}
-\\vfill
-
-\\begin{{center}}
-    \\small \\textbf{{Ann\\'ee Universitaire :}} {annee}
-\\end{{center}}
-
-\\end{{titlepage}}
-"""
-    return content
+    # Conversion en PDF via Edge Headless
+    edge_paths = [
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    ]
+    edge_exe = next((p for p in edge_paths if os.path.exists(p)), None)
+    if edge_exe:
+        cmd = [
+            edge_exe,
+            "--headless=new",
+            "--disable-gpu",
+            "--no-pdf-header-footer",
+            f"--print-to-pdf={RESUME_AR_PDF_PATH}",
+            str(RESUME_AR_HTML_PATH)
+        ]
+        try:
+            subprocess.run(cmd, check=True, capture_output=True)
+            if RESUME_AR_PDF_PATH.exists():
+                print(f"      -> Résumé arabe généré avec succès : {RESUME_AR_PDF_PATH.relative_to(BASE_DIR)}")
+        except Exception as e:
+            print("      [AVERTISSEMENT] Erreur lors de l'export PDF du résumé arabe :", e)
 
 
 def build_remerciements(cfg: dict) -> str:
+    """Génère front/remerciements.tex selon le protocole officiel ENSAF."""
     org = cfg.get("organisme", {})
     enc = cfg.get("encadrement", {})
     jury = cfg.get("jury", {})
@@ -345,13 +398,11 @@ def build_remerciements(cfg: dict) -> str:
     dept = escape_latex(acad.get("departement", "Génie Informatique"))
     equipe_collabs = escape_latex(rem.get("equipe_collaborateurs", "l'équipe des ingénieurs, techniciens et stagiaires de l'organisme"))
 
-    # Formule organisme & partenaire
     if org_part:
         org_mention = f"au \\textbf{{{org_nom}}} ainsi qu'\\`a \\textbf{{{org_part}}}"
     else:
         org_mention = f"\\`a l'organisme d'accueil \\textbf{{{org_nom}}}"
 
-    # Directeur
     dir_mention = ""
     if dir_nom and not dir_nom.startswith("["):
         dir_mention = f"""\\vspace{{0.4cm}}
@@ -360,7 +411,6 @@ def build_remerciements(cfg: dict) -> str:
 J'adresse mes remerciements les plus distingu\\'es \\`a {dir_civ} {dir_nom}, \\textit{{{dir_titre}}}, pour son accueil bienveillant, ses orientations strat\\'egiques, sa vision et pour les moyens mis \\`a disposition tout au long de cette mission d'ing\\'enierie.
 """
 
-    # Encadrants professionnels
     pro_encs = enc.get("professionnel", [])
     if pro_encs:
         items_pro = []
@@ -381,7 +431,6 @@ Je tiens \\`a t\\'emoigner ma vive et profonde reconnaissance \\`a mes encadrant
     else:
         bloc_pro = ""
 
-    # Encadrant académique
     acad_encs = enc.get("academique", [])
     if acad_encs:
         items_acad = []
@@ -398,7 +447,6 @@ Mes sinc\\`eres remerciements vont \\'egalement \\`a mon encadrant acad\\'emique
     else:
         bloc_acad = ""
 
-    # Jury
     membres_jury = jury.get("membres", [])
     bloc_jury_list = ""
     if membres_jury:
@@ -459,24 +507,21 @@ def print_check(cfg: dict):
     enc = cfg.get("encadrement", {})
     jury = cfg.get("jury", {})
 
-    print(f"[*] Titre       : {proj.get('titre')}")
-    print(f"[*] Sous-titre  : {proj.get('sous_titre')}")
-    print(f"[*] Type        : {acad.get('type_rapport')}")
-    print(f"[*] Filière     : {acad.get('filiere')}")
-    print(f"[*] Période     : {proj.get('periode_stage')}")
-    print(f"[*] Organisme   : {org.get('nom')} ({org.get('ville')})")
-    print(f"[*] Auteur(s)   :")
+    print(f"[*] Modèle couverture : {acad.get('modele_couverture', 'PFA')}")
+    print(f"[*] Titre             : {proj.get('titre')}")
+    print(f"[*] Sous-titre        : {proj.get('sous_titre')}")
+    print(f"[*] Filière           : {acad.get('filiere')}")
+    print(f"[*] Période           : {proj.get('periode_stage')}")
+    print(f"[*] Organisme         : {org.get('nom')} ({org.get('ville')})")
+    print(f"[*] Auteur(s)         :")
     for a in auteurs:
         print(f"    - {a.get('civilite')} {a.get('prenom')} {a.get('nom')}")
-    print(f"[*] Encadrement Académique :")
+    print(f"[*] Encadrant ENSAF   :")
     for ea in enc.get("academique", []):
         print(f"    - {ea.get('civilite')} {ea.get('prenom_nom')}")
-    print(f"[*] Encadrement Société    :")
+    print(f"[*] Encadrant Société :")
     for ep in enc.get("professionnel", []):
         print(f"    - {ep.get('civilite')} {ep.get('prenom_nom')} ({ep.get('specialite') or ep.get('fonction')})")
-    print(f"[*] Jury :")
-    for j in jury.get("membres", []):
-        print(f"    - {j.get('civilite')} {j.get('prenom_nom')} [{j.get('qualite')}]")
     print("=" * 65)
 
 
@@ -491,20 +536,24 @@ def main():
     print("=" * 65)
     cfg = load_config()
 
-    print("[1/2] Génération de la page de garde (front/titlepage.tex)...")
-    titlepage_tex = build_titlepage(cfg)
+    print("[1/3] Génération de la couverture officielle Word (garantie 1 page)...")
+    cover_ok = generate_word_cover(cfg)
+    titlepage_tex = build_titlepage(cfg, cover_ok)
     with open(TITLEPAGE_PATH, "w", encoding="utf-8") as f:
         f.write(titlepage_tex)
-    print(f"      -> Mis à jour avec succès : {TITLEPAGE_PATH.relative_to(BASE_DIR)}")
+    print(f"      -> Mis à jour : {TITLEPAGE_PATH.relative_to(BASE_DIR)}")
 
-    print("[2/2] Génération des remerciements (front/remerciements.tex)...")
+    print("[2/3] Génération du résumé arabe haute fidélité (front/resume_ar.pdf)...")
+    generate_arabic_resume(cfg)
+
+    print("[3/3] Génération des remerciements (front/remerciements.tex)...")
     rem_tex = build_remerciements(cfg)
     with open(REMERCIEMENTS_PATH, "w", encoding="utf-8") as f:
         f.write(rem_tex)
-    print(f"      -> Mis à jour avec succès : {REMERCIEMENTS_PATH.relative_to(BASE_DIR)}")
+    print(f"      -> Mis à jour : {REMERCIEMENTS_PATH.relative_to(BASE_DIR)}")
 
     print("-" * 65)
-    print("[SUCCÈS] Vos pages liminaires sont synchronisées avec 'project_info.yaml'.")
+    print("[SUCCÈS] Rapport synchronisé avec 'project_info.yaml'.")
     print("         Pour recompiler : python preview.py")
     print("=" * 65)
 

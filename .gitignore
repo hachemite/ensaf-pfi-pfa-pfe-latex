@@ -37,6 +37,8 @@
 *.pdf
 !logos/**/*.pdf
 !figures/**/*.pdf
+front/couverture.docx
+front/resume_ar.html
 *.zip
 *.tar.gz
 *.7z

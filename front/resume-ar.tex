@@ -1,25 +1,21 @@
-\chapter*{R\'esum\'e en langue arabe}
-\addcontentsline{toc}{chapter}{R\'esum\'e en langue arabe}
+\IfFileExists{front/resume_ar.pdf}{%
+    \includepdf[pages=1,pagecommand={\thispagestyle{plain}\addcontentsline{toc}{chapter}{R\'esum\'e en langue arabe}}]{front/resume_ar.pdf}%
+}{%
+    \chapter*{R\'esum\'e en langue arabe}
+    \addcontentsline{toc}{chapter}{R\'esum\'e en langue arabe}
 
-\vspace{0.5cm}
+    \vspace{0.5cm}
 
-\begin{center}
-\fbox{
-    \parbox{0.92\textwidth}{
-        \vspace{0.4cm}
-        \selectlanguage{arabic}
-        \centering
-        {\large ملخص المشروع}\\[0.4cm]
-        \normalsize
-        يقدّم هذا التقرير وصفاً شاملاً لمشروع نهاية السنة المنجز لدى مؤسسة [اسم المؤسسة / الشركة المستضيفة]، والمتمحور حول [موضوع المشروع : مثلاً تصميم وتطوير منصة رقمية / نظام معلوماتي / تطبيق ويب متكامل]. استجابةً للتحديات المرصودة، والمتمثلة في [وصف التحديات : مثلاً تحسين الأداء، أتمتة العمليات، أو عصرنة البنية البرمجية]، تم وضع وتنفيذ حلول هندسية متكاملة ومستدامة.
-
-        \vspace{0.3cm}
-        اعتمدت المنهجية المتبعة على [وصف المنهجية : مثلاً المنهجية الرشيقة، التحليل المنهجي للمتطلبات، والتصميم المعماري المعياري]. وقد ارتكزت البنية التقنية على [ذكر التقنيات الرئيسية : مثلاً أطر عمل الواجهة الأمامية والخلفية، وقواعد البيانات الحديثة]. وتُظهر النتائج المحققة [ذكر النتائج البارزة : مثلاً رفع كفاءة النظام، تحسين تجربة المستخدم، وضمان استقرار وجودة البرمجية]، محققةً بذلك الأهداف المسطرة في دفتر التحملات.
-
-        \vspace{0.4cm}
-        كلمات مفتاحية : [كلمة مفتاحية 1]، [كلمة مفتاحية 2]، [كلمة مفتاحية 3]، هندسة البرمجيات، بنية النظم، تطوير التطبيقات.
-        \vspace{0.4cm}
-        \selectlanguage{french}
+    \begin{center}
+    \fbox{
+        \parbox{0.92\textwidth}{
+            \vspace{0.4cm}
+            \centering
+            {\large ملخص المشروع}\\[0.4cm]
+            \normalsize
+            [Veuillez exécuter \texttt{python configure.py} pour générer la version haute fidélité \texttt{front/resume\_ar.pdf} avec le moteur typographique arabe natif.]
+            \vspace{0.4cm}
+        }
     }
+    \end{center}
 }
-\end{center}

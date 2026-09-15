@@ -5,9 +5,9 @@
 % ============================================================
 % 1. LANGUES ET ENCODAGES
 % ============================================================
-\RequirePackage[LAE,T1]{fontenc}
+\RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[arabic,french]{babel}
+\RequirePackage[french]{babel}
 
 % ============================================================
 % 2. MISE EN PAGE ET MARGES (Section 2.2.2)
@@ -39,6 +39,7 @@
 % 6. PACKAGES COMPLÉMENTAIRES (Flottants, Tableaux, Graphiques)
 % ============================================================
 \RequirePackage{graphicx}
+\RequirePackage{pdfpages}
 \RequirePackage{float}
 \RequirePackage{caption}
 % Légendes de figures et tableaux : centrées, italique, 12pt (Section 2.4)
