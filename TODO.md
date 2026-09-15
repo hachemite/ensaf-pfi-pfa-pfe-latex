@@ -8,23 +8,22 @@ Ce fichier permet de suivre l'état d'avancement de la rédaction du rapport, ch
 ---
 
 ## 📌 1. Pages Liminaires (Front Matter)
-- [-] **Configuration générale (`project_info.yaml` & `python configure.py`)** :
-  - [-] Auteur(s) (solo, binôme ou trinôme)
-  - [-] Filière, département et année universitaire
-  - [-] Titre, sous-titre et période de stage
-  - [-] Organisme d'accueil, direction et encadrement professionnel
-  - [-] Encadrement académique ENSAF et membres du jury
-- [-] **Page de garde (`front/titlepage.tex`)** (générée automatiquement par `configure.py`)
+- [x] **Configuration générale (`project_info.yaml` & `python configure.py`)** :
+  - [x] Infrastructure de synchronisation automatique (solo/binôme/trinôme, filières, encadrement, jury)
+  - [x] Support multi-modèles de couverture : PFA (2A), PFE (3A), INITIATION (1A) ou NONE
+- [x] **Page de garde (`front/titlepage.tex`)** :
+  - [x] Remplissage automatisé du document Word officiel avec conservation 100% du style
+  - [x] Algorithme de compactage garantissant strictement 1 seule page (`front/couverture.pdf`)
+  - [x] Inclusion propre via `\includepdf`
 - [-] **Dédicaces (`front/dedicace.tex`)** :
   - [x] Alignement centré et mise en page Times
   - [-] Remplacer `[Votre Prénom]`
-- [-] **Remerciements (`front/remerciements.tex`)** :
-  - [-] Noms de l'organisme et des encadrants
-  - [-] Remerciements équipe technique & jury
+- [x] **Remerciements (`front/remerciements.tex`)** :
+  - [x] Formule officielle personnalisée avec direction, encadrants pro/académiques et jury
 - [-] **Résumés et Mots-Clés (`front/resume-*.tex`)** :
   - [-] Résumé en français (10 lignes) + 3 à 5 mots-clés
   - [-] Abstract en anglais (10 lines) + keywords
-  - [-] Résumé en arabe + mots-clés en arabe
+  - [x] Résumé en arabe haute fidélité (`front/resume_ar.pdf`) avec titre sobre « ملخص » sans cadre artificiel
 - [-] **Liste des abréviations (`front/abreviations.tex`)** :
   - [-] Ajouter les sigles et acronymes propres au projet
 
