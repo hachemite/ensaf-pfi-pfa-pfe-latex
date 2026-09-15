@@ -5,6 +5,8 @@ Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage,
 > 💡 **Exemple complet de démonstration / Fully-filled example :**  
 > Vous souhaitez voir un rapport d'ingénierie 100% complété et compilé avec ce modèle ?  
 > 👉 **[See a full filled example here: `example-filled-report`](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/tree/example-filled-report)** *(avec son PDF complet [`example.pdf`](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/blob/example-filled-report/example.pdf))*.
+> 
+> 📋 **Journal des modifications :** Consultez le **[`CHANGELOG.md`](CHANGELOG.md)** pour l'historique complet des versions et des évolutions du modèle.
 
 ---
 
