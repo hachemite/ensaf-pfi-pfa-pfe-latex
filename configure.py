@@ -155,6 +155,13 @@ def generate_word_cover(cfg: dict) -> bool:
 $w = New-Object -ComObject Word.Application
 $w.Visible = $false
 try {
+    $e_aigu = [char]0x00E9
+    $lblGenie = "G" + $e_aigu + "nie "
+    $lblStage = "Stage r" + $e_aigu + "alis" + $e_aigu + " au sein de : "
+    $lblPeriode = "P" + $e_aigu + "riode de stage : "
+    $lblRealise = "R" + $e_aigu + "alis" + $e_aigu + " par : "
+    $lblSociete = "Encadrant Soci" + $e_aigu + "t" + $e_aigu + " : "
+
     $d = $w.Documents.Open($inDocx)
     $juryArray = @()
     if ($juryList -ne "") {
@@ -167,27 +174,27 @@ try {
         $t = $p.Range.Text.Trim()
         
         if ($t -match "^G.*nie") {
-            $p.Range.Text = "Génie " + $filiere + "`r`n"
+            $p.Range.Text = $lblGenie + $filiere + "`r`n"
         }
         elseif ($t -match "Stage.*au sein de") {
-            $p.Range.Text = "Stage réalisé au sein de : " + $org + "`r`n"
+            $p.Range.Text = $lblStage + $org + "`r`n"
         }
         elseif ($t -match "^Sujet de stage") {
             $p.Range.Text = "Sujet de stage : " + $sujet + "`r`n"
         }
         elseif ($t -match "P.*riode de stage") {
             if ($periode -ne "") {
-                $p.Range.Text = "Période de stage : " + $periode + "`r`n"
+                $p.Range.Text = $lblPeriode + $periode + "`r`n"
             }
         }
         elseif ($t -match "R.*alis.*par") {
-            $p.Range.Text = "Réalisé par : " + $auteurs + "`r`n"
+            $p.Range.Text = $lblRealise + $auteurs + "`r`n"
         }
         elseif ($t -match "^Encadrant ENSAF") {
             $p.Range.Text = "Encadrant ENSAF : " + $encAcad + "`r`n"
         }
         elseif ($t -match "^Encadrant Soci.*t") {
-            $p.Range.Text = "Encadrant Société : " + $encPro + "`r`n"
+            $p.Range.Text = $lblSociete + $encPro + "`r`n"
         }
         elseif ($t -match "^Promotion") {
             $p.Range.Text = "Promotion " + $promotion + "`r`n"
@@ -238,7 +245,7 @@ try {
 """
     ps_tmp = BASE_DIR / ".word_cover_gen.ps1"
     try:
-        with open(ps_tmp, "w", encoding="utf-8") as f:
+        with open(ps_tmp, "w", encoding="utf-8-sig") as f:
             f.write(ps_code)
 
         args = [
