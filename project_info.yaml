@@ -18,11 +18,15 @@ academique:
   filiere: "Génie Informatique"         # ex: Génie Informatique (GI), Télécoms & Réseaux (GTR), etc.
   annee_universitaire: "2025 -- 2026"
 
-  # Modèle officiel de couverture (dossier 'couvertures_rapport_stage_ensaf/') :
-  # Options : "PFA" (Stage d'Application - 4A), "PFE" (Projet de Fin d'Études - 5A), "INITIATION" (Stage d'Initiation - 3A)
+  # Choix du modèle de couverture (dossier 'couvertures_rapport_stage_ensaf/') :
+  # Options :
+  #   - "PFA"        : Stage d'Application (4A / 2ème année cycle ingénieur)
+  #   - "PFE"        : Projet de Fin d'Études (5A / 3ème année cycle ingénieur)
+  #   - "INITIATION" : Stage d'Initiation (3A / 1ère année cycle ingénieur)
+  #   - "NONE"       : SANS couverture (ex: impression séparée ou couverture PDF externe)
   modele_couverture: "PFA"
-  promotion: "2026"                     # Utile principalement pour le PFE
-  date_soutenance: "Juin 2026"          # Utile principalement pour le PFE
+  promotion: "2026"                     # Utilisé pour le modèle PFE
+  date_soutenance: "Juin 2026"          # Utilisé pour le modèle PFE
 
   # Type de rapport :
   type_rapport: "RAPPORT DE PROJET DE FIN D'ANNÉE"

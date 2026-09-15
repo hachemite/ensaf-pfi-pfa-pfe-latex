@@ -123,8 +123,17 @@ def build_titlepage(cfg: dict) -> str:
         bloc_jury = "\n\\vspace{0.4cm}\n\\begin{center}\n\\small \\textbf{Membres du Jury :}\\\\[0.1cm]\n" + " \\quad | \\quad ".join(membres_str) + "\n\\end{center}\n"
 
     modele = str(acad.get("modele_couverture", "PFA")).upper().strip()
+    inclure = acad.get("inclure_couverture", True)
     promotion = escape_latex(acad.get("promotion", "2026"))
     date_soutenance = escape_latex(acad.get("date_soutenance", "Juin 2026"))
+
+    # CAS 0 : AUCUNE COUVERTURE (NONE / SANS / inclure_couverture: false)
+    if not inclure or modele in ["NONE", "AUCUN", "AUCUNE", "SANS", "FALSE", "OFF", "0"]:
+        return "% ============================================================\n" \
+               "% PAGE DE GARDE DÉSACTIVÉE (modele_couverture: NONE)\n" \
+               "% Le rapport est compilé sans page de garde (pour impression\n" \
+               "% séparée ou insertion d'une couverture externe).\n" \
+               "% ============================================================\n"
 
     # CAS 1 : PROJET DE FIN D'ÉTUDES (PFE / cpfe.docx)
     if "PFE" in modele or "FIN D" in type_rapport.upper():
