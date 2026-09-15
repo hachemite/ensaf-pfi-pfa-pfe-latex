@@ -47,7 +47,46 @@ cmrpi/
 
 ---
 
-## 2. Comment Démarrer et Remplir le Rapport
+## 2. Intégration du Modèle dans Vos Projets
+
+### 🔹 Option A : Utilisation en Dépôt Autonome (Nouveau Rapport)
+Pour créer votre propre dépôt de rapport à partir de ce template :
+- Cliquez sur **Use this template** en haut du dépôt GitHub, ou clonez-le directement :
+  ```bash
+  git clone https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git mon-rapport
+  cd mon-rapport
+  ```
+
+### 🔹 Option B : Intégration dans un Projet Logiciel Existant
+Pour documenter un projet existant (par exemple dans un dossier `docs/` ou `rapport/`) :
+```bash
+# À la racine de votre projet de code :
+git submodule add https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git docs/rapport
+```
+
+### 🔹 Option C : Importation Directe sur Overleaf
+- Exécutez `python zip_for_overleaf.py` (ou téléchargez le ZIP depuis GitHub).
+- Importez l'archive sur Overleaf via **New Project $\rightarrow$ Upload Project**.
+
+---
+
+## 3. Rédaction Assistée par IA (`PROMPT_START.md`)
+
+Le modèle a été optimisé pour être piloté par des assistants IA de pointe (**Cursor**, **Claude Code**, **Google Antigravity**, **GitHub Copilot**, **ChatGPT**) :
+
+1. Ouvrez le projet dans votre IDE IA.
+2. Copiez le prompt contenu dans **[`PROMPT_START.md`](PROMPT_START.md)** et collez-le dans la discussion de votre agent.
+3. L'assistant exécutera automatiquement le cycle en 6 étapes :
+   - Ingestion de vos notes et analyse de votre code source.
+   - Questions ciblées pour compléter [`project_info.yaml`](project_info.yaml) et synchronisation via `python configure.py`.
+   - Proposition d'un plan de sous-sections chapitre par chapitre pour validation.
+   - Rédaction rigoureuse sous les directives académiques de [`AGENTS.md`](AGENTS.md).
+   - **Boucle d'auto-correction automatique** : l'agent lance `python lint.py`, corrige immédiatement dans les fichiers `.tex` les alertes soulevées, et répète jusqu'à validation sans erreur.
+   - Vérification des listes transversales (`abreviations.tex`, `annexes.tex`, `bibliographie.bib`).
+
+---
+
+## 4. Comment Démarrer et Remplir le Rapport Manuellement
 
 ### Étape 1 : Renseigner vos métadonnées (`project_info.yaml`)
 La méthode recommandée consiste à modifier le fichier central **[`project_info.yaml`](project_info.yaml)** :
@@ -118,7 +157,9 @@ Chaque chapitre possède une commande spéciale et une section de transition :
 
 ---
 
-## 3. Commandes Utiles & Exemples Prêts à l'Emploi
+---
+
+## 5. Commandes Utiles & Exemples Prêts à l'Emploi
 
 ### A. Insérer une Figure (Image / Capture d'écran)
 Placez votre image dans le dossier `figures/ch1/`, `figures/ch2/` ou `figures/ch3/`, puis insérez :
@@ -205,7 +246,7 @@ Le diagramme de Gantt est codé nativement en LaTeX (`pgfgantt`). Vous pouvez mo
 
 ---
 
-## 4. Compilation et Prévisualisation
+## 6. Compilation, Prévisualisation & CI/CD
 
 ### 🔹 Méthode 1 : Double-clic Windows (Recommandé)
 - Double-cliquez sur `compile.bat`.
@@ -218,9 +259,14 @@ Le diagramme de Gantt est codé nativement en LaTeX (`pgfgantt`). Vous pouvez mo
   ```
 - Le script compile et **ouvre directement le fichier PDF** dans votre lecteur par défaut.
 
+### 🔹 Méthode 3 : Compilation Automatique GitHub Actions (CI/CD)
+- À chaque `git push` ou pull request sur la branche `main`, le workflow [`.github/workflows/check.yml`](.github/workflows/check.yml) s'exécute automatiquement.
+- Il valide la conformité académique via `lint.py` et compile `main.pdf`.
+- Vous pouvez télécharger le PDF généré directement depuis l'onglet **Actions** de votre dépôt GitHub sans compiler sur votre machine.
+
 ---
 
-## 5. Exportation vers Overleaf
+## 7. Exportation vers Overleaf
 
 Pour collaborer en ligne sur Overleaf avec vos binômes :
 
@@ -235,7 +281,7 @@ Pour collaborer en ligne sur Overleaf avec vos binômes :
 
 ---
 
-## 6. Foire Aux Questions (FAQ) & Dépannage
+## 8. Foire Aux Questions (FAQ) & Dépannage
 
 ### Q1 : Comment remplacer le logo de mon entreprise ?
 Déposez simplement votre logo au format PNG dans le dossier `logos/` sous le nom **`logo-entreprise.png`**. Il sera automatiquement pris en compte sur toutes les pages.
