@@ -16,6 +16,19 @@ Ce template clé en main intègre la **génération automatique de couverture of
 
 ---
 
+## 🔍 En Bref : Ce que ce Modèle Résout (Index & Mots-Clés)
+
+| Recherche Fréquente / Besoin | Ce que le modèle fournit |
+| :--- | :--- |
+| **Rapport PFA / PFE ENSA & Maroc** | Structure conforme aux jurys ENSAF & réseau ENSA (Times 12pt, interligne 1.5, marges 2.5cm) |
+| **Génération automatique couverture** | Couverture officielle Word ENSAF garantie sur 1 page via [`configure.py`](configure.py) |
+| **Résumé en arabe LaTeX** | Moteur haute fidélité [`front/resume_ar.pdf`](front/resume_ar.pdf) sans bugs de polices |
+| **Vérification / Correction automatique** | Linter académique [`lint.py`](lint.py) éliminant le "je", les erreurs de légendes et d'équations |
+| **Prompt IA pour rapport de stage** | [`PROMPT_START.md`](PROMPT_START.md) pour rédiger avec Cursor, Claude Code ou Copilot |
+| **Export Overleaf 1-clic** | Script [`zip_for_overleaf.py`](zip_for_overleaf.py) prêt à importer sans configuration |
+
+---
+
 ## 🚀 Comment Intégrer ce Modèle dans Votre Projet
 
 Vous pouvez utiliser ce dépôt de plusieurs manières selon votre organisation de travail :

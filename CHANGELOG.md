@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **High-Intent SEO & Feature Index Table** in `README.md`: Direct mapping between frequent student search queries (Rapport PFA/PFE, couverture Word, résumé en arabe, linter, prompt IA, Overleaf) and repository automated features for maximum search discoverability.
 - **AI Self-Correction Loop** in `PROMPT_START.md`: Explicit instruction after step 5 to automatically execute `python lint.py`, fix reported issues directly in-file, re-run `lint.py`, and repeat until clean before reporting a chapter complete.
 - Comprehensive onboarding, integration, and AI-assisted workflow guides in `README.md` and `GUIDE_UTILISATION_TEMPLATE.md` (standalone clone, git submodule, Overleaf import, and CI/CD).
 - Version history tracking via `CHANGELOG.md` linked from `README.md`.
