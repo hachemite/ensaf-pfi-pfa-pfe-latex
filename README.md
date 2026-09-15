@@ -1,6 +1,11 @@
 # 🎓 Modèle de Rapport de Projet de Fin d'Année (PFA) / PFE — ENSAF
 
-Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage, PFA et PFE à l'**École Nationale des Sciences Appliquées de Fès (ENSAF)**.
+> [!WARNING]
+> **BRANCHE DE DÉMONSTRATION (CONTENU FICTIF / DEMO ONLY)**  
+> Cette branche `example-filled-report` contient un rapport **entièrement complété avec des données et des chapitres d'exemple fictifs** (Auteur : *Yassine EXEMPLE*, Entreprise : *TechCorp Exemple SARL*).  
+> Elle sert de démonstration complète attestant que l'ensemble de la chaîne de production (couverture Word officielle 1 page, résumé arabe natif, linting académique 100% conforme, compilation LaTeX) fonctionne de bout en bout.  
+> 📄 **Consulter le PDF d'exemple généré : [`example.pdf`](example.pdf)**  
+> 🚀 **Pour rédiger votre propre rapport :** Rendez-vous sur la branche principale **[`main`](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/tree/main)**.
 
 ---
 

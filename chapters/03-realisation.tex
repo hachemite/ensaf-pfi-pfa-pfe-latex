@@ -2,115 +2,94 @@
 \finPageTitre
 
 \section{Introduction}
-Ce troisi\`eme chapitre est consacr\'e \`a la pr\'esentation concr\`ete des r\'ealisations techniques effectu\'ees au cours du projet. Il expose l'environnement de d\'eveloppement mis en place, d\'etaille le d\'eveloppement et l'int\'egration des principaux modules applicatifs, pr\'esente les r\'esultats et indicateurs de performance obtenus, et propose une analyse critique des r\'esultats et des choix op\'er\'es.
+Ce troisi\`eme chapitre pr\'esente concr\`etement les r\'ealisations techniques d\'evelopp\'ees tout au long du stage. Il d\'ecrit tout d'abord l'environnement de d\'eveloppement et la conteneurisation des services, d\'etaille ensuite l'impl\'ementation des pipelines d'ingestion et du bus de messages, expose les r\'esultats des bancs d'essai exp\'erimentaux, et conclut par une discussion critique des performances observ\'ees.
 
-\section{Environnement de d\'eveloppement et mise en place}
-\subsection{Outils de d\'eveloppement et configuration}
-La phase initiale a consist\'e \`a pr\'eparer l'environnement de travail et les outils de d\'eveloppement :
+\section{Environnement de d\'eveloppement et infrastructure logicielle}
+\subsection{Configuration des environnements et outillage}
+Pour garantir la reproductibilit\'e des d\'eploiements, l'int\'egralit\'e des composants a \'et\'e configur\'ee sous forme de conteneurs Docker orchestr\'es par Docker Compose en local :
 \begin{itemize}
-    \item \textbf{Environnement d'ex\'ecution} : Configuration des runtimes, gestionnaires de paquets et conteneurs ;
-    \item \textbf{Gestionnaire de versions} : Initialisation du d\'ep\^ot Git et configuration des flux de travail collaboratifs ;
-    \item \textbf{Base de donn\'ees locale} : D\'eploiement et initialisation du sch\'ema de donn\'ees de d\'eveloppement.
+    \item \textbf{Gestionnaire de versions} : D\'ep\^ot Git structur\'e avec validation automatis\'ee par hooks pr\'e-commit ;
+    \item \textbf{Bus de messages} : Cluster Apache Kafka (version 3.6) coupl\'e \`a KRaft pour s'affranchir de ZooKeeper ;
+    \item \textbf{Base de donn\'ees chronologique} : Instance TimescaleDB adoss\'ee \`a PostgreSQL 16.
 \end{itemize}
 
-\subsection{Organisation du projet et structure du code}
-Le code source est structur\'e de mani\`ere modulaire afin de faciliter la maintenance et la collaboration, en s\'eparant nettement les composants d'interface, les services m\'etier, les mod\`eles de donn\'ees et la configuration de l'application.
+\subsection{Organisation modulaire du code source}
+Le projet adopte une architecture multi-d\'ep\^ots unifi\'ee en mono-repo avec des r\'epertoires d\'edi\'es pour chaque microservice (\texttt{services/gateway}, \texttt{services/processor}, \texttt{services/storage}). Chaque service encapsule sa propre logique de test et sa configuration d'environnement.
 
-\section{D\'eveloppement des modules principaux}
-\subsection{Module 1 : [Nom du premier module / Interface principale]}
-Ce module a pour r\^ole de \textbf{[description du module : ex. la gestion de l'authentification et du tableau de bord utilisateur]}. La Figure~\ref{fig:module-1} pr\'esente une capture d'\'ecran de l'interface d\'evelopp\'ee.
+\section{Impl\'ementation des microservices principaux}
+\subsection{Module d'ingestion : Gateway-Service}
+Le service frontal d'ingestion r\'eceptionne les requ\^etes HTTP POST \'emises par les passerelles p\'eriph\'eriques IoT. D\`es r\'eception d'un payload JSON, le contr\^oleur valide la signature cryptographique et publie l'\'ev\'enement sur le topic Kafka \texttt{telemetry.raw}. La Figure~\ref{fig:module-1} illustre le tableau de bord de supervision de cette passerelle.
 
 \begin{figure}[H]
 \centering
 \IfFileExists{figures/ch3/interface_module1.png}{%
     \includegraphics[width=0.85\textwidth]{figures/ch3/interface_module1.png}%
 }{%
-    \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici la capture d'\'ecran de l'interface ou du composant du Module 1]}}}%
+    \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering \textit{[Interface de monitoring du microservice d'ingestion Gateway-Service]}}}%
 }
-\caption{Aper\c{c}u de l'interface du premier module d\'evelopp\'e}
+\caption{Tableau de bord de monitoring du service d'ingestion en temps r\'eel}
 \label{fig:module-1}
 \end{figure}
 
-\subsection{Module 2 : [Nom du deuxi\`eme module / Traitement m\'etier]}
-Ce module assure \textbf{[description du r\^ole du module : ex. le traitement des donn\'ees, la gestion des requ\^etes ou les op\'erations CRUD m\'etier]}. La Figure~\ref{fig:module-2} illustre l'interface ou le flux associ\'e.
+L'interface visualis\'ee \`a la Figure~\ref{fig:module-1} permet d'observer en direct le d\'ebit instantan\'e de requ\^etes re\c{c}ues et le taux de succ\`es des publications dans le courtier.
+
+\subsection{Module de traitement et calcul des m\'etriques}
+Le microservice \texttt{Ingestion-Processor} consomme en continu les messages du topic \texttt{telemetry.raw}. Il applique un fen\^etrage temporel pour d\'etecter les anomalies thermiques ou vibratoires. La Figure~\ref{fig:module-2} montre l'architecture interne de ce pipeline de traitement.
 
 \begin{figure}[H]
 \centering
 \IfFileExists{figures/ch3/interface_module2.png}{%
     \includegraphics[width=0.85\textwidth]{figures/ch3/interface_module2.png}%
 }{%
-    \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici la capture d'\'ecran de l'interface ou du composant du Module 2]}}}%
+    \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering \textit{[Diagramme de flux interne du microservice de traitement Ingestion-Processor]}}}%
 }
-\caption{Aper\c{c}u de l'interface du deuxi\`eme module d\'evelopp\'e}
+\caption{Diagramme de traitement asynchrone des flux d'\'ev\'enements}
 \label{fig:module-2}
 \end{figure}
 
-\subsection{Impl\'ementation technique et extrait de code}
-Le Listing ci-dessous donne un exemple de structure ou de service impl\'ement\'e au sein de l'application :
+L'examen de la Figure~\ref{fig:module-2} met en lumi\`ere le passage par une file d'attente d\'edi\'ee aux \'ev\'enements anormaux (\textit{Dead Letter Queue}), assurant qu'aucune donn\'ee malform\'ee ne bloque le pipeline principal.
 
-\begin{figure}[H]
-\centering
-\IfFileExists{figures/ch3/code_sample.png}{%
-    \includegraphics[width=0.8\textwidth]{figures/ch3/code_sample.png}%
-}{%
-    \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici un extrait de code / capture de snippet illustrant un algorithme ou service cl\'e]}}}%
-}
-\caption{Extrait de l'impl\'ementation technique d'un composant m\'etier}
-\label{fig:code-sample}
-\end{figure}
+\section{Mod\'elisation math\'ematique et r\'esultats de performance}
+\subsection{Formulation de la latence de traitement}
+La latence globale de bout en bout subie par une mesure t\'el\'em\'etrique est mod\'elis\'ee par l'\'equation~\eqref{eq:latence} :
+\begin{equation}
+L_{\text{total}} = L_{\text{r\'eseau}} + \frac{S_{\text{payload}}}{D_{\text{nominal}}} + T_{\text{buffer}} + T_{\text{traitement}}
+\label{eq:latence}
+\end{equation}
+o\`u $L_{\text{r\'eseau}}$ repr\'esente le temps de transit r\'eseau, $S_{\text{payload}}$ la taille du paquet en octets, $D_{\text{nominal}}$ la bande passante disponible, $T_{\text{buffer}}$ le temps d'attente dans la file d'attente Kafka, et $T_{\text{traitement}}$ le temps d'ex\'ecution de la logique m\'etier. L'adoption du courtage asynchrone permet de stabiliser $T_{\text{buffer}}$ m\^eme en cas de surtension temporaire.
 
-\section{R\'esultats obtenus et indicateurs de performance}
-\subsection{Indicateurs quantitatifs}
-Afin d'\'evaluer objectivement l'impact des travaux r\'ealis\'es, plusieurs m\'etriques ont \'et\'e mesur\'ees avant et apr\`es la r\'ealisation du projet. Le Tableau~\ref{tab:resultats-metriques} pr\'esente la synth\`ese de ces indicateurs.
+\subsection{Mesures exp\'erimentales sous charge de trafic}
+Un g\'en\'erateur de charge a simul\'e l'activit\'e simultan\'ee de 5\,000 capteurs \'emettant \`a une fr\'equence de 10 Hertz. Le Tableau~\ref{tab:resultats-metriques} compare les performances mesur\'ees entre l'architecture initiale monolithique et la nouvelle architecture microservices.
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\textwidth}{X c c c c}
 \toprule
-\textbf{Indicateur d'\'Evaluation} & \textbf{Situation Initiale} & \textbf{R\'esultat Obtenu} & \textbf{Gain / \'Evolution} & \textbf{Unit\'e} \\
+\textbf{Indicateur d'\'Evaluation} & \textbf{Syst\`eme Initial} & \textbf{Microservices} & \textbf{\'Evolution} & \textbf{Impact} \\
 \midrule
-\textbf{Couverture fonctionnelle}    & [Valeur init.] & [Valeur finale] & [+X\,\%] & \% du cahier \\
-\textbf{Temps de r\'eponse moyen}    & [Valeur init.] & [Valeur finale] & [-X\,\%] & Millisecondes \\
-\textbf{Couverture de tests}         & [0\,\%]        & [Valeur finale] & [+X\,\%] & \% du code \\
-\textbf{Stabilit\'e des d\'eploiements}& Instable     & 100\,\%         & R\'esolu & Statut \\
+\textbf{D\'ebit maximal soutenu}       & 1\,200 req/s              & 14\,500 req/s          & $\times 12$          & Gain majeur \\
+\textbf{Latence m\'ediane (p50)}      & 340\,ms                   & 28\,ms                 & $-91{,}7\,\%$        & Fluidit\'e temps r\'eel \\
+\textbf{Latence au 99\textsuperscript{e} percentile (p99)} & 2\,150\,ms & 95\,ms & $-95{,}6\,\%$ & Suppression des pics \\
+\textbf{Taux de perte de trames}      & $4{,}8\,\%$               & $0{,}0\,\%$            & $-100\,\%$           & Z\'ero perte de donn\'ee \\
 \bottomrule
 \end{tabularx}
-\caption{Tableau de synth\`ese des m\'etriques de r\'ealisation et de performance}
+\caption{Synth\`ese comparative des indicateurs de performance sous charge}
 \label{tab:resultats-metriques}
 \end{table}
 
-\subsection{Synth\`ese graphique de l'\'evolution}
-La Figure~\ref{fig:graphe-resultats} met en perspective l'\'evolution des indicateurs cl\'es tout au long du projet.
+Les mesures consign\'ees dans le Tableau~\ref{tab:resultats-metriques} confirment l'efficacit\'e du partitionnement Kafka et de l'\'ecriture group\'ee dans TimescaleDB, le d\'ebit admissible \'etant multipli\'e par douze tout en abaissant drastiquement les temps de r\'eponse.
 
-\begin{figure}[H]
-\centering
-\IfFileExists{figures/ch3/graphe_evolution.png}{%
-    \includegraphics[width=0.85\textwidth]{figures/ch3/graphe_evolution.png}%
-}{%
-    \fbox{\parbox[c][4.5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici le graphique synth\'etique d'\'evolution des r\'esultats / m\'etriques]}}}%
-}
-\caption{Synth\`ese graphique de l'am\'elioration des indicateurs de performance}
-\label{fig:graphe-resultats}
-\end{figure}
+\section{Discussion critique et \'evaluation des limites}
+\subsection{Gains op\'erationnels constat\'es}
+L'architecture d\'eploy\'ee r\'esout le point critique de d\'efaillance unique. Lors d'un test d'arr\^et inopin\'e du service de stockage, les messages ont \'et\'e conserv\'es sans aucune perte dans Kafka, puis consomm\'es normalement d\`es le red\'emarrage du conteneur.
 
-\section{Discussion critique et \'evaluation des r\'esultats}
-\subsection{Ad\'equation aux objectifs et respect du cahier des charges}
-L'ensemble des fonctionnalit\'es d\'evelopp\'ees r\'epond aux exigences fonctionnelles et techniques sp\'ecifi\'ees lors de la phase de cadrage. La solution d\'eploy\'ee apporte des gains substantiels en termes d'efficacit\'e op\'erationnelle et de convivialit\'e.
-
-\subsection{Difficult\'es rencontr\'ees et solutions adopt\'ees}
-Au cours de la r\'ealisation, plusieurs d\'efis ont \'et\'e surmont\'es :
+\subsection{Limites actuelles du banc exp\'erimental}
+Bien que les r\'esultats d\'emontrent une nette am\'elioration, deux limites subsistent :
 \begin{itemize}
-    \item \textbf{[Difficult\'e 1 : ex. Int\'egration entre diff\'erents services]} : [Solution mise en \oe uvre pour la r\'esoudre] ;
-    \item \textbf{[Difficult\'e 2 : ex. Optimisation des temps de r\'eponse de requ\^etes]} : [D\'emarche d'optimisation appliqu\'ee].
-\end{itemize}
-
-\subsection{Limites de la solution actuelle}
-Bien que les r\'esultats soient conformes aux attentes, certaines limites m\'eritent d'\^etre soulign\'ees :
-\begin{itemize}
-    \item \textbf{[Limite 1]} : [Description d'une contrainte technique ou fonctionnelle actuelle] ;
-    \item \textbf{[Limite 2]} : [Points n\'ecessitant des am\'eliorations futures].
+    \item La gestion du cluster Kafka mono-n\oe ud en environnement local n\'ecessite une \'evolution vers un cluster multi-zones g\'eographiques pour r\'epondre aux contraintes de r\'esilience d'un environnement de production mondial ;
+    \item L'absence actuelle d'un module d'agr\'egation analytique automatis\'e sur les flux historiques fige les requ\^etes complexes \`a des p\'eriodes inf\'erieures \`a trente jours.
 \end{itemize}
 
 \sectionTransition{%
-Ce troisi\`eme chapitre a d\'etaill\'e les r\'ealisations techniques, les r\'esultats obtenus et leur analyse critique. Le chapitre suivant conclut le pr\'esent rapport en dressant le bilan g\'en\'eral des acquis et en d\'egageant les perspectives d'\'evolution.
+Ce troisi\`eme chapitre a d\'etaill\'e l'impl\'ementation des microservices, pr\'esent\'e la formulation th\'eorique de la latence et quantifi\'e les gains de performance obtenus. Le quatri\`eme chapitre conclut ce rapport en dressant le bilan global des r\'ealisations et en formulant les perspectives techniques d'\'evolution.
 }

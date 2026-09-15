@@ -2,44 +2,39 @@
 \addcontentsline{toc}{chapter}{Conclusion et perspectives}
 
 \noindent
-Ce projet de fin d'ann\'ee effectu\'e au sein de \textbf{[Nom de l'organisme d'accueil]} a constitu\'e une exp\'erience particuli\`erement enrichissante et professionnalisante. Il a permis de mettre en application et de consolider les comp\'etences th\'eoriques et pratiques acquises durant la formation d'ing\'enieur \`a l'ENSAF, tout en se confrontant aux exigences r\'eelles d'un environnement professionnel.
+Ce projet de fin d'ann\'ee r\'ealis\'e au sein de l'entreprise \textbf{TechCorp Exemple SARL} \`a F\`es a constitu\'e une mission d'ing\'enierie logicielle particuli\`erement stimulante. Il a permis d'aborder concr\`etement la probl\'ematique critique de l'ingestion massive et du traitement en temps r\'eel de flux de t\'el\'em\'etrie IoT dans un environnement industriel soumis \`a de fortes exigences de haute disponibilit\'e.
 
 \vspace{0.4cm}
 
 \noindent
-\textbf{Bilan synth\'etique des r\'ealisations :}\\
-Les objectifs fix\'es au d\'ebut du stage ont \'et\'e atteints avec succ\`es :
+\textbf{Bilan synth\'etique des r\'ealisations techniques :}\\
+Les objectifs initiaux d\'efinis lors de la phase de cadrage ont \'et\'e int\'egralement atteints :
 \begin{itemize}
-    \item \textbf{Cadrage et analyse} : R\'ealisation d'une \'etude pr\'ealable d\'etaill\'ee de l'existant et sp\'ecification pr\'ecise du cahier des charges ;
-    \item \textbf{Conception et architecture} : Choix raisonn\'e d'une pile technologique moderne et mod\'elisation d'une architecture logicielle modulaire et \'evolutive ;
-    \item \textbf{Impl\'ementation et int\'egration} : D\'eveloppement des diff\'erents modules applicatifs dans le respect des bonnes pratiques de g\'enie logiciel ;
-    \item \textbf{Validation et qualit\'e} : Mise en place de protocoles de tests garantissant la stabilit\'e, la s\'ecurit\'e et la performance de la solution livr\'ee.
+    \item \textbf{D\'ecouplage architectural} : Remplacement r\'eussi de l'ancien monolithe par une architecture microservices r\'eactive adoss\'ee au courtier de messages Apache Kafka ;
+    \item \textbf{Fiabilisation des flux} : \'Elimination totale des pertes de paquets lors des pics d'activit\'e gr\^ace au m\'ecanisme de mise en tampon distribu\'ee ;
+    \item \textbf{Acc\'el\'eration des performances} : Multiplication par douze du d\'ebit maximal admissible et r\'eduction de plus de $90\,\%$ de la latence de traitement ;
+    \item \textbf{Conteneurisation et reproductibilit\'e} : D\'eploiement int\'egralement script\'e et automatis\'e via Docker Compose.
 \end{itemize}
 
 \vspace{0.4cm}
 
 \noindent
-\textbf{Acquis m\'ethodologiques et personnels :}\\
-Au-del\`a des livrables techniques, ce projet a permis de d\'evelopper des comp\'etences cl\'es :
-\begin{itemize}
-    \item \textbf{Rigueur d'ing\'enierie} : Gestion rigoureuse des versions de code, documentation technique structur\'ee et respect des normes de d\'eveloppement ;
-    \item \textbf{Autonomie et r\'esolution de probl\`emes} : Capacit\'e \`a diagnostiquer m\'ethodiquement des anomalies complexes et \`a formuler des solutions adapt\'ees ;
-    \item \textbf{Travail collaboratif} : Int\'egration active au sein de l'\'equipe technique et communication r\'eguli\`ere sur l'avancement des t\^aches.
-\end{itemize}
+\textbf{Limites et enseignements d'ing\'enierie :}\\
+Ce travail a mis en relief l'importance capitale du dimensionnement fin des files d'attente et des partitions dans les syst\`emes distribu\'es. Il a \'egalement soulign\'e le co\^ut op\'erationnel inh\'erent \`a la gestion d'un cluster Kafka, dont la complexit\'e de configuration requiert une surveillance rigoureuse des m\'etriques de d\'ecalage des consommateurs (\textit{consumer lag}).
 
 \vspace{0.4cm}
 
 \noindent
 \textbf{Perspectives d'\'evolution :}\\
-Pour poursuivre et valoriser les r\'esultats de ce travail, plusieurs perspectives d'am\'elioration peuvent \^etre envisag\'ees :
+Afin de valoriser et de p\'erenniser la plateforme au-del\`a de ce stage, plusieurs axes d'\'evolution sont identifi\'es :
 \begin{itemize}
-    \item \textbf{\`A court terme} : \'Etendre la couverture des tests automatis\'es et int\'egrer l'application dans un pipeline d'int\'egration et de d\'eploiement continus (CI/CD) ;
-    \item \textbf{\`A moyen terme} : D\'evelopper de nouveaux modules fonctionnels r\'epondant \`a des besoins m\'etier \'emergents ;
-    \item \textbf{\`A long terme} : Optimiser le passage \`a l'\'echelle sur une infrastructure cloud et explorer l'int\'egration de fonctionnalit\'es intelligentes bas\'ees sur l'analyse de donn\'ees.
+    \item \textbf{\`A court terme} : Mettre en place un orchestrateur Kubernetes pour automatiser la mise \`a l'\'echelle horizontale (\textit{Horizontal Pod Autoscaler}) en fonction de la charge instantan\'ee ;
+    \item \textbf{\`A moyen terme} : Int\'egrer un moteur de calcul de flux d\'edi\'e tel qu'Apache Flink pour ex\'ecuter des requ\^etes de fen\^etrage complexe directement sur les flux de mesures ;
+    \item \textbf{\`A long terme} : D\'evelopper un module de maintenance pr\'edictive entra\^inant des mod\`eles d'apprentissage automatique sur les s\'eries temporelles archiv\'ees dans TimescaleDB.
 \end{itemize}
 
 \vspace{0.4cm}
 
 \noindent
-\textbf{Bilan personnel :}\\
-Cette exp\'erience au sein de \textbf{[Nom de l'organisme]} a permis de consolider les comp\'etences techniques en g\'enie informatique et constitue une assise solide pour aborder la suite du cursus et la future carri\`ere d'ing\'enieur d'\'Etat.
+\textbf{Bilan de formation :}\\
+Cette mission au sein de TechCorp Exemple SARL a permis de consolider les acquis m\'ethodologiques et techniques de la formation d'ing\'enieur d'\'Etat \`a l'ENSAF, en alliant rigueur de mod\'elisation, exp\'erimentation concr\`ete et l'expertise sur les standards contemporains de l'ing\'enierie distribu\'ee.

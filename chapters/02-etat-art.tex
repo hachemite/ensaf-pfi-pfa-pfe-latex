@@ -2,95 +2,84 @@
 \finPageTitre
 
 \section{Introduction}
-La r\'eussite d'un projet d'ing\'enierie logicielle repose sur l'adoption d'une d\'emarche m\'ethodologique rigoureuse et le choix d'un \'ecosyst\`eme technologique adapt\'e aux exigences du cahier des charges. Ce deuxi\`eme chapitre est d\'edi\'e \`a la pr\'esentation de l'approche m\'ethodologique retenue, \`a l'\'etude comparative des diff\'erentes technologies envisageables, ainsi qu'\`a la conception architecturale globale du syst\`eme \`a d\'evelopper.
+La r\'eussite d'un projet d'ing\'enierie logicielle distribu\'ee repose sur l'adoption d'une d\'emarche m\'ethodologique rigoureuse et sur la s\'election d'un \'ecosyst\`eme technologique adapt\'e aux exigences de performance et de scalabilit\'e. Ce deuxi\`eme chapitre pr\'esente l'approche m\'ethodologique retenue, d\'eveloppe une \'etude comparative approfondie des paradigmes de communication et des courtiers de messages, et formalise l'architecture microservices du syst\`eme d'ingestion IoT.
 
 \section{Approche m\'ethodologique et organisation du projet}
-\subsection{Cycle de d\'eveloppement et gestion de projet}
-Pour mener \`a bien la r\'ealisation de ce projet, une m\'ethodologie de d\'eveloppement \textbf{[nom de la m\'ethodologie : ex. Agile / Scrum / Cycle it\'eratif]} a \'et\'e adopt\'ee. Cette d\'emarche privil\'egie :
-\begin{itemize}
-    \item L'it\'eration continue et la validation r\'eguli\`ere des fonctionnalit\'es d\'evelopp\'ees ;
-    \item La flexibilit\'e face aux ajustements \'eventuels des besoins du projet ;
-    \item Une communication fluide et r\'eguli\`ere avec les encadrants acad\'emique et professionnel.
-\end{itemize}
+\subsection{Cycle de d\'eveloppement it\'eratif et agile}
+Afin d'assurer une convergence rapide vers les objectifs op\'erationnels, une m\'ethodologie de d\'eveloppement agile inspir\'ee du cadre Scrum a \'et\'e appliqu\'ee. Cette approche s'est concr\'etis\'ee par des cycles it\'eratifs bi-hebdomadaires permettant d'int\'egrer en continu les retours des encadrants technique et acad\'emique.
 
 \subsection{Principes d'ing\'enierie logicielle appliqu\'es}
-Le d\'eveloppement de la solution respecte les principes fondamentaux de qualit\'e logicielle :
+Le d\'eveloppement s'est conform\'e aux principes de conception logicielle reconnus :
 \begin{itemize}
-    \item \textbf{S\'eparation des pr\'eoccupations (Separation of Concerns)} : D\'ecouplage net entre la pr\'esentation, la logique m\'etier et l'acc\`es aux donn\'ees ;
-    \item \textbf{Modularit\'e et r\'eutilisabilit\'e} : Conception de composants ind\'ependants, facilement testables et maintenables ;
-    \item \textbf{Gestion rigoureuse des versions} : Utilisation de Git avec une convention de branches claire (\texttt{main}, \texttt{develop}, \texttt{feature/*}).
+    \item \textbf{S\'eparation des pr\'eoccupations} : D\'ecouplage strict entre la r\'eception des trames, la validation m\'etier et la persistance ;
+    \item \textbf{Autonomie des microservices} : Chaque service dispose de sa propre base de donn\'ees ou de son espace logique d\'edi\'e selon le patron \textit{Database-per-Service}~\cite{richardson2018microservices} ;
+    \item \textbf{R\'esilience et tol\'erance aux pannes} : Mise en place de circuits d'interruption et de m\'ecanismes de relance automatique.
 \end{itemize}
 
-\section{\'Etude comparative et s\'election des technologies}
-\subsection{Technologies Front-End (Interface Utilisateur)}
-Pour la r\'ealisation de la couche interface, une comparaison entre diff\'erents frameworks a \'et\'e men\'ee :
+\section{\'Etude comparative des technologies de communication et de courtage}
+\subsection{\'Evaluation des protocoles de transport IoT}
+La transmission des donn\'ees depuis les passerelles p\'eriph\'eriques vers la plateforme centrale a n\'ecessit\'e la comparaison entre deux protocoles majeurs :
 \begin{itemize}
-    \item \textbf{[Framework 1 : ex. Angular / React / Vue.js]} : [Avantages, inconv\'enients et sp\'ecificit\'es] ;
-    \item \textbf{[Framework 2 : ex. Solution alternative]} : [Comparaison et limites].
+    \item \textbf{HTTP/REST} : Protocole synchrone, reposant sur TCP. Tr\`es r\'epandu et ais\'e \`a d\'eboguer, il induit n\'eanmoins une surcharge d'en-t\^etes cons\'equente et une d\'ependance directe \`a la disponibilit\'e imm\'ediate du r\'ecepteur ;
+    \item \textbf{MQTT} : Protocole l\'eger de publication/abonnement con\c{c}u sp\'ecifiquement pour les environnements \`a bande passante contrainte. Sa faible empreinte r\'eseau et ses niveaux de qualit\'e de service (QoS) en font un candidat optimal pour la t\'el\'em\'etrie capteurs.
 \end{itemize}
-\textbf{Choix retenu :} \textbf{[Nom de la technologie front-end retenue]}, en raison de \textbf{[justification : ex. son architecture composant, sa robustesse, sa performance]}.
 
-\subsection{Technologies Back-End (Logique M\'etier et API)}
-Pour le d\'eveloppement de la logique serveur et de l'API REST :
-\begin{itemize}
-    \item \textbf{[Technologie 1 : ex. Spring Boot / Node.js / Django]} : [Forces, \'ecosyst\`eme et facilit\'e de prise en main] ;
-    \item \textbf{[Technologie 2 : ex. Solution alternative]} : [Comparaison technique].
-\end{itemize}
-\textbf{Choix retenu :} \textbf{[Nom de la technologie back-end retenue]}, justifi\'ee par \textbf{[justification : ex. son \'ecosyst\`eme riche, sa s\'ecurit\'e int\'egr\'ee et sa stabilit\'e]}.
-
-\subsection{Gestion de la persistance des donn\'ees}
-Le stockage des donn\'ees n\'ecessite un choix adapt\'e \`a la nature des informations manipul\'ees :
-\begin{itemize}
-    \item \textbf{Bases de donn\'ees relationnelles (SQL : ex. PostgreSQL / MySQL)} : Gestion rigoureuse des transactions ACID et int\'egrit\'e r\'ef\'erentielle ;
-    \item \textbf{Bases de donn\'ees NoSQL (ex. MongoDB / Redis)} : Flexibilit\'e de sch\'ema et gestion de volumes ou de caches rapides.
-\end{itemize}
-\textbf{Choix retenu :} \textbf{[Nom du SGBD retenu]}, r\'epondant aux besoins de \textbf{[justification du choix]}.
-
-\subsection{Synth\`ese des choix technologiques}
-Le Tableau~\ref{tab:synthese-technologies} synth\'etise les technologies s\'electionn\'ees pour l'ensemble du projet.
+\subsection{S\'election du courtier de messages distribu\'e}
+Pour absorber les pics de trafic sans impacter les services aval, une couche de courtage asynchrone est indispensable. Le Tableau~\ref{tab:synthese-technologies} synth\'etise la comparaison \'etablie entre les trois solutions \'etudi\'ees.
 
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{p{3.5cm} X X p{3cm}}
+\begin{tabularx}{\textwidth}{p{3.2cm} X X p{3.2cm}}
 \toprule
-\textbf{Composant} & \textbf{Technologie Retenue} & \textbf{Avantages Principaux} & \textbf{Crit\`ere D\'ecisif} \\
+\textbf{Courtier} & \textbf{Avantages Principaux} & \textbf{Limites Notables} & \textbf{Choix Retenu} \\
 \midrule
-\textbf{Front-End}       & [Technologie Front] & [Modularit\'e, r\'eactivit\'e, composants] & Ergonomie UI \\
-\textbf{Back-End}        & [Technologie Back]  & [Performance, s\'ecurit\'e, API RESTful]   & Fiabilit\'e m\'etier \\
-\textbf{Base de Donn\'ees}& [SGBD Retenu]       & [Int\'egrit\'e, performance, flexibilit\'e] & Coh\'erence donn\'ees \\
-\textbf{Environnement}   & [Outils : ex. Docker, Git] & [Portabilit\'e, gestion de versions] & Reproductibilit\'e \\
+\textbf{RabbitMQ} & Routage flexible, support AMQP \'etendu & Moins performant sur les flux tr\`es massifs & Non retenu \\
+\textbf{Redis Streams} & Vitesse en m\'emoire, latence tr\`es basse & Persistance secondaire sur disque & Utilis\'e en cache \\
+\textbf{Apache Kafka} & D\'ebit exceptionnel, tol\'erance aux pannes, r\'etention persistante & Gestion plus complexe de cluster & \textbf{Retenu pour le c\oe ur d'ingestion} \\
 \bottomrule
 \end{tabularx}
-\caption{Synth\`ese comparative des choix technologiques}
+\caption{Comparaison technique des solutions de courtage de messages}
 \label{tab:synthese-technologies}
 \end{table}
 
-\section{Architecture globale et mod\'elisation conceptuelle}
-\subsection{Patron d'architecture logicielle}
-L'architecture adopt\'ee s'articule autour d'un mod\`ele en couches (\textbf{[ex. N-Tiers / Microservices / MVC]}), permettant d'isoler clairement les responsabilit\'es. La Figure~\ref{fig:architecture-globale} illustre l'organisation des modules et les flux de communication.
+L'analyse comparative consign\'ee dans le Tableau~\ref{tab:synthese-technologies} montre qu'Apache Kafka offre les garanties d'immuabilit\'e et de partitionnement indispensables au traitement parall\`ele de millions de mesures journali\`eres~\cite{newman2015building}.
+
+\subsection{Moteur de persistance pour s\'eries temporelles}
+Les flux IoT g\'en\`erent des s\'eries chronologiques n\'ecessitant des fonctions analytiques avanc\'ees (agr\'egations temporelles, fen\^etres glissantes). Le choix s'est port\'e sur \textbf{TimescaleDB}, extension sp\'ecialis\'ee pour PostgreSQL, alliant l'expressivit\'e du mod\`ele relationnel et l'indexation optimis\'ee des s\'eries temporelles via des \textit{hypertables}.
+
+\section{Architecture globale et mod\'elisation microservices}
+\subsection{Patron d'architecture r\'eactive orient\'ee \'ev\'enements}
+L'architecture globale du syst\`eme repose sur une topologie orient\'ee \'ev\'enements (\textit{Event-Driven Architecture}). La Figure~\ref{fig:architecture-globale} sch\'ematise l'agencement des microservices et la circulation des messages.
 
 \begin{figure}[H]
 \centering
 \IfFileExists{figures/ch2/architecture_globale.png}{%
     \includegraphics[width=0.85\textwidth]{figures/ch2/architecture_globale.png}%
 }{%
-    \fbox{\parbox[c][5.5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici le sch\'ema d'architecture globale / mod\`ele en couches du syst\`eme]}}}%
+    \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering \textit{[Sch\'ema de l'architecture microservices : Ingestion MQTT/HTTP $\rightarrow$ Kafka $\rightarrow$ Processeurs de calcul $\rightarrow$ TimescaleDB]}}}%
 }
-\caption{Architecture globale du syst\`eme propos\'e}
+\caption{Architecture microservices distribu\'ee pour l'ingestion IoT}
 \label{fig:architecture-globale}
 \end{figure}
 
-\subsection{Mod\'elisation des donn\'ees et diagrammes de conception}
-La conception du mod\`ele de donn\'ees repose sur la mod\'elisation UML (diagramme de classes ou mod\`ele relationnel) d\'etaillant les entit\'es cl\'es, leurs attributs et leurs associations.
+Comme l'illustre la Figure~\ref{fig:architecture-globale}, la passerelle frontale re\c{c}oit les paquets et les \'emet imm\'ediatement dans une file d'attente tamponn\'ee, garantissant une r\'eponse quasi-instantan\'ee au client tout en d\'ecouplant compl\`etement les modules d'enrichissement et d'indexation.
 
-\section{D\'emarche d'assurance qualit\'e et validation}
-Pour garantir la qualit\'e des livrables et la robustesse du code :
+\subsection{D\'ecomposition des responsabilit\'es m\'etier}
+Le d\'ecoupage fonctionnel aboutit \`a trois microservices autonomes :
 \begin{itemize}
-    \item \textbf{Strat\'egie de tests} : Tests unitaires pour valider les fonctions m\'etier critiques, tests d'int\'egration pour v\'erifier les points de terminaison d'API ;
-    \item \textbf{Conventions de codage} : Respect des r\`egles de nommage, linters et revue syst\'ematique du code ;
-    \item \textbf{S\'ecurit\'e} : Validation rigoureuse des entr\'ees, gestion des habilitations et s\'ecurisation des communications.
+    \item \textbf{Gateway-Service} : Service frontal charg\'e de l'authentification des capteurs et de la conversion des trames brutes en \'ev\'enements normalis\'es ;
+    \item \textbf{Ingestion-Processor} : Composant d'enrichissement m\'etier calculant les moyennes mobiles et d\'etectant les anomalies de d\'epassement de seuil ;
+    \item \textbf{Storage-Sink} : Service assurant l'\'ecriture par lots (\textit{batching}) dans TimescaleDB pour r\'eduire la contention I/O.
+\end{itemize}
+
+\section{D\'emarche d'assurance qualit\'e logicielle}
+L'ensemble des modules a \'et\'e soumis \`a une d\'emarche qualit\'e continue :
+\begin{itemize}
+    \item Tests unitaires automatis\'es couvrant la logique de d\'ecodage des trames ;
+    \item Conteneurisation int\'egrale via des images Docker optimis\'ees \`a \'etapes multiples (\textit{multi-stage builds}) ;
+    \item Respect des r\`egles de nommage et absence totale de code redondant selon le principe DRY (\textit{Don't Repeat Yourself}).
 \end{itemize}
 
 \sectionTransition{%
-Ce deuxi\`eme chapitre a d\'etaill\'e la m\'ethodologie, les choix technologiques et les choix d'architecture logicielle. Le troisi\`eme chapitre pr\'esente la mise en \oe uvre pratique, les r\'ealisations techniques d\'evelopp\'ees ainsi que l'analyse des r\'esultats obtenus.
+Ce deuxi\`eme chapitre a justifi\'e les choix technologiques et pr\'esent\'e la mod\'elisation de l'architecture microservices. Le troisi\`eme chapitre expose l'impl\'ementation pratique des composants, l'environnement de d\'eploiement ainsi que l'\'evaluation exp\'erimentale des performances sous charge.
 }

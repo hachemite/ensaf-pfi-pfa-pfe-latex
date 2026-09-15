@@ -2,128 +2,105 @@
 \finPageTitre
 
 \section{Introduction}
-Ce premier chapitre est consacr\'e \`a la pr\'esentation du cadre g\'en\'eral du projet de fin d'ann\'ee. Nous introduisons tout d'abord l'organisme d'accueil, ses activit\'es et ses p\^oles d'expertise. Nous menons ensuite une analyse m\'ethodique de l'existant afin de cerner le contexte technique et op\'erationnel. Enfin, nous d\'elimitons le p\'erim\`etre pr\'ecis de la mission confi\'ee, ses objectifs, ses contraintes ainsi que la planification pr\'evisionnelle illustr\'ee par le diagramme de Gantt.
+Ce premier chapitre est consacr\'e \`a la pr\'esentation du cadre g\'en\'eral du projet de fin d'ann\'ee. Il expose tout d'abord l'organisme d'accueil, ses activit\'es et ses p\^oles d'expertise. Une analyse m\'ethodique de l'infrastructure existante permet ensuite d'identifier les contraintes techniques et op\'erationnelles. Enfin, le p\'erim\`etre de la mission confi\'ee est d\'elimit\'e, pr\'ecisant les objectifs assign\'es, les exigences architecturales ainsi que la planification pr\'evisionnelle mat\'erialis\'ee par un diagramme de Gantt.
 
 \section{Pr\'esentation de l'organisme d'accueil}
 \subsection{Pr\'esentation g\'en\'erale et secteur d'activit\'e}
-L'organisme d'accueil, \textbf{[Nom de l'organisme / Entreprise]}, est une structure sp\'ecialis\'ee dans le domaine de \textbf{[secteur d'activit\'e : ex. le d\'eveloppement logiciel, l'int\'egration de syst\`emes, la transformation digitale]}.
-
-Fond\'ee en \textbf{[Ann\'ee]}, l'organisation propose des solutions innovantes adapt\'ees aux besoins de ses clients et partenaires. Ses activit\'es couvrent le conseil en technologies, la conception d'architectures logicielles et le d\'eploiement de solutions m\'etier.
+L'organisme d'accueil, \textbf{TechCorp Exemple SARL}, est une entreprise d'ing\'enierie logicielle et de conseil en technologies de l'information implant\'ee \`a F\`es. Fond\'ee en 2018, la soci\'et\'e intervient aupr\`es d'acteurs industriels pour concevoir des architectures cloud r\'esilientes, des syst\`emes d'ingestion massive de flux IoT et des solutions de d\'ecisionnelles en temps r\'eel.
 
 \subsection{Positionnement et \'ecosyst\`eme}
-L'organisme collabore avec divers partenaires institutionnels et industriels \textbf{[citer des r\'ef\'erences : ex. entreprises partenaires, organismes publics, clients cl\'es]}. Situ\'e \`a \textbf{[Ville / R\'egion]}, il dispose d'un positionnement strat\'egique lui permettant d'intervenir sur des projets \`a forte valeur ajout\'ee.
+TechCorp Exemple SARL collabore \'etroitement avec des p\^oles universitaires et des centres d'innovation, notamment le \textit{Laboratoire d'Innovation Num\'erique} de F\`es. Ce positionnement favorise un transfert technologique permanent entre les avanc\'ees acad\'emiques en informatique distribu\'ee et les exigences d'exploitabilit\'e industrielle.
 
 \subsection{Domaines d'expertise}
-Les principales comp\'etences et activit\'es de l'organisme s'articulent autour de plusieurs axes compl\'ementaires pr\'esent\'es dans le Tableau~\ref{tab:expertises}.
+Les comp\'etences cl\'es de l'entreprise s'articulent autour de trois axes compl\'ementaires d\'etaill\'es dans le Tableau~\ref{tab:expertises}.
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\textwidth}{X X X}
 \toprule
-\textbf{Ing\'enierie Logicielle} & \textbf{Conseil \& Expertise} & \textbf{Innovation \& R\&D} \\
+\textbf{Ing\'enierie Distribu\'ee} & \textbf{Cloud \& DevOps} & \textbf{Internet des Objets} \\
 \midrule
-\textbullet~Conception d'architectures \par
-\textbullet~D\'eveloppement Web \& Mobile \par
-\textbullet~Int\'egration de syst\`emes & 
-\textbullet~Audit et s\'ecurit\'e \par
-\textbullet~Gestion de projets IT \par
-\textbullet~Accompagnement digital & 
-\textbullet~Veille technologique \par
-\textbullet~D\'eveloppement de PoC \par
-\textbullet~Intelligence Artificielle \\
+\textbullet~Architectures microservices \par
+\textbullet~Traitement asynchrone \par
+\textbullet~Tol\'erance aux pannes & 
+\textbullet~Conteneurisation Docker \par
+\textbullet~Pipelines CI/CD continus \par
+\textbullet~Supervision m\'etrique & 
+\textbullet~Ingestion de t\'el\'em\'etrie \par
+\textbullet~Protocoles MQTT \& HTTP \par
+\textbullet~S\'ecurit\'e des flux \\
 \bottomrule
 \end{tabularx}
-\caption{Domaines d'expertise de l'organisme d'accueil}
+\caption{Domaines d'expertise de TechCorp Exemple SARL}
 \label{tab:expertises}
 \end{table}
 
 \subsection{Solutions et produits principaux}
-Dans le cadre de ses prestations, l'organisme con\c{c}oit et maintient diff\'erentes solutions logicielles :
+Dans le cadre de ses activit\'es, l'entreprise d\'eveloppe des plateformes sp\'ecialis\'ees :
 \begin{itemize}
-    \item \textbf{[Solution / Plateforme 1]} : [Br\`eve description de la solution principale ou du produit associ\'e au projet] ;
-    \item \textbf{[Solution / Plateforme 2]} : [Br\`eve description d'autres produits d\'evelopp\'es au sein de l'entreprise].
+    \item \textbf{StreamCore} : Un moteur d'ingestion distribu\'e con\c{c}u pour capter les \'ev\'enements industriels \`a haute cadence ;
+    \item \textbf{EdgeTelemetry} : Une suite logicielle embarqu\'ee facilitant l'agr\'egation et le chiffrement des mesures de capteurs.
 \end{itemize}
 
 \section{Analyse de l'existant}
 \subsection{Contexte et p\'erim\`etre du syst\`eme existant}
-L'intervention r\'ealis\'ee porte sur \textbf{[Nom du syst\`eme / de l'application existante]}. Ce syst\`eme a pour finalit\'e de \textbf{[d\'ecrire la mission op\'erationnelle du syst\`eme existant]}.
+L'intervention r\'ealis\'ee porte sur la plateforme centrale d'agr\'egation de t\'el\'em\'etrie. Ce syst\`eme a pour r\^ole de recevoir les relev\'es p\'eriodiques de temp\'erature, de pression et de vibration \'emis par des automates connect\'es, puis de persister ces donn\'ees pour les tableaux de bord op\'erationnels.
 
 \subsection{Architecture technique initiale}
-Le Tableau~\ref{tab:stack-existant} r\'esume la composition de la pile technologique initiale du syst\`eme.
+Le Tableau~\ref{tab:stack-existant} synth\'etise la pile technologique initialement d\'eploy\'ee au sein de l'infrastructure.
 
 \begin{table}[H]
 \centering
-\begin{tabularx}{\textwidth}{p{3.8cm} X p{3.8cm}}
+\begin{tabularx}{\textwidth}{p{3.8cm} X p{4.2cm}}
 \toprule
 \textbf{Composant / Couche} & \textbf{Technologies Utilis\'ees} & \textbf{R\^ole Op\'erationnel} \\
 \midrule
-\textbf{Couche Pr\'esentation} & [Technologies Front : ex. HTML/CSS, Framework UI] & Interface utilisateur et interactions \\
-\textbf{Couche M\'etier}       & [Technologies Back : ex. Langage, Framework API]  & Logique m\'etier et traitement des flux \\
-\textbf{Couche Persistance}    & [Syst\`eme de BDD : ex. SQL / NoSQL]               & Stockage et gestion des donn\'ees \\
-\textbf{Infrastructure}        & [Outils : ex. Serveur web, Conteneurs, Outils CI]   & H\'ebergement et ex\'ecution \\
+\textbf{Ingestion HTTP}       & API monolithique Python & R\'eception synchrone des paquets \\
+\textbf{Traitement M\'etier}  & Processus unique centralis\'e & Validation et filtrage des valeurs \\
+\textbf{Persistance}          & Base relationnelle SQL  & Stockage brut des s\'eries temporelles \\
+\textbf{D\'eploiement}        & Serveur d\'edi\'e sans conteneur & H\'ebergement de l'application \\
 \bottomrule
 \end{tabularx}
 \caption{Architecture technique du syst\`eme existant}
 \label{tab:stack-existant}
 \end{table}
 
-\subsection{Acteurs et flux fonctionnels}
-Le fonctionnement de la plateforme implique diff\'erents r\^oles d'utilisateurs :
-\begin{itemize}
-    \item \textbf{[Acteur 1 : ex. Administrateur]} : [R\^ole, responsabilit\'es et droits d'acc\`es] ;
-    \item \textbf{[Acteur 2 : ex. Gestionnaire / Utilisateur m\'etier]} : [Op\'erations principales et t\^aches quotidiennes] ;
-    \item \textbf{[Acteur 3 : ex. Client / Utilisateur final]} : [Consultation des informations et interactions avec le syst\`eme].
-\end{itemize}
+\subsection{Limites identifi\'ees et flux fonctionnels}
+Le fonctionnement de la plateforme implique des administrateurs syst\`eme et des ing\'enieurs de maintenance. L'analyse des journaux d'exploitation met en \'evidence un goulot d'\'etranglement structurel : lors d'\'ev\'enements m\'et\'eorologiques ou de pointes de trafic, le d\'ebit d'\'emission d\'epasse la capacit\'e de r\'eception synchrone, entra\^inant des pertes de trames et des indisponibilit\'es r\'ep\'et\'ees.
 
 \begin{figure}[H]
 \centering
 \IfFileExists{figures/ch1/diagramme_fonctionnel.png}{%
     \includegraphics[width=0.85\textwidth]{figures/ch1/diagramme_fonctionnel.png}%
 }{%
-    \fbox{\parbox[c][5cm][c]{0.85\textwidth}{\centering \textit{[Ins\'erer ici le diagramme de cas d'utilisation ou d'architecture fonctionnelle de l'existant]}}}%
+    \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering \textit{[Architecture fonctionnelle des flux d'ingestion existants]}}}%
 }
-\caption{Diagramme fonctionnel des flux du syst\`eme}
+\caption{Sch\'ema des flux de t\'el\'em\'etrie dans l'infrastructure initiale}
 \label{fig:diag-fonctionnel}
 \end{figure}
 
-\section{Probl\'ematique et identification des besoins}
-L'analyse de l'existant et les \'echanges avec l'\'equipe encadrante ont permis de d\'egager plusieurs limitations :
+L'examen de la Figure~\ref{fig:diag-fonctionnel} confirme le couplage direct entre la r\'eception des requ\^etes et l'\'ecriture en base, emp\^echant tout passage \`a l'\'echelle ind\'ependant.
+
+\section{Probl\'ematique et sp\'ecification des besoins}
+Les observations op\'erationnelles conduisent \`a formuler trois besoins prioritaires :
 \begin{enumerate}
-    \item \textbf{Limitations fonctionnelles} : [D\'ecrire les manques fonctionnels ou processus manuels \`a automatiser] ;
-    \item \textbf{Contraintes techniques} : [D\'ecrire les contraintes d'architecture, de scalabilit\'e ou de performance] ;
-    \item \textbf{Besoins d'am\'elioration} : [D\'ecrire les attentes prioritaires des utilisateurs et de l'organisme].
+    \item \textbf{D\'ecouplage temporel et spatial} : Remplacer l'ingestion synchrone par un m\'ecanisme de courtage de messages tamponn\'e ;
+    \item \textbf{Modularit\'e et passage \`a l'\'echelle} : D\'ecomposer le monolithe en services autonomes pouvant \^etre dupliqu\'es horizontalement ;
+    \item \textbf{Observabilit\'e en temps r\'eel} : Mettre en place des m\'etriques pr\'ecises pour suivre la latence et le taux d'erreur.
 \end{enumerate}
 
 \section{Expos\'e de la mission confi\'ee}
-\subsection{Objectifs g\'en\'eraux}
-Pour r\'epondre aux besoins identifi\'es, la mission confi\'ee dans le cadre de ce stage consiste \`a \textbf{[d\'efinir l'objectif majeur du projet : ex. concevoir et d\'evelopper un module m\'etier complet, refondre l'architecture applicative ou cr\'eer une nouvelle plateforme]}.
+\subsection{Objectifs et livrables}
+La mission confi\'ee dans le cadre de ce stage consiste \`a concevoir et r\'ealiser une architecture microservices d\'edi\'ee \`a l'ingestion et au traitement r\'esilient des flux IoT. Les livrables attendus comprennent le d\'ecoupage microservices, les scripts de d\'eploiement conteneuris\'es et un banc d'essai exp\'erimental de charge.
 
 \subsection{P\'erim\`etre du projet}
-\begin{itemize}
-    \item \textbf{T\^aches et fonctionnalit\'es incluses} :
-    \begin{itemize}
-        \item [T\^ache 1 : ex. Analyse d\'etaill\'ee des besoins et r\'edaction des sp\'ecifications] ;
-        \item [T\^ache 2 : ex. Conception de l'architecture logicielle et de la base de donn\'ees] ;
-        \item [T\^ache 3 : ex. D\'eveloppement et int\'egration des composants Front-End et Back-End] ;
-        \item [T\^ache 4 : ex. Mise en \oe uvre des tests de validation et d\'eploiement].
-    \end{itemize}
-    \item \textbf{Fonctionnalit\'es hors p\'erim\`etre} :
-    \begin{itemize}
-        \item [Exclusion 1 : Fonctionnalit\'es secondaires report\'ees aux versions futures] ;
-        \item [Exclusion 2 : Int\'egrations mat\'erielles ou d\'eploiements externes hors port\'ee].
-    \end{itemize}
-\end{itemize}
+Le p\'erim\`etre technique englobe le d\'eveloppement des passerelles d'ingestion, le bus de communication asynchrone, le service de traitement m\'etier et les tests automatis\'es. L'impl\'ementation physique de capteurs mat\'eriels est consid\'er\'ee hors p\'erim\`etre, ces derniers \'etant simul\'es par des g\'en\'erateurs logiciels conformes aux sp\'ecifications industrielles.
 
-\subsection{Contraintes et crit\`eres d'\'evaluation}
-Le projet est soumis aux contraintes suivantes :
-\begin{itemize}
-    \item \textbf{D\'elai d'ex\'ecution} : Respect de la dur\'ee impartie pour le stage ([nombre] semaines) ;
-    \item \textbf{Qualit\'e et s\'ecurit\'e} : Respect des standards de codage, de s\'ecurit\'e des donn\'ees et de modularit\'e ;
-    \item \textbf{Maintenabilit\'e} : Production d'un code document\'e, testable et ais\'ement r\'eutilisable.
-\end{itemize}
+\subsection{Contraintes de r\'ealisation}
+Le projet s'est d\'eroul\'e sur une p\'eriode stricte de 8 semaines, imposant une s\'election technologique rigoureuse, une couverture de tests syst\'ematique et le respect des normes d'architecture logicielle de l'ENSAF.
 
 \section{Planification temporelle et diagramme de Gantt}
-Afin de structurer le d\'eroulement du projet et d'assurer le respect des d\'elais, un planning pr\'evisionnel a \'et\'e \'etabli. La Figure~\ref{fig:gantt} pr\'esente la r\'epartition temporelle des principales phases du projet.
+Afin de coordonner l'ensemble des t\^aches et de garantir la livraison des composants dans les d\'elais requis, une planification pr\'evisionnelle a \'et\'e \'etablie. La Figure~\ref{fig:gantt} d\'etaille la r\'epartition des huit semaines de stage.
 
 \begin{figure}[H]
 \centering
@@ -133,26 +110,28 @@ Afin de structurer le d\'eroulement du projet et d'assurer le respect des d\'ela
     \begin{ganttchart}[
         hgrid,
         vgrid,
-        x unit=0.88cm,
+        x unit=0.95cm,
         y unit chart=0.6cm,
         title height=1,
         bar/.append style={fill=grisfonce},
         bar height=0.6
-    ]{1}{10}
-    \gantttitle{Semaines}{10}\\
-    \gantttitlelist{1,...,10}{1}\\
+    ]{1}{8}
+    \gantttitle{Semaines}{8}\\
+    \gantttitlelist{1,...,8}{1}\\
     \ganttbar{Analyse de l'existant \& Sp\'ecifications}{1}{2}\\
-    \ganttbar{\'Etat de l'art \& Choix techniques}{2}{4}\\
-    \ganttbar{Conception de l'architecture}{4}{6}\\
-    \ganttbar{D\'eveloppement \& Int\'egration}{5}{8}\\
-    \ganttbar{Tests, Validation \& D\'eploiement}{8}{9}\\
-    \ganttbar{R\'edaction du rapport \& Cl\^oture}{9}{10}
+    \ganttbar{\'Etat de l'art \& Choix techniques}{2}{3}\\
+    \ganttbar{Conception de l'architecture microservices}{3}{4}\\
+    \ganttbar{D\'eveloppement des pipelines d'ingestion}{4}{6}\\
+    \ganttbar{Tests de charge \& \'Evaluation}{6}{7}\\
+    \ganttbar{R\'edaction du rapport \& Cl\^oture}{7}{8}
     \end{ganttchart}%
 }
-\caption{Diagramme de Gantt pr\'evisionnel du d\'eroulement du projet}
+\caption{Diagramme de Gantt pr\'evisionnel du d\'eroulement du stage}
 \label{fig:gantt}
 \end{figure}
 
+L'ordonnancement visible sur la Figure~\ref{fig:gantt} t\'emoigne d'une approche progressive, o\`u chaque phase fournit les bases formelles n\'ecessaires \`a la suivante.
+
 \sectionTransition{%
-Ce premier chapitre a pr\'esent\'e l'organisme d'accueil, analys\'e l'existant et d\'efini les objectifs et la planification du projet. Le deuxi\`eme chapitre est consacr\'e \`a l'\'etude de l'\'etat de l'art, \`a la d\'emarche m\'ethodologique et \`a la justification des choix technologiques et architecturaux.
+Ce premier chapitre a pr\'esent\'e le contexte d'accueil au sein de TechCorp Exemple SARL, l'analyse des faiblesses du syst\`eme existant ainsi que le cadrage de la mission et sa planification. Le deuxi\`eme chapitre d\'eveloppe l'\'etat de l'art technologique, la d\'emarche m\'ethodologique adopt\'ee et l'\'etude comparative justifiant les choix d'architecture microservices.
 }
