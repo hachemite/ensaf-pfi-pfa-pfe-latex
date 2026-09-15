@@ -8,12 +8,16 @@ Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage,
 
 ### 0. Personnaliser vos informations (Formulaire & IA)
 Renseignez vos informations dans **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
-- Type de stage : `PFA` (Stage d'Application), `PFE` (Projet de Fin d'Études), `INITIATION` (Stage d'Initiation), ou `NONE` (sans couverture).
-- Auteur(s) (solo, binôme ou trinôme), département et filière.
-- Organisme d'accueil, sujet, dates de stage.
-- Encadrement pédagogique ENSAF, encadrement professionnel, et jury de soutenance.
+- **`modele_couverture`** :
+  - `"PFA"` : Stage d'Application (2ème année cycle ingénieur / 4A)
+  - `"PFE"` : Projet de Fin d'Études (3ème année cycle ingénieur / 5A)
+  - `"INITIATION"` : Stage d'Initiation (1ère année cycle ingénieur / 3A)
+  - `"NONE"` : SANS couverture (le rapport démarre directement avec les dédicaces)
+- **Auteurs :** supporte 1 étudiant (solo), binôme ou trinôme.
+- **Entreprise & Sujet :** Nom, ville, sujet de stage, période.
+- **Encadrants & Jury :** Noms et qualités des encadrants et membres du jury.
 
-Puis appliquez la configuration :
+Puis appliquez la configuration automatique :
 ```bash
 python configure.py
 ```

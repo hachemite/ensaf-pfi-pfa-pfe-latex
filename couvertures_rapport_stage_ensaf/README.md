@@ -60,7 +60,11 @@ Vous pouvez sélectionner directement le modèle de couverture souhaité dans [`
 
 ```yaml
 academique:
-  # Valeurs possibles : "PFA" (défaut), "PFE", ou "INITIATION"
+  # Valeurs possibles :
+  #   - "PFA"        : Stage d'Application (2A / 4ème année)
+  #   - "PFE"        : Projet de Fin d'Études (3A / 5ème année)
+  #   - "INITIATION" : Stage d'Initiation (1A / 3ème année)
+  #   - "NONE"       : SANS couverture (démarre directement aux dédicaces)
   modele_couverture: "PFA"
 ```
 
@@ -68,4 +72,4 @@ Puis exécutez simplement :
 ```bash
 python configure.py
 ```
-Le script copiera et adaptera automatiquement le modèle correspondant dans `front/titlepage.tex`.
+Le script remplit directement le document Word officiel avec vos métadonnées en pur UTF-8, le compacte automatiquement pour garantir **strictement 1 seule page**, génère `front/couverture.pdf`, et l'intègre dans votre rapport LaTeX via `front/titlepage.tex`.

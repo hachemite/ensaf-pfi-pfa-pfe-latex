@@ -51,8 +51,20 @@ cmrpi/
 
 ### Étape 1 : Renseigner vos métadonnées (`project_info.yaml`)
 La méthode recommandée consiste à modifier le fichier central **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
-- **`modele_couverture`** : Choisissez `"PFA"` (Stage d'Application 2A), `"PFE"` (3A), `"INITIATION"` (1A), ou `"NONE"` (sans couverture).
-- Vos informations : titre, auteurs (solo, binôme, trinôme), organisme d'accueil, dates de stage, encadrants et membres du jury.
+
+| Option `modele_couverture` | Usage / Niveau ENSAF | Fichier source Word officiel |
+| :--- | :--- | :--- |
+| **`"PFA"`** *(défaut)* | Stage d'Application (2ème année / 4A) | `couvertures_rapport_stage_ensaf/Stage_Application_2A_PFA_csa.docx` |
+| **`"PFE"`** | Projet de Fin d'Études (3ème année / 5A) | `couvertures_rapport_stage_ensaf/Projet_Fin_Etudes_3A_PFE_cpfe.docx` |
+| **`"INITIATION"`** | Stage d'Initiation (1ère année / 3A) | `couvertures_rapport_stage_ensaf/Stage_Initiation_1A_csi.docx` |
+| **`"NONE"`** | **Sans couverture** (démarre direct aux dédicaces) | *(Aucune page de garde insérée)* |
+
+Renseignez également :
+- **Auteurs :** 1 étudiant (solo), binôme ou trinôme (il suffit de décommenter les blocs dans `project_info.yaml`).
+- **Entreprise & Sujet :** Nom de l'organisme, ville, titre et période de stage.
+- **Encadrement :** Encadrant pédagogique ENSAF et encadrant professionnel en société.
+- **Jury :** Noms et qualités des membres du jury.
+- **Résumé en arabe :** Section `resume_arabe` (titre `ملخص`, texte et mots-clés).
 
 Puis appliquez la configuration automatique :
 ```bash
@@ -60,31 +72,31 @@ python configure.py
 ```
 Ce script :
 1. Remplit automatiquement le document Word officiel correspondant dans [`couvertures_rapport_stage_ensaf/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/couvertures_rapport_stage_ensaf/).
-2. Compacte le texte pour garantir **strictement 1 seule page** (`front/couverture.pdf`).
-3. Génère le résumé arabe haute fidélité (`front/resume_ar.pdf`) avec le moteur natif sans bordure superflue.
-4. Rédige les remerciements protocolaires dans `front/remerciements.tex`.
-
-> **Note :** Si vous souhaitez afficher la page de garde dans le PDF généré, décommentez la ligne `\input{front/titlepage}` au début de `main.tex`.
+2. Compacte le texte pour garantir **strictement 1 seule page** (`front/couverture.pdf`) avec un encodage UTF-8 parfait.
+3. Génère le résumé arabe haute fidélité (`front/resume_ar.pdf`) avec polices natives Windows sans bordure artificielle.
+4. Rédige les remerciements protocolaires personnalisés dans `front/remerciements.tex`.
 
 ---
 
-### Étape 2 : Remplir les pages d'en-tête (`front/`)
+### Étape 2 : Personnaliser les pages d'en-tête (`front/`)
 
 1. **Dédicaces (`front/dedicace.tex`) :**
    - Le texte est **automatiquement centré** et en italique Times.
    - Remplacez simplement `[Votre Prénom]` à la fin.
 
 2. **Remerciements (`front/remerciements.tex`) :**
-   - Complétez les noms de l'entreprise, de vos tuteurs et des membres de votre équipe.
+   - Générés automatiquement par `configure.py` avec le protocole officiel ENSAF.
+   - Si vous souhaitez ajouter un mot personnel, utilisez le champ `remerciements.mot_personnel` dans `project_info.yaml`.
 
 3. **Résumés (`front/resume-fr.tex`, `resume-en.tex`, `resume-ar.tex`) :**
-   - Remplissez les 3 résumés (français, anglais, arabe) d'une dizaine de lignes chacun.
-   - Indiquez 3 à 5 mots-clés pertinents par langue.
+   - Remplissez les résumés en français (`resume-fr.tex`) et en anglais (`resume-en.tex`) d'une dizaine de lignes chacun avec 3 à 5 mots-clés.
+   - Le résumé en arabe est généré automatiquement par `configure.py` via la section `resume_arabe` de `project_info.yaml`.
 
 4. **Abréviations (`front/abreviations.tex`) :**
-   - Ajoutez ou supprimez des lignes dans le tableau `tabularx` :
+   - Ajoutez ou modifiez vos sigles techniques dans le tableau `tabularx` :
      ```latex
      \textbf{AWS} & Amazon Web Services (Plateforme cloud) \\
+     \textbf{API} & Application Programming Interface \\
      ```
 
 ---
@@ -218,3 +230,33 @@ Pour travailler sur Overleaf en ligne :
    - Cliquez sur **New Project** $\rightarrow$ **Upload Project**.
    - Déposez le fichier **`overleaf_ensaf_template.zip`**.
 4. Overleaf compile immédiatement votre projet en ligne !
+
+---
+
+## 6. Foire Aux Questions (FAQ) & Dépannage
+
+### Q1 : Comment remplacer le logo de mon entreprise ?
+Déposez simplement votre logo au format PNG dans le dossier `logos/` sous le nom **`logo-entreprise.png`**. Il sera automatiquement pris en compte sur toutes les pages.
+
+### Q2 : Comment vérifier que mon rapport respecte toutes les règles ENSAF ?
+Lancez simplement la commande :
+```bash
+python lint.py
+```
+Le linter vérifie :
+- L'absence de tournures personnelles ("je", "mon", "nous" dans le corps technique).
+- La présence systématique de légendes (`\caption`) et de labels sur toutes les figures et tableaux.
+- L'absence de texte souligné (`\underline`) prohibé par le guide officiel.
+- L'équilibre des volumes de chapitres.
+
+### Q3 : Puis-je modifier directement la couverture Word manuellement ?
+Oui ! Vous pouvez ouvrir directement le fichier Word généré dans `front/couverture.docx` (ou le modèle dans `couvertures_rapport_stage_ensaf/`), faire vos ajustements, puis l'enregistrer sous `front/couverture.pdf`. LaTeX inclura automatiquement votre PDF personnalisé.
+
+### Q4 : Comment fonctionne le résumé en langue arabe ?
+Le résumé en arabe est généré au format autonome haute fidélité (`front/resume_ar.pdf`) pour bénéficier du moteur de rendu natif Windows (polices avec ligatures et diacritiques arabes complètes). Il est ensuite fusionné dans le rapport avec son titre de chapitre et sa pagination sans provoquer d'erreur de police LaTeX.
+
+### Q5 : Que faire si je travaille sous Linux ou macOS ?
+Si Microsoft Word n'est pas installé sur votre machine :
+- Définissez `modele_couverture: "NONE"` dans `project_info.yaml` pour compiler directement sans page de garde.
+- Ou convertissez le document Word officiel en PDF avec LibreOffice (`libreoffice --headless --convert-to pdf front/couverture.docx`) et placez le résultat dans `front/couverture.pdf`.
+- Vous pouvez également utiliser directement Overleaf via `python zip_for_overleaf.py`.
