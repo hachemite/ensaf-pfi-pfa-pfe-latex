@@ -1,6 +1,6 @@
 # 🎓 Modèle LaTeX Rapport de Stage PFA & PFE — ENSA & Écoles d'Ingénieurs Maroc
 
-[![Check & Compile](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/actions/workflows/check.yml/badge.svg)](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/actions/workflows/check.yml)
+[![Check & Compile](https://github.com/hachemite/rapport-pfe-pfa-latex-maroc/actions/workflows/check.yml/badge.svg)](https://github.com/hachemite/rapport-pfe-pfa-latex-maroc/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Changelog](https://img.shields.io/badge/Changelog-Keep%20a%20Changelog-blue)](CHANGELOG.md)
 
@@ -10,7 +10,7 @@ Ce template clé en main intègre la **génération automatique de couverture of
 
 > 💡 **Exemple complet de démonstration / Fully-filled example :**  
 > Vous souhaitez voir un rapport d'ingénierie 100% complété et compilé avec ce modèle ?  
-> 👉 **[Consulter l'exemple complet sur la branche `example-filled-report`](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/tree/example-filled-report)** *(avec son PDF généré [`example.pdf`](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/blob/example-filled-report/example.pdf))*.
+> 👉 **[Consulter l'exemple complet sur la branche `example-filled-report`](https://github.com/hachemite/rapport-pfe-pfa-latex-maroc/tree/example-filled-report)** *(avec son PDF généré [`example.pdf`](https://github.com/hachemite/rapport-pfe-pfa-latex-maroc/blob/example-filled-report/example.pdf))*.
 > 
 > 📋 **Journal des modifications :** Consultez le **[`CHANGELOG.md`](CHANGELOG.md)** pour l'historique complet des versions et des évolutions du modèle.
 
@@ -37,7 +37,7 @@ Vous pouvez utiliser ce dépôt de plusieurs manières selon votre organisation 
 - Cliquez sur le bouton vert **"Use this template"** en haut à droite sur GitHub pour créer votre propre dépôt de rapport.
 - Ou clonez-le directement en local :
   ```bash
-  git clone https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git mon-rapport-pfa
+  git clone https://github.com/hachemite/rapport-pfe-pfa-latex-maroc.git mon-rapport-pfa
   cd mon-rapport-pfa
   ```
 
@@ -45,9 +45,9 @@ Vous pouvez utiliser ce dépôt de plusieurs manières selon votre organisation 
 Si vous souhaitez conserver votre code et votre rapport dans le même dépôt Git :
 ```bash
 # Dans la racine de votre projet logiciel :
-git submodule add https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git docs/rapport
+git submodule add https://github.com/hachemite/rapport-pfe-pfa-latex-maroc.git docs/rapport
 # ou cloner directement comme sous-dossier :
-git clone https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git rapport
+git clone https://github.com/hachemite/rapport-pfe-pfa-latex-maroc.git rapport
 ```
 
 ### Option 3 : Import 1-Clic sur Overleaf

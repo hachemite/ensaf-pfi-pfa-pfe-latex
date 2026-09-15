@@ -53,7 +53,7 @@ cmrpi/
 Pour créer votre propre dépôt de rapport à partir de ce template :
 - Cliquez sur **Use this template** en haut du dépôt GitHub, ou clonez-le directement :
   ```bash
-  git clone https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git mon-rapport
+  git clone https://github.com/hachemite/rapport-pfe-pfa-latex-maroc.git mon-rapport
   cd mon-rapport
   ```
 
@@ -61,7 +61,7 @@ Pour créer votre propre dépôt de rapport à partir de ce template :
 Pour documenter un projet existant (par exemple dans un dossier `docs/` ou `rapport/`) :
 ```bash
 # À la racine de votre projet de code :
-git submodule add https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex.git docs/rapport
+git submodule add https://github.com/hachemite/rapport-pfe-pfa-latex-maroc.git docs/rapport
 ```
 
 ### 🔹 Option C : Importation Directe sur Overleaf
