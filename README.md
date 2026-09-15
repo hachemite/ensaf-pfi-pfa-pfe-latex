@@ -1,10 +1,12 @@
-# 🎓 Modèle de Rapport de Projet de Fin d'Année (PFA) / PFE — ENSAF
+# 🎓 Modèle LaTeX Rapport de Stage PFA & PFE — ENSA & Écoles d'Ingénieurs Maroc
 
 [![Check & Compile](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/actions/workflows/check.yml/badge.svg)](https://github.com/hachemite/ensaf-pfi-pfa-pfe-latex/actions/workflows/check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Changelog](https://img.shields.io/badge/Changelog-Keep%20a%20Changelog-blue)](CHANGELOG.md)
 
-Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage, PFA et PFE à l'**École Nationale des Sciences Appliquées de Fès (ENSAF)**.
+Le modèle LaTeX officiel, standardisé et automatisé pour la rédaction de **rapports de stage**, de **Projets de Fin d'Année (PFA)** et de **Projets de Fin d'Études (PFE)** à l'**ENSAF (École Nationale des Sciences Appliquées de Fès)**, adaptable à l'ensemble du **réseau ENSA Maroc** et aux grandes écoles d'ingénieurs (ENSEM, EMI, INPT, EHTP, FST).
+
+Ce template clé en main intègre la **génération automatique de couverture officielle**, la gestion native des **résumés trilingues (Français, Anglais, Arabe)**, un **linter académique automatique (`lint.py`)**, l'export **1-clic vers Overleaf**, ainsi qu'un protocole d'onboarding complet pour les **assistants IA (Cursor, Claude Code, GitHub Copilot, Antigravity)**.
 
 > 💡 **Exemple complet de démonstration / Fully-filled example :**  
 > Vous souhaitez voir un rapport d'ingénierie 100% complété et compilé avec ce modèle ?  
@@ -129,6 +131,18 @@ Pour rédiger en ligne sur Overleaf avec vos binômes :
 - **Style :** Forme impersonnelle (proscrire le "je" sauf en dédicaces/remerciements).
 - **Titres :** Grande lettre, centrés sur page dédiée (`\finPageTitre`), sans deux-points.
 - **Figures / Tableaux :** Numérotation `Nc.No` avec légende (`\caption`) systématique.
+
+---
+
+## 🇲🇦 Adaptabilité aux Autres Écoles d'Ingénieurs (Réseau ENSA & Maroc)
+
+Bien que préconfiguré selon les exigences académiques de l'**ENSAF**, ce modèle repose sur une architecture modulaire conçue pour être déclinée à l'ensemble des écoles d'ingénieurs au Maroc :
+- **Réseau ENSA :** ENSA Agadir, Al Hoceima, Berrechid, El Jadida, Fès, Kénitra, Khouribga, Marrakech, Oujda, Safi, Tanger, Béni Mellal.
+- **Grandes Écoles d'Ingénieurs :** ENSEM Casablanca, EMI Rabat, INPT, EHTP, ENSAM, FST, etc.
+- **Comment l'adapter à votre établissement :**
+  1. **Page de garde :** Définissez `modele_couverture: "NONE"` dans `project_info.yaml` pour insérer la couverture propre à votre école (ou déposez votre couverture officielle dans `front/couverture.pdf`).
+  2. **Logo :** Remplacez simplement le fichier `logos/logo-ensaf.png` par l'emblème de votre université ou école.
+  3. **Normes éditoriales :** La structure logique (Contexte $\rightarrow$ Analyse $\rightarrow$ Conception $\rightarrow$ Réalisation $\rightarrow$ Résultats), la sobriété typographique (Times 12pt, noir/blanc/gris, booktabs) et les résumés trilingues répondent aux critères nationaux des jurys de PFA et PFE au Maroc.
 
 ---
 
