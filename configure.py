@@ -75,6 +75,7 @@ def build_titlepage(cfg: dict) -> str:
     titre = escape_latex(proj.get("titre", "[TITRE DU PROJET]"))
     sous_titre = escape_latex(proj.get("sous_titre", ""))
     periode = escape_latex(proj.get("periode_stage", ""))
+    periode_str = f"\\textbf{{P\\'eriode de stage :}} {periode}\\\\[0.15cm]\n    " if periode else ""
     annee = escape_latex(acad.get("annee_universitaire", "2025 -- 2026"))
 
     org_nom = escape_latex(org.get("nom", "[Organisme d'accueil]"))
@@ -83,9 +84,9 @@ def build_titlepage(cfg: dict) -> str:
     # Section Auteurs (1, 2 ou 3)
     auteurs_lines = []
     for a in auteurs:
-        civ = a.get("civilite", "M.")
-        prenom = a.get("prenom", "")
-        nom = a.get("nom", "")
+        civ = escape_latex(a.get("civilite", "M."))
+        prenom = escape_latex(a.get("prenom", ""))
+        nom = escape_latex(a.get("nom", ""))
         auteurs_lines.append(f"\\textbf{{{civ} {prenom} {nom}}}")
 
     if len(auteurs_lines) == 1:
@@ -99,13 +100,13 @@ def build_titlepage(cfg: dict) -> str:
     enc_lines = []
     # Encadrants académiques
     for acad_enc in enc.get("academique", []):
-        civ = acad_enc.get("civilite", "M./Mme")
-        nom = acad_enc.get("prenom_nom", "[Encadrant ENSAF]")
+        civ = escape_latex(acad_enc.get("civilite", "M./Mme"))
+        nom = escape_latex(acad_enc.get("prenom_nom", "[Encadrant ENSAF]"))
         enc_lines.append(f"\\textbf{{{civ} {nom}}} \\textit{{(Encadrant Acad\\'emique ENSAF)}}")
     # Encadrants professionnels
     for pro_enc in enc.get("professionnel", []):
-        civ = pro_enc.get("civilite", "M./Mme")
-        nom = pro_enc.get("prenom_nom", "[Encadrant Société]")
+        civ = escape_latex(pro_enc.get("civilite", "M./Mme"))
+        nom = escape_latex(pro_enc.get("prenom_nom", "[Encadrant Société]"))
         enc_lines.append(f"\\textbf{{{civ} {nom}}} \\textit{{(Encadrant Professionnel)}}")
 
     bloc_encadrement = "\\textbf{Sous la direction de :}\\\\[0.2cm]\n    " + "\\\\\n    ".join(enc_lines)
@@ -115,10 +116,10 @@ def build_titlepage(cfg: dict) -> str:
     if jury.get("afficher_sur_garde", False) and jury.get("membres"):
         membres_str = []
         for m in jury["membres"]:
-            civ = m.get("civilite", "M.")
-            nom = m.get("prenom_nom", "")
-            qualite = m.get("qualite", "Membre")
-            etab = m.get("etablissement", "ENSAF")
+            civ = escape_latex(m.get("civilite", "M."))
+            nom = escape_latex(m.get("prenom_nom", ""))
+            qualite = escape_latex(m.get("qualite", "Membre"))
+            etab = escape_latex(m.get("etablissement", "ENSAF"))
             membres_str.append(f"\\textbf{{{civ} {nom}}}, {qualite} ({etab})")
         bloc_jury = "\n\\vspace{0.4cm}\n\\begin{center}\n\\small \\textbf{Membres du Jury :}\\\\[0.1cm]\n" + " \\quad | \\quad ".join(membres_str) + "\n\\end{center}\n"
 
@@ -136,20 +137,20 @@ def build_titlepage(cfg: dict) -> str:
                "% ============================================================\n"
 
     # CAS 1 : PROJET DE FIN D'ÉTUDES (PFE / cpfe.docx)
-    if "PFE" in modele or "FIN D" in type_rapport.upper():
+    if "PFE" in modele or ("FIN D'ÉTUDES" in type_rapport.upper() or "FIN D'ETUDES" in type_rapport.upper()):
         jury_items = []
         for pro in enc.get("professionnel", []):
-            civ = pro.get("civilite", "M.")
-            pnom = pro.get("prenom_nom", "[Encadrant Société]")
+            civ = escape_latex(pro.get("civilite", "M."))
+            pnom = escape_latex(pro.get("prenom_nom", "[Encadrant Société]"))
             jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant(e) Soci\\'et\\'e \\\\")
         for aca in enc.get("academique", []):
-            civ = aca.get("civilite", "Prof.")
-            pnom = aca.get("prenom_nom", "[Encadrant ENSAF]")
+            civ = escape_latex(aca.get("civilite", "Prof."))
+            pnom = escape_latex(aca.get("prenom_nom", "[Encadrant ENSAF]"))
             jury_items.append(f"\\textbf{{{civ} {pnom}}} & Encadrant ENSAF \\\\")
         for j in jury.get("membres", []):
-            civ = j.get("civilite", "Prof.")
-            pnom = j.get("prenom_nom", "[Enseignant ENSAF]")
-            role = j.get("qualite", "Enseignant ENSAF")
+            civ = escape_latex(j.get("civilite", "Prof."))
+            pnom = escape_latex(j.get("prenom_nom", "[Enseignant ENSAF]"))
+            role = escape_latex(j.get("qualite", "Enseignant ENSAF"))
             jury_items.append(f"\\textbf{{{civ} {pnom}}} & {role} \\\\")
 
         jury_block = ""
@@ -235,19 +236,19 @@ def build_titlepage(cfg: dict) -> str:
     # CAS 2 : STAGE D'INITIATION (1ère année / csi.docx)
     elif "INIT" in modele or "1" in modele:
         titre_stage = "Stage d'Initiation"
-        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 1\\textsuperscript{\\grave{{e}}re} ann\\'ee"
+        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 1\\textsuperscript{\\`ere} ann\\'ee"
     # CAS 3 : STAGE D'APPLICATION (2ème année / PFA / csa.docx)
     else:
         titre_stage = "Stage d'Application"
-        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 2\\textsuperscript{\\grave{{e}}me} ann\\'ee"
+        statut_etudiant = "\\'El\\`eve Ing\\'enieur en 2\\textsuperscript{\\`eme} ann\\'ee"
 
     # Jury pour stage d'application / initiation
     bloc_jury_stage = ""
     if jury.get("membres"):
         j_l = []
         for m in jury["membres"]:
-            civ = m.get("civilite", "M.")
-            nom = m.get("prenom_nom", "")
+            civ = escape_latex(m.get("civilite", "M."))
+            nom = escape_latex(m.get("prenom_nom", ""))
             j_l.append(f"-- {civ} {nom}")
         bloc_jury_stage = f"""\\vspace{{0.5cm}}
 \\noindent
