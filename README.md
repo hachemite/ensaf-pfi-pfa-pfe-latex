@@ -7,7 +7,7 @@ Modèle LaTeX officiel et standardisé pour la rédaction des rapports de stage,
 ## ⚡ Démarrage Rapide (4 Étapes)
 
 ### 0. Personnaliser vos informations (Formulaire & IA)
-Renseignez vos informations dans **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
+Renseignez vos informations dans **[`project_info.yaml`](project_info.yaml)** :
 - **`modele_couverture`** :
   - `"PFA"` : Stage d'Application (2ème année cycle ingénieur / 4A)
   - `"PFE"` : Projet de Fin d'Études (3ème année cycle ingénieur / 5A)
@@ -24,7 +24,7 @@ python configure.py
 *(Génère automatiquement la couverture Word officielle garantie sur 1 page `front/couverture.pdf`, le résumé en arabe haute fidélité `front/resume_ar.pdf`, et les remerciements protocolaires `front/remerciements.tex`).*
 
 ### 1. Compiler localement
-- **Option A (Double-clic) :** Double-cliquez sur [`compile.bat`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/compile.bat).
+- **Option A (Double-clic) :** Double-cliquez sur [`compile.bat`](compile.bat).
 - **Option B (Python) :** Lancez dans votre terminal :
   ```bash
   python preview.py
@@ -39,8 +39,9 @@ python lint.py
 
 ### 3. Exporter pour Overleaf
 Pour rédiger en ligne sur Overleaf avec vos binômes :
-- Double-cliquez sur [`zip_overleaf.bat`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/zip_overleaf.bat) (ou exécutez `python zip_for_overleaf.py`).
-- Glissez-déposez le fichier généré **`overleaf_ensaf_template.zip`** sur [Overleaf](https://www.overleaf.com) (*New Project -> Upload Project*).
+- Double-cliquez sur [`zip_overleaf.bat`](zip_overleaf.bat) (ou lancez `python zip_for_overleaf.py`).
+- Déposez l'archive générée **`overleaf_ensaf_template.zip`** sur [Overleaf](https://www.overleaf.com) (*New Project -> Upload Project*).
+- **Moteur vérifié :** Compile directement avec le compilateur standard **pdfLaTeX** d'Overleaf (avec intégration des composants pré-générés ou repli natif automatique).
 
 ---
 
@@ -48,16 +49,16 @@ Pour rédiger en ligne sur Overleaf avec vos binômes :
 
 | Dossier / Fichier | Description |
 | :--- | :--- |
-| [`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml) | Formulaire de métadonnées (auteurs, entreprise, encadrants, jury) |
-| [`configure.py`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/configure.py) | Script de synchronisation automatique des pages liminaires |
-| [`main.tex`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/main.tex) | Fichier racine du projet |
-| [`ensaf.cls`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/ensaf.cls) | Classe de style (police Times 12pt, marges 2.5cm/2cm, en-têtes) |
-| [`front/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/front) | Dédicaces, Remerciements, Résumés (FR/EN/AR), Abréviations |
-| [`chapters/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/chapters) | Chapitres 0 à 4 (Introduction, Cadre, État de l'art, Réalisation, Conclusion) |
-| [`back/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/back) | Annexes, glossaire et bibliographie (`bibliographie.bib`) |
-| [`figures/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/figures) | Vos captures d'écran et schémas (`ch1/`, `ch2/`, `ch3/`) |
-| [`TODO.md`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/TODO.md) | Suivi d'avancement chapitre par chapitre |
-| [`GUIDE_UTILISATION_TEMPLATE.md`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/GUIDE_UTILISATION_TEMPLATE.md) | Guide détaillé des commandes et syntaxes LaTeX |
+| [`project_info.yaml`](project_info.yaml) | Formulaire de métadonnées (auteurs, entreprise, encadrants, jury) |
+| [`configure.py`](configure.py) | Script de synchronisation automatique des pages liminaires |
+| [`main.tex`](main.tex) | Fichier racine du projet |
+| [`ensaf.cls`](ensaf.cls) | Classe de style (police Times 12pt, marges 2.5cm/2cm, en-têtes) |
+| [`front/`](front/) | Dédicaces, Remerciements, Résumés (FR/EN/AR), Abréviations |
+| [`chapters/`](chapters/) | Chapitres 0 à 4 (Introduction, Cadre, État de l'art, Réalisation, Conclusion) |
+| [`back/`](back/) | Annexes, glossaire et bibliographie (`bibliographie.bib`) |
+| [`figures/`](figures/) | Vos captures d'écran et schémas (`ch1/`, `ch2/`, `ch3/`) |
+| [`TODO.md`](TODO.md) | Suivi d'avancement chapitre par chapitre |
+| [`GUIDE_UTILISATION_TEMPLATE.md`](GUIDE_UTILISATION_TEMPLATE.md) | Guide détaillé des commandes et syntaxes LaTeX |
 
 ---
 

@@ -50,7 +50,7 @@ cmrpi/
 ## 2. Comment Démarrer et Remplir le Rapport
 
 ### Étape 1 : Renseigner vos métadonnées (`project_info.yaml`)
-La méthode recommandée consiste à modifier le fichier central **[`project_info.yaml`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/project_info.yaml)** :
+La méthode recommandée consiste à modifier le fichier central **[`project_info.yaml`](project_info.yaml)** :
 
 | Option `modele_couverture` | Usage / Niveau ENSAF | Fichier source Word officiel |
 | :--- | :--- | :--- |
@@ -71,7 +71,7 @@ Puis appliquez la configuration automatique :
 python configure.py
 ```
 Ce script :
-1. Remplit automatiquement le document Word officiel correspondant dans [`couvertures_rapport_stage_ensaf/`](file:///c:/Users/squal/Documents/rapport_pfa/cmrpi/couvertures_rapport_stage_ensaf/).
+1. Remplit automatiquement le document Word officiel correspondant dans [`couvertures_rapport_stage_ensaf/`](couvertures_rapport_stage_ensaf/).
 2. Compacte le texte pour garantir **strictement 1 seule page** (`front/couverture.pdf`) avec un encodage UTF-8 parfait.
 3. Génère le résumé arabe haute fidélité (`front/resume_ar.pdf`) avec polices natives Windows sans bordure artificielle.
 4. Rédige les remerciements protocolaires personnalisés dans `front/remerciements.tex`.
@@ -220,16 +220,18 @@ Le diagramme de Gantt est codé nativement en LaTeX (`pgfgantt`). Vous pouvez mo
 
 ---
 
-## 5. Exportation vers Overleaf (En 1 Seul Clic)
+## 5. Exportation vers Overleaf
 
-Pour travailler sur Overleaf en ligne :
+Pour collaborer en ligne sur Overleaf avec vos binômes :
 
-1. Double-cliquez sur **`zip_overleaf.bat`** (ou exécutez `python zip_for_overleaf.py`).
-2. Le fichier **`overleaf_ensaf_template.zip`** est créé à la racine du projet.
+1. Exécutez `python zip_for_overleaf.py` (ou double-cliquez sur `zip_overleaf.bat`).
+2. Le fichier **`overleaf_ensaf_template.zip`** est créé à la racine du projet, contenant l'ensemble des sources TeX, figures, logos et composants pré-générés.
 3. Sur votre compte [Overleaf](https://www.overleaf.com) :
    - Cliquez sur **New Project** $\rightarrow$ **Upload Project**.
    - Déposez le fichier **`overleaf_ensaf_template.zip`**.
-4. Overleaf compile immédiatement votre projet en ligne !
+4. **Compilation vérifiée :** Le projet utilise le moteur standard **pdfLaTeX** d'Overleaf.
+   - Si vous avez exécuté `python configure.py` au préalable, la couverture officielle Word (`couverture.pdf`) et le résumé arabe (`resume_ar.pdf`) sont automatiquement intégrés.
+   - Si ces fichiers ne sont pas présents, le code bascule automatiquement sur des pages liminaires de repli en pur LaTeX (`\IfFileExists`), garantissant une compilation immédiate sans erreur.
 
 ---
 

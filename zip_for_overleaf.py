@@ -58,17 +58,31 @@ def create_overleaf_zip(output_filename=DEFAULT_OUTPUT_ZIP):
                         zipf.write(full_path, arcname=rel_path)
                         files_added.append(rel_path)
 
+    has_cover = any(f.endswith('couverture.pdf') for f in files_added)
+    has_ar = any(f.endswith('resume_ar.pdf') for f in files_added)
+
     print("=" * 60)
     print("  EXPORTATION DU PROJET POUR OVERLEAF")
     print("=" * 60)
-    print(f"\n[OK] Archive générée avec succès : {output_filename}")
+    print(f"\n[OK] Archive generee avec succes : {output_filename}")
     print(f"[+] Total fichiers inclus : {len(files_added)}")
     print(f"[+] Emplacement : {output_path}")
-    print("\nComment l'utiliser sur Overleaf :")
-    print("  1. Allez sur https://www.overleaf.com")
+    print("\nEtat des composants pre-generes :")
+    if has_cover:
+        print("  [OK] Page de garde officielle Word incluse (front/couverture.pdf)")
+    else:
+        print("  [--] Page de garde Word non incluse (repli LaTeX natif actif)")
+        print("       Astuce : lancez d'abord 'python configure.py' pour l'integrer au zip.")
+    if has_ar:
+        print("  [OK] Resume en langue arabe inclus (front/resume_ar.pdf)")
+    else:
+        print("  [--] Resume arabe PDF non inclus (repli LaTeX natif actif)")
+    
+    print("\nInstructions d'importation Overleaf :")
+    print("  1. Connectez-vous sur https://www.overleaf.com")
     print("  2. Cliquez sur 'New Project' -> 'Upload Project'")
-    print(f"  3. Sélectionnez le fichier '{output_filename}'")
-    print("  4. Overleaf compilera automatiquement votre rapport !")
+    print(f"  3. Deposez l'archive '{output_filename}'")
+    print("  4. Le projet compile avec le compilateur standard pdfLaTeX.")
     print("=" * 60)
     return output_path
 
